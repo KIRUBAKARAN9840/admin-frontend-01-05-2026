@@ -117,10 +117,12 @@ export default function TodaySchedule() {
   const getStatusColor = (status) => {
     switch (status) {
       case "scheduled":
+      case "booked":
         return "#FFA500";
       case "attended":
         return "#4ade80";
       case "missed":
+      case "no_show":
         return "#ef4444";
       case "rescheduled":
         return "#3b82f6";
@@ -128,6 +130,26 @@ export default function TodaySchedule() {
         return "#888";
       default:
         return "#ccc";
+    }
+  };
+
+  const getStatusDisplayText = (status) => {
+    switch (status) {
+      case "scheduled":
+      case "booked":
+      case "available":
+        return "Not Scanned";
+      case "attended":
+        return "Scanned";
+      case "missed":
+      case "no_show":
+        return "Missed";
+      case "rescheduled":
+        return "Rescheduled";
+      case "canceled":
+        return "Canceled";
+      default:
+        return status || "N/A";
     }
   };
 
@@ -217,19 +239,23 @@ export default function TodaySchedule() {
                   <td className="type">{item.type === "Session" && item.session_name ? `Fitness Class - ${item.session_name}` : item.type}</td>
                   <td className="scheduled-date">{formatDate(item.scheduled_date)}</td>
                   <td className="status">
-                    <span
-                      style={{
-                        padding: "4px 12px",
-                        borderRadius: "4px",
-                        fontSize: "12px",
-                        fontWeight: "600",
-                        textTransform: "uppercase",
-                        backgroundColor: "rgba(255, 255, 255, 0.1)",
-                        color: getStatusColor(item.status),
-                      }}
-                    >
-                      {item.status}
-                    </span>
+                    {item.status ? (
+                      <span
+                        style={{
+                          padding: "4px 12px",
+                          borderRadius: "4px",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          textTransform: "uppercase",
+                          backgroundColor: "rgba(255, 255, 255, 0.1)",
+                          color: getStatusColor(item.status),
+                        }}
+                      >
+                        {getStatusDisplayText(item.status)}
+                      </span>
+                    ) : (
+                      <span style={{ color: "#666", fontSize: "12px" }}>N/A</span>
+                    )}
                   </td>
                   {/* <td className="amount">{formatAmount(item.amount)}</td> */}
                   <td className="purchased-at">{formatDateTime(item.purchased_at)}</td>
@@ -365,6 +391,10 @@ export default function TodaySchedule() {
         table.schedule-table .purchased-at {
           font-size: 14px !important;
           color: #888 !important;
+        }
+
+        table.schedule-table .status {
+          text-align: center !important;
         }
 
         @keyframes spin {

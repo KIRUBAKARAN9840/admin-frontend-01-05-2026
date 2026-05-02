@@ -186,10 +186,12 @@ export default function AllPurchases() {
   const getStatusColor = (status) => {
     switch (status) {
       case "scheduled":
+      case "booked":
         return "#FFA500";
       case "attended":
         return "#4ade80";
       case "missed":
+      case "no_show":
         return "#ef4444";
       case "rescheduled":
         return "#3b82f6";
@@ -197,6 +199,26 @@ export default function AllPurchases() {
         return "#888";
       default:
         return "#ccc";
+    }
+  };
+
+  const getStatusDisplayText = (status) => {
+    switch (status) {
+      case "scheduled":
+      case "booked":
+      case "available":
+        return "Not Scanned";
+      case "attended":
+        return "Scanned";
+      case "missed":
+      case "no_show":
+        return "Missed";
+      case "rescheduled":
+        return "Rescheduled";
+      case "canceled":
+        return "Canceled";
+      default:
+        return status || "N/A";
     }
   };
 
@@ -584,7 +606,7 @@ export default function AllPurchases() {
                               color: getStatusColor(purchase.status),
                             }}
                           >
-                            {purchase.status}
+                            {getStatusDisplayText(purchase.status)}
                           </span>
                         ) : (
                           <span style={{ color: "#666", fontSize: "12px" }}>N/A</span>
