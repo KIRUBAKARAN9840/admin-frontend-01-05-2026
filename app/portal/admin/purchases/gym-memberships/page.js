@@ -588,14 +588,20 @@ export default function GymMemberships() {
       )}
 
       <style jsx global>{`
+        .table-responsive {
+          overflow-x: auto !important;
+          position: relative !important;
+        }
+
         table.memberships-table {
           width: 100% !important;
+          min-width: 1400px !important;
           border-collapse: separate !important;
           border-spacing: 0 !important;
           background-color: #1a1a1a !important;
           color: #fff !important;
           border-radius: 8px !important;
-          overflow: hidden !important;
+          overflow: visible !important;
         }
 
         table.memberships-table > thead {
@@ -609,13 +615,13 @@ export default function GymMemberships() {
           text-align: left !important;
           color: #fff !important;
           border: none !important;
-          background-color: transparent !important;
+          background-color: #1a1a1a !important;
         }
 
         table.memberships-table > tbody > tr {
           border-bottom: 1px solid #333 !important;
           transition: background-color 0.2s ease !important;
-          background-color: transparent !important;
+          background-color: #1a1a1a !important;
         }
 
         table.memberships-table > tbody > tr:hover {
@@ -630,7 +636,7 @@ export default function GymMemberships() {
           padding: 12px !important;
           color: #fff !important;
           border: none !important;
-          background-color: transparent !important;
+          background-color: #1a1a1a !important;
         }
 
         table.memberships-table .client-name {
@@ -661,6 +667,49 @@ export default function GymMemberships() {
 
         table.memberships-table .schedule-row:hover {
           background-color: #151515 !important;
+        }
+
+        /* Sticky columns - keep first 4 columns fixed while scrolling */
+        table.memberships-table > thead > tr > th:nth-child(1),
+        table.memberships-table > tbody > tr > td:nth-child(1) {
+          position: sticky !important;
+          left: 0 !important;
+          z-index: 11 !important;
+          background-color: #1a1a1a !important;
+          border-right: 1px solid #333 !important;
+        }
+
+        table.memberships-table > thead > tr > th:nth-child(2),
+        table.memberships-table > tbody > tr > td:nth-child(2) {
+          position: sticky !important;
+          left: 40px !important;
+          width: 160px !important;
+          min-width: 160px !important;
+          z-index: 11 !important;
+          background-color: #1a1a1a !important;
+          border-right: 1px solid #333 !important;
+        }
+
+        table.memberships-table > thead > tr > th:nth-child(3),
+        table.memberships-table > tbody > tr > td:nth-child(3) {
+          position: sticky !important;
+          left: 200px !important;
+          width: 120px !important;
+          min-width: 120px !important;
+          z-index: 11 !important;
+          background-color: #1a1a1a !important;
+          border-right: 1px solid #333 !important;
+        }
+
+        table.memberships-table > thead > tr > th:nth-child(4),
+        table.memberships-table > tbody > tr > td:nth-child(4) {
+          position: sticky !important;
+          left: 320px !important;
+          width: 160px !important;
+          min-width: 160px !important;
+          z-index: 11 !important;
+          background-color: #1a1a1a !important;
+          border-right: 2px solid #333 !important;
         }
 
         @keyframes spin {
