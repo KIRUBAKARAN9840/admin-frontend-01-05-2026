@@ -516,7 +516,7 @@ export default function AllPurchases() {
                 <th>Days / Classes</th>
                 <th>Amount</th>
                 <th>Purchased At</th>
-                <th>Status</th>
+                <th style={{ width: "140px" }}>Status</th>
                 <th>Platform</th>
               </tr>
             </thead>
@@ -597,9 +597,9 @@ export default function AllPurchases() {
                         {purchase.status ? (
                           <span
                             style={{
-                              padding: "4px 12px",
+                              padding: "3px 10px",
                               borderRadius: "4px",
-                              fontSize: "12px",
+                              fontSize: "11px",
                               fontWeight: "600",
                               textTransform: "uppercase",
                               backgroundColor: "rgba(255, 255, 255, 0.1)",
