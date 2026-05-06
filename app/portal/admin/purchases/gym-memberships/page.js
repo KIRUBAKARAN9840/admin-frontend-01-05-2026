@@ -381,13 +381,16 @@ export default function GymMemberships() {
           <table className="table memberships-table">
             <thead>
               <tr>
-                <th style={{ width: "40px" }}></th>
-                <th>Client Name</th>
+                <th style={{ minWidth: "40px", width: "40px" }}></th>
+                <th style={{ minWidth: "160px", width: "160px" }}>Client Name</th>
                 <th>Contact</th>
-                <th>Gym Name</th>
+                <th style={{ minWidth: "160px", width: "160px" }}>Gym Name</th>
                 <th>Type</th>
                 <th>Amount</th>
                 <th>Purchased At</th>
+                <th>Status</th>
+                <th style={{ minWidth: "120px", width: "120px" }}>Joined At</th>
+                <th style={{ minWidth: "120px", width: "120px" }}>Expire At</th>
                 <th>Platform</th>
               </tr>
             </thead>
@@ -458,6 +461,27 @@ export default function GymMemberships() {
                       <td className="type">{formatType(item.type)}</td>
                       <td className="amount">{formatAmount(item.amount)}</td>
                       <td className="purchased-at">{formatDate(item.purchased_at)}</td>
+                      <td className="status">
+                        {item.status ? (
+                          <span
+                            style={{
+                              padding: "3px 10px",
+                              borderRadius: "4px",
+                              fontSize: "11px",
+                              fontWeight: "600",
+                              textTransform: "uppercase",
+                              backgroundColor: "rgba(255, 255, 255, 0.1)",
+                              color: item.status === "active" ? "#4ade80" : item.status === "expired" ? "#ef4444" : "#888",
+                            }}
+                          >
+                            {item.status}
+                          </span>
+                        ) : (
+                          <span style={{ color: "#666", fontSize: "11px" }}>N/A</span>
+                        )}
+                      </td>
+                      <td className="joined-at">{item.joined_at ? formatDate(item.joined_at) : "N/A"}</td>
+                      <td className="expire-at">{item.expire_at ? formatDate(item.expire_at) : "N/A"}</td>
                       <td className="platform">
                         <span
                           style={{
@@ -478,7 +502,7 @@ export default function GymMemberships() {
                     </tr>
                     {isExpanded && (
                       <tr className="schedule-row">
-                        <td colSpan="8" style={{ padding: "0 !important" }}>
+                        <td colSpan="11" style={{ padding: "0 !important" }}>
                           <div
                             style={{
                               backgroundColor: "#151515",
