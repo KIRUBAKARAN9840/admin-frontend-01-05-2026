@@ -19,49 +19,58 @@ export default function PurchaseCountPage() {
   const [endDate, setEndDate] = useState("");
 
   // Compute dates based on filter (memoized to avoid recalculations)
+  // Use IST (UTC+5:30) to build date strings to match backend IST handling
   const dates = useMemo(() => {
     const today = new Date();
 
+    // Helper to format date as YYYY-MM-DD in local timezone (IST)
+    const formatDateLocal = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
     if (dateFilter === "today") {
       return {
-        start: today.toISOString().split('T')[0],
-        end: today.toISOString().split('T')[0]
+        start: formatDateLocal(today),
+        end: formatDateLocal(today)
       };
     } else if (dateFilter === "last_7") {
       const sevenDaysAgo = new Date(today);
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
       return {
-        start: sevenDaysAgo.toISOString().split('T')[0],
-        end: today.toISOString().split('T')[0]
+        start: formatDateLocal(sevenDaysAgo),
+        end: formatDateLocal(today)
       };
     } else if (dateFilter === "last_30") {
       const thirtyDaysAgo = new Date(today);
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
       return {
-        start: thirtyDaysAgo.toISOString().split('T')[0],
-        end: today.toISOString().split('T')[0]
+        start: formatDateLocal(thirtyDaysAgo),
+        end: formatDateLocal(today)
       };
     } else if (dateFilter === "last_month") {
       const lastMonthDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
       const firstDayOfLastMonth = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth(), 1);
       const lastDayOfLastMonth = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth() + 1, 0);
       return {
-        start: firstDayOfLastMonth.toISOString().split('T')[0],
-        end: lastDayOfLastMonth.toISOString().split('T')[0]
+        start: formatDateLocal(firstDayOfLastMonth),
+        end: formatDateLocal(lastDayOfLastMonth)
       };
     } else if (dateFilter === "current_month") {
       const firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
       return {
-        start: firstDayOfCurrentMonth.toISOString().split('T')[0],
-        end: today.toISOString().split('T')[0]
+        start: formatDateLocal(firstDayOfCurrentMonth),
+        end: formatDateLocal(today)
       };
     }
     // Default to last_30
     const thirtyDaysAgo = new Date(today);
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
     return {
-      start: thirtyDaysAgo.toISOString().split('T')[0],
-      end: today.toISOString().split('T')[0]
+      start: formatDateLocal(thirtyDaysAgo),
+      end: formatDateLocal(today)
     };
   }, [dateFilter]);
 
