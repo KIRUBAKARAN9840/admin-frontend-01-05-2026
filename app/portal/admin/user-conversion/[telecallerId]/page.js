@@ -387,14 +387,23 @@ export default function TelecallerConvertedClients() {
             )}
           </h2>
         </div>
-        <div className="users-count">Total: {totalClients} clients</div>
       </div>
 
-      {/* Filters Section */}
-      <div className="filters-section">
-        <div className="row pb-0">
-          <div className="col-lg-3 col-md-6 col-sm-12">
-            <div className="search-box">
+      {/* Stats Cards Section */}
+      <div style={{ display: "flex", gap: "16px", marginBottom: "16px", flexWrap: "wrap" }}>
+        {/* Search and Pagination Card */}
+        <div style={{
+          flex: "1 1 300px",
+          minWidth: "280px",
+          background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)",
+          borderRadius: "12px",
+          padding: "16px 20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+        }}>
+          <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
+            <div className="search-box" style={{ flex: "1 1 200px", minWidth: "180px" }}>
               <FaSearch className="search-icon" />
               <input
                 type="text"
@@ -407,9 +416,6 @@ export default function TelecallerConvertedClients() {
                 }}
               />
             </div>
-          </div>
-
-          <div className="col-lg-2 col-md-6 col-sm-12">
             <select
               className="filter-select"
               value={itemsPerPage}
@@ -417,6 +423,7 @@ export default function TelecallerConvertedClients() {
                 setItemsPerPage(Number(e.target.value));
                 setCurrentPage(1);
               }}
+              style={{ minWidth: "100px" }}
             >
               <option value={5}>5 per page</option>
               <option value={10}>10 per page</option>
@@ -424,142 +431,151 @@ export default function TelecallerConvertedClients() {
               <option value={50}>50 per page</option>
             </select>
           </div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px", color: "#888" }}>
+            <span>Total: {totalClients} clients</span>
+            {totalPages > 1 && (
+              <span>Page {currentPage} of {totalPages}</span>
+            )}
+          </div>
+        </div>
 
-          <div className="col-lg-4 col-md-6 col-sm-12">
-            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
-              <div
-                style={{
-                  background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-                  borderRadius: "8px",
-                  padding: "12px 16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  minHeight: "70px",
-                  minWidth: "140px",
-                }}
-              >
-                <div style={{ fontSize: "12px", color: "#ecfdf5", marginBottom: "2px", fontWeight: "500" }}>
-                  Business by {telecaller?.name || "Telecaller"}
-                </div>
-                <div style={{ fontSize: "20px", fontWeight: "700", color: "#ffffff" }}>
-                  ₹{totalRevenue.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                </div>
+        {/* Business Card */}
+        <div style={{
+          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+          borderRadius: "12px",
+          padding: "16px 20px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          minWidth: "160px",
+          minHeight: "90px",
+        }}>
+          <div style={{ fontSize: "11px", color: "#d1fae5", marginBottom: "4px", fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+            Business by {telecaller?.name || "Telecaller"}
+          </div>
+          <div style={{ fontSize: "22px", fontWeight: "700", color: "#ffffff" }}>
+            ₹{totalRevenue.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+          </div>
+        </div>
+
+        {/* Call Count Card */}
+        <div style={{
+          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+          borderRadius: "12px",
+          padding: "16px 20px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          minWidth: "200px",
+          minHeight: callCountFilter === "custom" ? "auto" : "90px",
+          flexGrow: 0,
+        }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px", gap: "8px" }}>
+            <div style={{ fontSize: "11px", color: "#d1fae5", fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px", whiteSpace: "nowrap" }}>
+              {callCountFilter === "today" ? "Today's" : callCountFilter === "yesterday" ? "Yesterday's" : callCountFilter === "last7days" ? "Last 7 Days" : callCountFilter === "current_month" ? "Current Month" : callCountFilter === "last_month" ? "Last Month" : callCountFilter === "overall" ? "Overall" : "Custom"} Calls
+            </div>
+            <select
+              value={callCountFilter}
+              onChange={(e) => onFilterChange(e.target.value)}
+              style={{
+                background: "rgba(255,255,255,0.2)",
+                border: "none",
+                borderRadius: "4px",
+                padding: "2px 6px",
+                fontSize: "10px",
+                color: "#fff",
+                cursor: "pointer",
+                flexShrink: 0,
+              }}
+            >
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="last7days">Last 7 Days</option>
+              <option value="current_month">Current Month</option>
+              <option value="last_month">Last Month</option>
+              <option value="overall">Overall</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div style={{ fontSize: "22px", fontWeight: "700", color: "#ffffff" }}>
+            {loadingCallCount ? "..." : todayCallCount}
+          </div>
+          {callCountFilter === "custom" && (
+            <div style={{ marginTop: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div style={{ display: "flex", gap: "6px", alignItems: "center", flexWrap: "wrap" }}>
+                <span style={{ color: "#d1fae5", fontSize: "10px", whiteSpace: "nowrap" }}>From:</span>
+                <input
+                  type="datetime-local"
+                  value={customStartTime}
+                  onChange={(e) => {
+                    setCustomStartTime(e.target.value);
+                    customStartRef.current = e.target.value;
+                  }}
+                  style={{
+                    background: "rgba(255,255,255,0.15)",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "4px 6px",
+                    fontSize: "10px",
+                    color: "#fff",
+                    width: "100%",
+                    minWidth: "140px",
+                  }}
+                />
               </div>
-              <div
-                style={{
-                  background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-                  borderRadius: "8px",
-                  padding: "12px 16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  minHeight: "70px",
-                  minWidth: "140px",
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <div>
-                    <div style={{ fontSize: "12px", color: "#ecfdf5", marginBottom: "2px", fontWeight: "500" }}>
-                      {callCountFilter === "today" ? "Today's" : callCountFilter === "yesterday" ? "Yesterday's" : callCountFilter === "last7days" ? "Last 7 Days" : callCountFilter === "current_month" ? "Current Month" : callCountFilter === "last_month" ? "Last Month" : callCountFilter === "overall" ? "Overall" : "Custom"} Calls
-                    </div>
-                    <div style={{ fontSize: "20px", fontWeight: "700", color: "#ffffff" }}>
-                      {loadingCallCount ? "..." : todayCallCount}
-                    </div>
-                  </div>
-                  <select
-                    value={callCountFilter}
-                    onChange={(e) => onFilterChange(e.target.value)}
-                    style={{
-                      background: "rgba(255,255,255,0.15)",
-                      border: "none",
-                      borderRadius: "4px",
-                      padding: "4px 8px",
-                      fontSize: "11px",
-                      color: "#fff",
-                      cursor: "pointer",
-                      minWidth: "80px",
-                    }}
-                  >
-                    <option value="today">Today</option>
-                    <option value="yesterday">Yesterday</option>
-                    <option value="last7days">Last 7 Days</option>
-                    <option value="current_month">Current Month</option>
-                    <option value="last_month">Last Month</option>
-                    <option value="overall">Overall</option>
-                    <option value="custom">Custom</option>
-                  </select>
-                </div>
-                {callCountFilter === "custom" && (
-                  <div style={{ marginTop: "8px", display: "flex", gap: "6px", alignItems: "center" }}>
-                    <input
-                      type="datetime-local"
-                      value={customStartTime}
-                      onChange={(e) => {
-                        setCustomStartTime(e.target.value);
-                        customStartRef.current = e.target.value;
-                      }}
-                      style={{
-                        background: "rgba(255,255,255,0.15)",
-                        border: "none",
-                        borderRadius: "4px",
-                        padding: "4px 6px",
-                        fontSize: "10px",
-                        color: "#fff",
-                        width: "140px",
-                      }}
-                    />
-                    <span style={{ color: "#ecfdf5", fontSize: "10px" }}>to</span>
-                    <input
-                      type="datetime-local"
-                      value={customEndTime}
-                      onChange={(e) => {
-                        setCustomEndTime(e.target.value);
-                        customEndRef.current = e.target.value;
-                      }}
-                      style={{
-                        background: "rgba(255,255,255,0.15)",
-                        border: "none",
-                        borderRadius: "4px",
-                        padding: "4px 6px",
-                        fontSize: "10px",
-                        color: "#fff",
-                        width: "140px",
-                      }}
-                    />
-                    <button
-                      onClick={applyCustomFilter}
-                      style={{
-                        background: "rgba(255,255,255,0.25)",
-                        border: "none",
-                        borderRadius: "4px",
-                        padding: "4px 8px",
-                        fontSize: "10px",
-                        color: "#fff",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Apply
-                    </button>
-                    <button
-                      onClick={clearFilter}
-                      style={{
-                        background: "transparent",
-                        border: "1px solid rgba(255,255,255,0.3)",
-                        borderRadius: "4px",
-                        padding: "4px 8px",
-                        fontSize: "10px",
-                        color: "#fff",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Clear
-                    </button>
-                  </div>
-                )}
+              <div style={{ display: "flex", gap: "6px", alignItems: "center", flexWrap: "wrap" }}>
+                <span style={{ color: "#d1fae5", fontSize: "10px", whiteSpace: "nowrap" }}>To:</span>
+                <input
+                  type="datetime-local"
+                  value={customEndTime}
+                  onChange={(e) => {
+                    setCustomEndTime(e.target.value);
+                    customEndRef.current = e.target.value;
+                  }}
+                  style={{
+                    background: "rgba(255,255,255,0.15)",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "4px 6px",
+                    fontSize: "10px",
+                    color: "#fff",
+                    width: "100%",
+                    minWidth: "140px",
+                  }}
+                />
+              </div>
+              <div style={{ display: "flex", gap: "6px", justifyContent: "flex-end" }}>
+                <button
+                  onClick={applyCustomFilter}
+                  style={{
+                    background: "rgba(255,255,255,0.25)",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "4px 12px",
+                    fontSize: "10px",
+                    color: "#fff",
+                    cursor: "pointer",
+                  }}
+                >
+                  Apply
+                </button>
+                <button
+                  onClick={clearFilter}
+                  style={{
+                    background: "rgba(255,255,255,0.1)",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "4px 12px",
+                    fontSize: "10px",
+                    color: "#d1fae5",
+                    cursor: "pointer",
+                  }}
+                >
+                  Clear
+                </button>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
