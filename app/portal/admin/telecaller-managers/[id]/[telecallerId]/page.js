@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import axiosInstance from "@/lib/axios";
-import { FaArrowLeft, FaPhone, FaBuilding, FaChevronLeft, FaChevronRight, FaInfoCircle } from "react-icons/fa";
+import { FaPhone, FaBuilding, FaChevronLeft, FaChevronRight, FaInfoCircle } from "react-icons/fa";
 
 const TABS = [
   { key: "pending", label: "Pending" },
@@ -269,53 +269,6 @@ export default function TelecallerDetails() {
   return (
     <div className="dashboard-container">
       <div className="section-container">
-        {/* Header with Back Button */}
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "15px",
-          marginBottom: "30px"
-        }}>
-          <button
-            onClick={() => router.push(`/portal/admin/telecaller-managers/${managerId}`)}
-            style={{
-              backgroundColor: "#2a2a2a",
-              border: "1px solid #444",
-              borderRadius: "8px",
-              padding: "10px 16px",
-              color: "#fff",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              fontSize: "14px",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = "#3a3a3a"}
-            onMouseLeave={(e) => e.target.style.backgroundColor = "#2a2a2a"}
-          >
-            <FaArrowLeft size={14} />
-            Back
-          </button>
-          <div>
-            <h1 style={{
-              fontSize: "24px",
-              fontWeight: "600",
-              color: "#fff",
-              margin: "0",
-            }}>
-              {telecaller?.name || "Telecaller"}&apos;s Gyms
-            </h1>
-            <p style={{
-              color: "#888",
-              fontSize: "14px",
-              margin: "4px 0 0 0",
-            }}>
-              Viewing assigned gyms and their call status
-            </p>
-          </div>
-        </div>
-
         {/* Telecaller Info Card */}
         {telecaller && (
           <div style={{
@@ -329,12 +282,35 @@ export default function TelecallerDetails() {
             flexWrap: "wrap",
             gap: "15px"
           }}>
-            <div>
-              <div style={{ color: "#888", fontSize: "14px", marginBottom: "4px" }}>
-                Telecaller Name
-              </div>
-              <div style={{ fontSize: "18px", fontWeight: "600", color: "#fff" }}>
-                {telecaller.name}
+            <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+              <button
+                onClick={() => router.push(`/portal/admin/telecaller-managers/${managerId}`)}
+                style={{
+                  backgroundColor: "#3a3a3a",
+                  border: "1px solid #444",
+                  borderRadius: "8px",
+                  padding: "10px 16px",
+                  color: "#fff",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontSize: "14px",
+                  transition: "all 0.2s",
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = "#4a4a4a"}
+                onMouseLeave={(e) => e.target.style.backgroundColor = "#3a3a3a"}
+              >
+                <FaChevronLeft size={14} />
+                Back
+              </button>
+              <div>
+                <div style={{ color: "#888", fontSize: "14px", marginBottom: "4px" }}>
+                  Telecaller Name
+                </div>
+                <div style={{ fontSize: "18px", fontWeight: "600", color: "#fff" }}>
+                  {telecaller.name}
+                </div>
               </div>
             </div>
             <div>
@@ -360,133 +336,110 @@ export default function TelecallerDetails() {
                 {Object.values(counts).reduce((a, b) => a + b, 0)}
               </div>
             </div>
-          </div>
-        )}
-
-        {/* Call Count Card */}
-        <div style={{
-          backgroundColor: "#2a2a2a",
-          padding: "20px",
-          borderRadius: "8px",
-          marginBottom: "30px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "15px"
-        }}>
-          <div>
-            <div style={{ color: "#888", fontSize: "14px", marginBottom: "4px" }}>
-              Call Count
-            </div>
-            <div style={{ fontSize: "32px", fontWeight: "600", color: "#10b981" }}>
-              {todayCallCount}
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-            <select
-              value={callCountFilter}
-              onChange={(e) => onFilterChange(e.target.value)}
-              style={{
-                backgroundColor: "#1e1e1e",
-                border: "1px solid #444",
-                borderRadius: "6px",
-                color: "#fff",
-                padding: "10px 16px",
-                fontSize: "13px",
-                outline: "none",
-                cursor: "pointer",
-                minWidth: "150px"
-              }}
-            >
-              <option value="today">Today</option>
-              <option value="yesterday">Yesterday</option>
-              <option value="last7days">Last 7 Days</option>
-              <option value="current_month">Current Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="overall">Overall</option>
-              <option value="custom">Custom</option>
-            </select>
-
-            {callCountFilter === 'custom' && (
-              <>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <label style={{ color: "#888", fontSize: "13px" }}>Start:</label>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", paddingLeft: "20px", borderLeft: "2px solid #10b981" }}>
+              <div>
+                <div style={{ color: "#888", fontSize: "14px", marginBottom: "4px" }}>
+                  Call Count
+                </div>
+                <div style={{ fontSize: "32px", fontWeight: "600", color: "#10b981" }}>
+                  {todayCallCount}
+                </div>
+              </div>
+              <select
+                value={callCountFilter}
+                onChange={(e) => onFilterChange(e.target.value)}
+                style={{
+                  backgroundColor: "#1e1e1e",
+                  border: "1px solid #444",
+                  borderRadius: "6px",
+                  color: "#fff",
+                  padding: "8px 12px",
+                  fontSize: "12px",
+                  outline: "none",
+                  cursor: "pointer"
+                }}
+              >
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7days">Last 7 Days</option>
+                <option value="current_month">Current Month</option>
+                <option value="last_month">Last Month</option>
+                <option value="overall">Overall</option>
+                <option value="custom">Custom</option>
+              </select>
+              {callCountFilter === 'custom' && (
+                <>
                   <input
                     type="datetime-local"
                     value={customStartTime}
                     onChange={(e) => {
-                  setCustomStartTime(e.target.value);
-                  customStartTimeRef.current = e.target.value;
-                }}
+                      setCustomStartTime(e.target.value);
+                      customStartTimeRef.current = e.target.value;
+                    }}
                     style={{
                       backgroundColor: "#1e1e1e",
                       border: "1px solid #444",
                       borderRadius: "6px",
                       color: "#fff",
-                      padding: "8px 12px",
-                      fontSize: "13px",
+                      padding: "6px 10px",
+                      fontSize: "11px",
                       outline: "none"
                     }}
                   />
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <label style={{ color: "#888", fontSize: "13px" }}>End:</label>
                   <input
                     type="datetime-local"
                     value={customEndTime}
                     onChange={(e) => {
-                  setCustomEndTime(e.target.value);
-                  customEndTimeRef.current = e.target.value;
-                }}
+                      setCustomEndTime(e.target.value);
+                      customEndTimeRef.current = e.target.value;
+                    }}
                     style={{
                       backgroundColor: "#1e1e1e",
                       border: "1px solid #444",
                       borderRadius: "6px",
                       color: "#fff",
-                      padding: "8px 12px",
-                      fontSize: "13px",
+                      padding: "6px 10px",
+                      fontSize: "11px",
                       outline: "none"
                     }}
                   />
-                </div>
+                  <button
+                    onClick={applyCustomFilter}
+                    style={{
+                      backgroundColor: "#10b981",
+                      border: "none",
+                      borderRadius: "6px",
+                      color: "#fff",
+                      padding: "6px 12px",
+                      fontSize: "12px",
+                      cursor: "pointer",
+                      fontWeight: "500"
+                    }}
+                  >
+                    Apply
+                  </button>
+                </>
+              )}
+              {callCountFilter !== 'today' && (
                 <button
-                  onClick={applyCustomFilter}
+                  onClick={clearFilter}
                   style={{
-                    backgroundColor: "#10b981",
+                    backgroundColor: "#444",
                     border: "none",
                     borderRadius: "6px",
                     color: "#fff",
-                    padding: "8px 16px",
-                    fontSize: "13px",
+                    padding: "6px 12px",
+                    fontSize: "12px",
                     cursor: "pointer",
                     fontWeight: "500"
                   }}
                 >
-                  Apply
+                  Clear
                 </button>
-              </>
-            )}
-
-            {callCountFilter !== 'today' && (
-              <button
-                onClick={clearFilter}
-                style={{
-                  backgroundColor: "#444",
-                  border: "none",
-                  borderRadius: "6px",
-                  color: "#fff",
-                  padding: "8px 16px",
-                  fontSize: "13px",
-                  cursor: "pointer",
-                  fontWeight: "500"
-                }}
-              >
-                Clear
-              </button>
-            )}
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Tabs */}
         <div style={{
