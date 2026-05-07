@@ -42,6 +42,10 @@ export default function TelecallerDetails() {
     hasNext: false,
     hasPrev: false,
   });
+  const [todayCallCount, setTodayCallCount] = useState(0);
+  const [callCountFilter, setCallCountFilter] = useState('today');
+  const [customStartTime, setCustomStartTime] = useState('');
+  const [customEndTime, setCustomEndTime] = useState('');
 
   // Modal state for call logs
   const [modalOpen, setModalOpen] = useState(false);
@@ -54,6 +58,9 @@ export default function TelecallerDetails() {
   const activeTabRef = useRef(activeTab);
   const pageRef = useRef(page);
   const searchTermRef = useRef(searchTerm);
+  const callCountFilterRef = useRef(callCountFilter);
+  const customStartTimeRef = useRef(customStartTime);
+  const customEndTimeRef = useRef(customEndTime);
 
   // Sync refs with state
   useEffect(() => {
@@ -67,6 +74,18 @@ export default function TelecallerDetails() {
   useEffect(() => {
     searchTermRef.current = searchTerm;
   }, [searchTerm]);
+
+  useEffect(() => {
+    callCountFilterRef.current = callCountFilter;
+  }, [callCountFilter]);
+
+  useEffect(() => {
+    customStartTimeRef.current = customStartTime;
+  }, [customStartTime]);
+
+  useEffect(() => {
+    customEndTimeRef.current = customEndTime;
+  }, [customEndTime]);
 
   const fetchTelecallerDetails = useCallback(async () => {
     try {
@@ -107,6 +126,45 @@ export default function TelecallerDetails() {
     }
   }, [managerId, telecallerId]);
 
+  const fetchCallCount = useCallback(async () => {
+    try {
+      const params = {
+        date_filter: callCountFilterRef.current
+      };
+
+      if (callCountFilterRef.current === 'custom' && customStartTimeRef.current && customEndTimeRef.current) {
+        params.start_time = customStartTimeRef.current;
+        params.end_time = customEndTimeRef.current;
+      }
+
+      const response = await axiosInstance.get(
+        `/api/admin/telecaller-managers/${managerId}/telecallers/${telecallerId}/call-count`,
+        { params }
+      );
+
+      if (response.data.success) {
+        setTodayCallCount(response.data.data.call_count || 0);
+      }
+    } catch (error) {
+      console.error('Fetch call count error:', error);
+    }
+  }, [managerId, telecallerId]);
+
+  const fetchInitialCallCount = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/admin/telecaller-managers/${managerId}/telecallers/${telecallerId}/call-count`,
+        { params: { date_filter: 'today' } }
+      );
+
+      if (response.data.success) {
+        setTodayCallCount(response.data.data.call_count || 0);
+      }
+    } catch (error) {
+      console.error('Fetch initial call count error:', error);
+    }
+  }, [managerId, telecallerId]);
+
   // Debounce search and trigger fetch
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -120,10 +178,56 @@ export default function TelecallerDetails() {
     return () => clearTimeout(timer);
   }, [searchTerm, fetchTelecallerDetails]);
 
-  // Fetch when activeTab or page changes
+  // Fetch when activeTab or page changes (details only)
   useEffect(() => {
     fetchTelecallerDetails();
-  }, [activeTab, page, fetchTelecallerDetails]);
+  }, [activeTab, page]);
+
+  // Fetch initial call count on mount
+  useEffect(() => {
+    fetchInitialCallCount();
+  }, []);
+
+  // Fetch call count when filter changes
+  const onFilterChange = (newFilter) => {
+    setCallCountFilter(newFilter);
+    const params = { date_filter: newFilter };
+    if (newFilter === 'custom' && customStartTimeRef.current && customEndTimeRef.current) {
+      params.start_time = customStartTimeRef.current;
+      params.end_time = customEndTimeRef.current;
+    }
+    axiosInstance.get(`/api/admin/telecaller-managers/${managerId}/telecallers/${telecallerId}/call-count`, { params })
+      .then(res => {
+        if (res.data.success) setTodayCallCount(res.data.data.call_count || 0);
+      })
+      .catch(err => console.error('Filter call count error:', err));
+  };
+
+  const applyCustomFilter = () => {
+    if (customStartTime && customEndTime) {
+      const params = {
+        date_filter: 'custom',
+        start_time: customStartTime,
+        end_time: customEndTime
+      };
+      axiosInstance.get(`/api/admin/telecaller-managers/${managerId}/telecallers/${telecallerId}/call-count`, { params })
+        .then(res => {
+          if (res.data.success) setTodayCallCount(res.data.data.call_count || 0);
+        })
+        .catch(err => console.error('Custom filter call count error:', err));
+    }
+  };
+
+  const clearFilter = () => {
+    setCallCountFilter('today');
+    setCustomStartTime('');
+    setCustomEndTime('');
+    axiosInstance.get(`/api/admin/telecaller-managers/${managerId}/telecallers/${telecallerId}/call-count`, { params: { date_filter: 'today' } })
+      .then(res => {
+        if (res.data.success) setTodayCallCount(res.data.data.call_count || 0);
+      })
+      .catch(err => console.error('Clear filter call count error:', err));
+  };
 
   const handleTabChange = (tabKey) => {
     if (activeTab === tabKey) return;
@@ -258,6 +362,131 @@ export default function TelecallerDetails() {
             </div>
           </div>
         )}
+
+        {/* Call Count Card */}
+        <div style={{
+          backgroundColor: "#2a2a2a",
+          padding: "20px",
+          borderRadius: "8px",
+          marginBottom: "30px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "15px"
+        }}>
+          <div>
+            <div style={{ color: "#888", fontSize: "14px", marginBottom: "4px" }}>
+              Call Count
+            </div>
+            <div style={{ fontSize: "32px", fontWeight: "600", color: "#10b981" }}>
+              {todayCallCount}
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <select
+              value={callCountFilter}
+              onChange={(e) => onFilterChange(e.target.value)}
+              style={{
+                backgroundColor: "#1e1e1e",
+                border: "1px solid #444",
+                borderRadius: "6px",
+                color: "#fff",
+                padding: "10px 16px",
+                fontSize: "13px",
+                outline: "none",
+                cursor: "pointer",
+                minWidth: "150px"
+              }}
+            >
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="last7days">Last 7 Days</option>
+              <option value="current_month">Current Month</option>
+              <option value="last_month">Last Month</option>
+              <option value="overall">Overall</option>
+              <option value="custom">Custom</option>
+            </select>
+
+            {callCountFilter === 'custom' && (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <label style={{ color: "#888", fontSize: "13px" }}>Start:</label>
+                  <input
+                    type="datetime-local"
+                    value={customStartTime}
+                    onChange={(e) => {
+                  setCustomStartTime(e.target.value);
+                  customStartTimeRef.current = e.target.value;
+                }}
+                    style={{
+                      backgroundColor: "#1e1e1e",
+                      border: "1px solid #444",
+                      borderRadius: "6px",
+                      color: "#fff",
+                      padding: "8px 12px",
+                      fontSize: "13px",
+                      outline: "none"
+                    }}
+                  />
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <label style={{ color: "#888", fontSize: "13px" }}>End:</label>
+                  <input
+                    type="datetime-local"
+                    value={customEndTime}
+                    onChange={(e) => {
+                  setCustomEndTime(e.target.value);
+                  customEndTimeRef.current = e.target.value;
+                }}
+                    style={{
+                      backgroundColor: "#1e1e1e",
+                      border: "1px solid #444",
+                      borderRadius: "6px",
+                      color: "#fff",
+                      padding: "8px 12px",
+                      fontSize: "13px",
+                      outline: "none"
+                    }}
+                  />
+                </div>
+                <button
+                  onClick={applyCustomFilter}
+                  style={{
+                    backgroundColor: "#10b981",
+                    border: "none",
+                    borderRadius: "6px",
+                    color: "#fff",
+                    padding: "8px 16px",
+                    fontSize: "13px",
+                    cursor: "pointer",
+                    fontWeight: "500"
+                  }}
+                >
+                  Apply
+                </button>
+              </>
+            )}
+
+            {callCountFilter !== 'today' && (
+              <button
+                onClick={clearFilter}
+                style={{
+                  backgroundColor: "#444",
+                  border: "none",
+                  borderRadius: "6px",
+                  color: "#fff",
+                  padding: "8px 16px",
+                  fontSize: "13px",
+                  cursor: "pointer",
+                  fontWeight: "500"
+                }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* Tabs */}
         <div style={{
