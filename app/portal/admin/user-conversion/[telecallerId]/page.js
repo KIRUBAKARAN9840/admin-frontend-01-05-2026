@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import axiosInstance from "@/lib/axios";
 import { FaSearch, FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp } from "react-icons/fa";
@@ -23,6 +23,18 @@ export default function TelecallerConvertedClients() {
   const [expandedCards, setExpandedCards] = useState({});
   const [purchasesData, setPurchasesData] = useState({});
   const [loadingPurchases, setLoadingPurchases] = useState({});
+
+  // Call count state
+  const [todayCallCount, setTodayCallCount] = useState(0);
+  const [callCountFilter, setCallCountFilter] = useState("today");
+  const [customStartTime, setCustomStartTime] = useState("");
+  const [customEndTime, setCustomEndTime] = useState("");
+  const [loadingCallCount, setLoadingCallCount] = useState(false);
+
+  // Refs for filter values to avoid dependency issues
+  const filterRef = useRef("today");
+  const customStartRef = useRef("");
+  const customEndRef = useRef("");
 
   // Debounce search term
   useEffect(() => {
@@ -107,6 +119,85 @@ export default function TelecallerConvertedClients() {
   useEffect(() => {
     fetchClients();
   }, [fetchClients]);
+
+  // Fetch initial call count (today's)
+  const fetchInitialCallCount = useCallback(async () => {
+    try {
+      setLoadingCallCount(true);
+      const response = await axiosInstance.get(
+        `/api/admin/user-conversion/0/telecallers/${telecallerId}/call-count`,
+        { params: { date_filter: "today" } }
+      );
+      if (response.data.success) {
+        setTodayCallCount(response.data.data.call_count);
+      }
+    } catch (error) {
+      console.error("Error fetching initial call count:", error);
+    } finally {
+      setLoadingCallCount(false);
+    }
+  }, [telecallerId]);
+
+  // Fetch call count with current filter
+  const fetchCallCount = useCallback(async () => {
+    try {
+      setLoadingCallCount(true);
+      const params = { date_filter: filterRef.current };
+      if (filterRef.current === "custom") {
+        params.start_time = customStartRef.current;
+        params.end_time = customEndRef.current;
+      }
+      const response = await axiosInstance.get(
+        `/api/admin/user-conversion/0/telecallers/${telecallerId}/call-count`,
+        { params }
+      );
+      if (response.data.success) {
+        setTodayCallCount(response.data.data.call_count);
+      }
+    } catch (error) {
+      console.error("Error fetching call count:", error);
+    } finally {
+      setLoadingCallCount(false);
+    }
+  }, [telecallerId]);
+
+  useEffect(() => {
+    fetchInitialCallCount();
+  }, [fetchInitialCallCount]);
+
+  // Handle filter change
+  const onFilterChange = (filterValue) => {
+    filterRef.current = filterValue;
+    setCallCountFilter(filterValue);
+    if (filterValue === "custom") {
+      // Reset custom refs when switching to custom
+      customStartRef.current = customStartTime;
+      customEndRef.current = customEndTime;
+    } else {
+      // Clear custom refs when switching away
+      customStartRef.current = "";
+      customEndRef.current = "";
+      fetchCallCount();
+    }
+  };
+
+  // Apply custom filter
+  const applyCustomFilter = () => {
+    if (customStartRef.current && customEndRef.current) {
+      fetchCallCount();
+    }
+  };
+
+  // Clear custom filter
+  const clearFilter = () => {
+    customStartRef.current = "";
+    customEndRef.current = "";
+    setCustomStartTime("");
+    setCustomEndTime("");
+    filterRef.current = "today";
+    setCallCountFilter("today");
+    fetchCallCount();
+  };
 
   const handleBack = () => {
     router.push("/portal/admin/user-conversion");
@@ -334,24 +425,138 @@ export default function TelecallerConvertedClients() {
             </select>
           </div>
 
-          <div className="col-lg-3 col-md-6 col-sm-12 ms-auto">
-            <div
-              style={{
-                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-                borderRadius: "8px",
-                padding: "12px 16px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div>
+          <div className="col-lg-4 col-md-6 col-sm-12">
+            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
+              <div
+                style={{
+                  background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                  borderRadius: "8px",
+                  padding: "12px 16px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  minHeight: "70px",
+                  minWidth: "140px",
+                }}
+              >
                 <div style={{ fontSize: "12px", color: "#ecfdf5", marginBottom: "2px", fontWeight: "500" }}>
                   Business by {telecaller?.name || "Telecaller"}
                 </div>
                 <div style={{ fontSize: "20px", fontWeight: "700", color: "#ffffff" }}>
                   ₹{totalRevenue.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </div>
+              </div>
+              <div
+                style={{
+                  background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                  borderRadius: "8px",
+                  padding: "12px 16px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  minHeight: "70px",
+                  minWidth: "140px",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <div>
+                    <div style={{ fontSize: "12px", color: "#ecfdf5", marginBottom: "2px", fontWeight: "500" }}>
+                      {callCountFilter === "today" ? "Today's" : callCountFilter === "yesterday" ? "Yesterday's" : callCountFilter === "last7days" ? "Last 7 Days" : callCountFilter === "current_month" ? "Current Month" : callCountFilter === "last_month" ? "Last Month" : callCountFilter === "overall" ? "Overall" : "Custom"} Calls
+                    </div>
+                    <div style={{ fontSize: "20px", fontWeight: "700", color: "#ffffff" }}>
+                      {loadingCallCount ? "..." : todayCallCount}
+                    </div>
+                  </div>
+                  <select
+                    value={callCountFilter}
+                    onChange={(e) => onFilterChange(e.target.value)}
+                    style={{
+                      background: "rgba(255,255,255,0.15)",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "4px 8px",
+                      fontSize: "11px",
+                      color: "#fff",
+                      cursor: "pointer",
+                      minWidth: "80px",
+                    }}
+                  >
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="last7days">Last 7 Days</option>
+                    <option value="current_month">Current Month</option>
+                    <option value="last_month">Last Month</option>
+                    <option value="overall">Overall</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
+                {callCountFilter === "custom" && (
+                  <div style={{ marginTop: "8px", display: "flex", gap: "6px", alignItems: "center" }}>
+                    <input
+                      type="datetime-local"
+                      value={customStartTime}
+                      onChange={(e) => {
+                        setCustomStartTime(e.target.value);
+                        customStartRef.current = e.target.value;
+                      }}
+                      style={{
+                        background: "rgba(255,255,255,0.15)",
+                        border: "none",
+                        borderRadius: "4px",
+                        padding: "4px 6px",
+                        fontSize: "10px",
+                        color: "#fff",
+                        width: "140px",
+                      }}
+                    />
+                    <span style={{ color: "#ecfdf5", fontSize: "10px" }}>to</span>
+                    <input
+                      type="datetime-local"
+                      value={customEndTime}
+                      onChange={(e) => {
+                        setCustomEndTime(e.target.value);
+                        customEndRef.current = e.target.value;
+                      }}
+                      style={{
+                        background: "rgba(255,255,255,0.15)",
+                        border: "none",
+                        borderRadius: "4px",
+                        padding: "4px 6px",
+                        fontSize: "10px",
+                        color: "#fff",
+                        width: "140px",
+                      }}
+                    />
+                    <button
+                      onClick={applyCustomFilter}
+                      style={{
+                        background: "rgba(255,255,255,0.25)",
+                        border: "none",
+                        borderRadius: "4px",
+                        padding: "4px 8px",
+                        fontSize: "10px",
+                        color: "#fff",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Apply
+                    </button>
+                    <button
+                      onClick={clearFilter}
+                      style={{
+                        background: "transparent",
+                        border: "1px solid rgba(255,255,255,0.3)",
+                        borderRadius: "4px",
+                        padding: "4px 8px",
+                        fontSize: "10px",
+                        color: "#fff",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
