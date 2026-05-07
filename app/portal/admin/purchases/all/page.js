@@ -26,7 +26,18 @@ export default function AllPurchases() {
   const [distinctGymsFilter, setDistinctGymsFilter] = useState(false);
   const [expandedRows, setExpandedRows] = useState(new Set());
   const [exporting, setExporting] = useState(false);
-  const [todayBookings, setTodayBookings] = useState(0);
+
+  // Booking count state
+  const [bookingCount, setBookingCount] = useState(0);
+  const [bookingCountFilter, setBookingCountFilter] = useState("today");
+  const [customStartTime, setCustomStartTime] = useState("");
+  const [customEndTime, setCustomEndTime] = useState("");
+  const [loadingBookingCount, setLoadingBookingCount] = useState(false);
+
+  // Refs for filter values
+  const bookingFilterRef = useRef("today");
+  const customStartRef = useRef("");
+  const customEndRef = useRef("");
 
   const isFetchingRef = useRef(false);
 
@@ -57,7 +68,6 @@ export default function AllPurchases() {
       if (response.data.success) {
         setPurchases(response.data.data.purchases);
         setPagination(response.data.data.pagination);
-        setTodayBookings(response.data.data.todayBookings || 0);
         // Store distinct clients and gyms from backend response
         if (response.data.data.distinctClients) {
           setDistinctClients(new Set(response.data.data.distinctClients));
@@ -81,6 +91,63 @@ export default function AllPurchases() {
   useEffect(() => {
     fetchPurchases(page, search, typeFilter, startDate, endDate, distinctClientsFilter, distinctGymsFilter);
   }, [page, search, typeFilter, startDate, endDate, distinctClientsFilter, distinctGymsFilter, fetchPurchases]);
+
+  // Fetch booking count based on filter
+  const fetchBookingCount = useCallback(async () => {
+    try {
+      setLoadingBookingCount(true);
+      const params = { date_filter: bookingFilterRef.current };
+      if (bookingFilterRef.current === "custom") {
+        params.start_time = customStartRef.current;
+        params.end_time = customEndRef.current;
+      }
+      const response = await axiosInstance.get("/api/admin/purchases/booking-count", { params });
+      if (response.data.success) {
+        setBookingCount(response.data.data.booking_count);
+      }
+    } catch (error) {
+      console.error("Error fetching booking count:", error);
+    } finally {
+      setLoadingBookingCount(false);
+    }
+  }, []);
+
+  // Initial fetch for today's booking count
+  useEffect(() => {
+    fetchBookingCount();
+  }, [fetchBookingCount]);
+
+  // Handle booking filter change
+  const onBookingFilterChange = (filterValue) => {
+    bookingFilterRef.current = filterValue;
+    setBookingCountFilter(filterValue);
+    if (filterValue === "custom") {
+      customStartRef.current = customStartTime;
+      customEndRef.current = customEndTime;
+    } else {
+      customStartRef.current = "";
+      customEndRef.current = "";
+      fetchBookingCount();
+    }
+  };
+
+  // Apply custom booking filter
+  const applyCustomBookingFilter = () => {
+    if (customStartRef.current && customEndRef.current) {
+      fetchBookingCount();
+    }
+  };
+
+  // Clear custom booking filter
+  const clearBookingFilter = () => {
+    customStartRef.current = "";
+    customEndRef.current = "";
+    setCustomStartTime("");
+    setCustomEndTime("");
+    bookingFilterRef.current = "today";
+    setBookingCountFilter("today");
+    fetchBookingCount();
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -300,47 +367,100 @@ export default function AllPurchases() {
           {/* Spacer */}
           <div style={{ flex: 1 }}></div>
 
-          {/* Today Bookings Card */}
+          {/* Booking Count Card */}
           <div
             style={{
-              minWidth: "170px",
-              background: "linear-gradient(135deg, #ffffff 0%, #d9d9d9 100%)",
-              border: "1px solid #ffffff",
-              borderRadius: "8px",
-              padding: "8px 14px",
+              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              borderRadius: "12px",
+              padding: "12px 16px",
+              minWidth: "180px",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "14px",
-              boxShadow: "0 8px 22px rgba(255, 255, 255, 0.12)",
+              flexDirection: "column",
+              justifyContent: "center",
             }}
           >
-            <div>
-              <div
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+              <div style={{ fontSize: "10px", color: "#d1fae5", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                {bookingCountFilter === "today" ? "Today's" : bookingCountFilter === "yesterday" ? "Yesterday's" : bookingCountFilter === "last7days" ? "Last 7 Days" : bookingCountFilter === "current_month" ? "Current Month" : bookingCountFilter === "last_month" ? "Last Month" : bookingCountFilter === "overall" ? "Overall" : "Custom"} Bookings
+              </div>
+              <select
+                value={bookingCountFilter}
+                onChange={(e) => onBookingFilterChange(e.target.value)}
                 style={{
-                  color: "#111",
-                  fontSize: "11px",
-                  fontWeight: 600,
-                  letterSpacing: "0.4px",
-                  textTransform: "uppercase",
-                  lineHeight: 1.2,
+                  background: "rgba(255,255,255,0.2)",
+                  border: "none",
+                  borderRadius: "4px",
+                  padding: "2px 6px",
+                  fontSize: "9px",
+                  color: "#fff",
+                  cursor: "pointer",
                 }}
               >
-                Today Bookings
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7days">Last 7 Days</option>
+                <option value="current_month">Current Month</option>
+                <option value="last_month">Last Month</option>
+                <option value="overall">Overall</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            <div style={{ fontSize: "22px", fontWeight: "700", color: "#ffffff" }}>
+              {loadingBookingCount ? "..." : bookingCount.toLocaleString("en-IN")}
+            </div>
+            {bookingCountFilter === "custom" && (
+              <div style={{ marginTop: "8px", display: "flex", gap: "4px", alignItems: "center" }}>
+                <input
+                  type="datetime-local"
+                  value={customStartTime}
+                  onChange={(e) => {
+                    setCustomStartTime(e.target.value);
+                    customStartRef.current = e.target.value;
+                  }}
+                  style={{
+                    background: "rgba(255,255,255,0.15)",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "3px 6px",
+                    fontSize: "9px",
+                    color: "#fff",
+                    width: "110px",
+                  }}
+                />
+                <span style={{ color: "#d1fae5", fontSize: "9px" }}>to</span>
+                <input
+                  type="datetime-local"
+                  value={customEndTime}
+                  onChange={(e) => {
+                    setCustomEndTime(e.target.value);
+                    customEndRef.current = e.target.value;
+                  }}
+                  style={{
+                    background: "rgba(255,255,255,0.15)",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "3px 6px",
+                    fontSize: "9px",
+                    color: "#fff",
+                    width: "110px",
+                  }}
+                />
+                <button
+                  onClick={applyCustomBookingFilter}
+                  style={{
+                    background: "rgba(255,255,255,0.25)",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "3px 8px",
+                    fontSize: "9px",
+                    color: "#fff",
+                    cursor: "pointer",
+                  }}
+                >
+                  Go
+                </button>
               </div>
-            </div>
-            <div
-              style={{
-                color: "#000",
-                fontSize: "24px",
-                fontWeight: 800,
-                lineHeight: 1,
-                minWidth: "32px",
-                textAlign: "right",
-              }}
-            >
-              {loading ? "..." : todayBookings.toLocaleString("en-IN")}
-            </div>
+            )}
           </div>
 
           {/* Export Button */}
