@@ -2,6 +2,13 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "@/lib/axios";
 
+const formatLocalDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 export default function UnitEconomicsPage() {
   const [loading, setLoading] = useState(true);
   const [unitEconomicsData, setUnitEconomicsData] = useState(null);
@@ -9,98 +16,47 @@ export default function UnitEconomicsPage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  // Initialize dates based on the initial filter
-  const getInitialDates = () => {
-    const today = new Date();
-
-    if (dateFilter === "today") {
-      return {
-        start: today.toISOString().split('T')[0],
-        end: today.toISOString().split('T')[0]
-      };
-    } else if (dateFilter === "last_7") {
-      const sevenDaysAgo = new Date(today);
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      return {
-        start: sevenDaysAgo.toISOString().split('T')[0],
-        end: today.toISOString().split('T')[0]
-      };
-    } else if (dateFilter === "last_30") {
-      const thirtyDaysAgo = new Date(today);
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      return {
-        start: thirtyDaysAgo.toISOString().split('T')[0],
-        end: today.toISOString().split('T')[0]
-      };
-    } else if (dateFilter === "last_month") {
-      const lastMonthDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-      const firstDayOfLastMonth = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth(), 1);
-      const lastDayOfLastMonth = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth() + 1, 0);
-      return {
-        start: firstDayOfLastMonth.toISOString().split('T')[0],
-        end: lastDayOfLastMonth.toISOString().split('T')[0]
-      };
-    } else if (dateFilter === "current_month") {
-      const firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-      return {
-        start: firstDayOfCurrentMonth.toISOString().split('T')[0],
-        end: today.toISOString().split('T')[0]
-      };
-    }
-    // Default to last_30
-    const thirtyDaysAgo = new Date(today);
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    return {
-      start: thirtyDaysAgo.toISOString().split('T')[0],
-      end: today.toISOString().split('T')[0]
-    };
-  };
-
-  const initialDates = getInitialDates();
-  const [currentStartDate, setCurrentStartDate] = useState(initialDates.start);
-  const [currentEndDate, setCurrentEndDate] = useState(initialDates.end);
-
-  useEffect(() => {
-    // Set date range based on filter selection
-    const today = new Date();
-
-    if (dateFilter === "today") {
-      setCurrentEndDate(today.toISOString().split('T')[0]);
-      setCurrentStartDate(today.toISOString().split('T')[0]);
-    } else if (dateFilter === "last_7") {
-      const sevenDaysAgo = new Date(today);
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      setCurrentEndDate(today.toISOString().split('T')[0]);
-      setCurrentStartDate(sevenDaysAgo.toISOString().split('T')[0]);
-    } else if (dateFilter === "last_30") {
-      const thirtyDaysAgo = new Date(today);
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      setCurrentEndDate(today.toISOString().split('T')[0]);
-      setCurrentStartDate(thirtyDaysAgo.toISOString().split('T')[0]);
-    } else if (dateFilter === "last_month") {
-      const lastMonthDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-      const firstDayOfLastMonth = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth(), 1);
-      const lastDayOfLastMonth = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth() + 1, 0);
-      setCurrentEndDate(lastDayOfLastMonth.toISOString().split('T')[0]);
-      setCurrentStartDate(firstDayOfLastMonth.toISOString().split('T')[0]);
-    } else if (dateFilter === "current_month") {
-      const firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-      setCurrentEndDate(today.toISOString().split('T')[0]);
-      setCurrentStartDate(firstDayOfCurrentMonth.toISOString().split('T')[0]);
-    }
-  }, [dateFilter]);
-
-  const fetchUnitEconomicsAnalytics = async (isOverall = false) => {
+  const fetchUnitEconomicsAnalytics = async (currentFilter, customStart, customEnd) => {
     setLoading(true);
     try {
       let url = "/api/admin/unit-economics/data";
       const params = [];
 
-      if (!isOverall) {
-        if (dateFilter === "custom" && startDate && endDate) {
-          params.push(`start_date=${startDate}`, `end_date=${endDate}`);
-        } else if (dateFilter !== "overall") {
-          params.push(`start_date=${currentStartDate}`, `end_date=${currentEndDate}`);
+      if (currentFilter !== "overall") {
+        let fetchStart = "";
+        let fetchEnd = "";
+        const today = new Date();
+
+        if (currentFilter === "custom" && customStart && customEnd) {
+          fetchStart = customStart;
+          fetchEnd = customEnd;
+        } else if (currentFilter === "today") {
+          fetchStart = formatLocalDate(today);
+          fetchEnd = formatLocalDate(today);
+        } else if (currentFilter === "last_7") {
+          const sevenDaysAgo = new Date(today);
+          sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+          fetchStart = formatLocalDate(sevenDaysAgo);
+          fetchEnd = formatLocalDate(today);
+        } else if (currentFilter === "last_30") {
+          const thirtyDaysAgo = new Date(today);
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+          fetchStart = formatLocalDate(thirtyDaysAgo);
+          fetchEnd = formatLocalDate(today);
+        } else if (currentFilter === "last_month") {
+          const lastMonthDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+          const firstDayOfLastMonth = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth(), 1);
+          const lastDayOfLastMonth = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth() + 1, 0);
+          fetchStart = formatLocalDate(firstDayOfLastMonth);
+          fetchEnd = formatLocalDate(lastDayOfLastMonth);
+        } else if (currentFilter === "current_month") {
+          const firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+          fetchStart = formatLocalDate(firstDayOfCurrentMonth);
+          fetchEnd = formatLocalDate(today);
+        }
+
+        if (fetchStart && fetchEnd) {
+          params.push(`start_date=${fetchStart}&end_date=${fetchEnd}`);
         }
       }
 
@@ -121,13 +77,13 @@ export default function UnitEconomicsPage() {
 
   useEffect(() => {
     if (dateFilter === "overall") {
-      fetchUnitEconomicsAnalytics(true);
+      fetchUnitEconomicsAnalytics("overall");
     } else if (dateFilter === "custom" && startDate && endDate) {
-      fetchUnitEconomicsAnalytics(false);
+      fetchUnitEconomicsAnalytics("custom", startDate, endDate);
     } else if (["today", "last_7", "last_30", "last_month", "current_month"].includes(dateFilter)) {
-      fetchUnitEconomicsAnalytics(false);
+      fetchUnitEconomicsAnalytics(dateFilter);
     }
-  }, [dateFilter, currentStartDate, currentEndDate, startDate, endDate]);
+  }, [dateFilter, startDate, endDate]);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-IN", {
@@ -192,7 +148,7 @@ export default function UnitEconomicsPage() {
                           type="date"
                           value={startDate}
                           onChange={(e) => setStartDate(e.target.value)}
-                          max={endDate || new Date().toISOString().split('T')[0]}
+                          max={endDate || formatLocalDate(new Date())}
                           style={{
                             backgroundColor: "#374151",
                             border: "1px solid #4b5563",
@@ -208,7 +164,7 @@ export default function UnitEconomicsPage() {
                           value={endDate}
                           onChange={(e) => setEndDate(e.target.value)}
                           min={startDate}
-                          max={new Date().toISOString().split('T')[0]}
+                          max={formatLocalDate(new Date())}
                           style={{
                             backgroundColor: "#374151",
                             border: "1px solid #4b5563",
