@@ -367,33 +367,32 @@ export default function AllPurchases() {
           {/* Spacer */}
           <div style={{ flex: 1 }}></div>
 
-          {/* Booking Count Card */}
-          <div
-            style={{
-              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-              borderRadius: "12px",
-              padding: "12px 16px",
-              minWidth: "180px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
-              <div style={{ fontSize: "10px", color: "#d1fae5", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                {bookingCountFilter === "today" ? "Today's" : bookingCountFilter === "yesterday" ? "Yesterday's" : bookingCountFilter === "last7days" ? "Last 7 Days" : bookingCountFilter === "current_month" ? "Current Month" : bookingCountFilter === "last_month" ? "Last Month" : bookingCountFilter === "overall" ? "Overall" : "Custom"} Bookings
-              </div>
+          {/* Booking Count */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px", alignItems: "flex-end" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                background: "linear-gradient(135deg, #0f766e 0%, #10b981 60%, #34d399 100%)",
+                border: "none",
+                borderRadius: "10px",
+                padding: "8px 14px",
+                boxShadow: "0 3px 12px rgba(16, 185, 129, 0.3)",
+              }}
+            >
               <select
                 value={bookingCountFilter}
                 onChange={(e) => onBookingFilterChange(e.target.value)}
                 style={{
-                  background: "rgba(255,255,255,0.2)",
-                  border: "none",
-                  borderRadius: "4px",
-                  padding: "2px 6px",
-                  fontSize: "9px",
+                  background: "rgba(0, 0, 0, 0.66)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  borderRadius: "6px",
+                  padding: "5px 8px",
+                  fontSize: "12px",
                   color: "#fff",
                   cursor: "pointer",
+                  outline: "none",
                 }}
               >
                 <option value="today">Today</option>
@@ -404,12 +403,15 @@ export default function AllPurchases() {
                 <option value="overall">Overall</option>
                 <option value="custom">Custom</option>
               </select>
-            </div>
-            <div style={{ fontSize: "22px", fontWeight: "700", color: "#ffffff" }}>
-              {loadingBookingCount ? "..." : bookingCount.toLocaleString("en-IN")}
+              <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
+                <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>Bookings</span>
+                <span style={{ fontSize: "22px", fontWeight: "700", color: "#fff" }}>
+                  {loadingBookingCount ? "..." : bookingCount.toLocaleString("en-IN")}
+                </span>
+              </div>
             </div>
             {bookingCountFilter === "custom" && (
-              <div style={{ marginTop: "8px", display: "flex", gap: "4px", alignItems: "center" }}>
+              <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
                 <input
                   type="datetime-local"
                   value={customStartTime}
@@ -418,16 +420,16 @@ export default function AllPurchases() {
                     customStartRef.current = e.target.value;
                   }}
                   style={{
-                    background: "rgba(255,255,255,0.15)",
-                    border: "none",
-                    borderRadius: "4px",
-                    padding: "3px 6px",
-                    fontSize: "9px",
-                    color: "#fff",
-                    width: "110px",
+                    background: "#222",
+                    border: "1px solid #333",
+                    borderRadius: "6px",
+                    padding: "4px 8px",
+                    fontSize: "11px",
+                    color: "#ccc",
+                    width: "130px",
                   }}
                 />
-                <span style={{ color: "#d1fae5", fontSize: "9px" }}>to</span>
+                <span style={{ color: "#666", fontSize: "11px" }}>to</span>
                 <input
                   type="datetime-local"
                   value={customEndTime}
@@ -436,25 +438,26 @@ export default function AllPurchases() {
                     customEndRef.current = e.target.value;
                   }}
                   style={{
-                    background: "rgba(255,255,255,0.15)",
-                    border: "none",
-                    borderRadius: "4px",
-                    padding: "3px 6px",
-                    fontSize: "9px",
-                    color: "#fff",
-                    width: "110px",
+                    background: "#222",
+                    border: "1px solid #333",
+                    borderRadius: "6px",
+                    padding: "4px 8px",
+                    fontSize: "11px",
+                    color: "#ccc",
+                    width: "130px",
                   }}
                 />
                 <button
                   onClick={applyCustomBookingFilter}
                   style={{
-                    background: "rgba(255,255,255,0.25)",
+                    background: "#10b981",
                     border: "none",
-                    borderRadius: "4px",
-                    padding: "3px 8px",
-                    fontSize: "9px",
+                    borderRadius: "6px",
+                    padding: "5px 14px",
+                    fontSize: "11px",
                     color: "#fff",
                     cursor: "pointer",
+                    fontWeight: 600,
                   }}
                 >
                   Go
@@ -719,11 +722,14 @@ export default function AllPurchases() {
                             style={{
                               padding: "3px 10px",
                               borderRadius: "4px",
-                              fontSize: "11px",
+                              fontSize: "12px",
                               fontWeight: "600",
                               textTransform: "uppercase",
                               backgroundColor: "rgba(255, 255, 255, 0.1)",
                               color: getStatusColor(purchase.status),
+                              display: "inline-block",
+                              minWidth: "120px",
+                              padding: "4px 12px",
                             }}
                           >
                             {getStatusDisplayText(purchase.status)}
