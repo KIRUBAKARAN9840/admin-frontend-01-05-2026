@@ -362,7 +362,7 @@ export default function TelecallerDetails() {
                 <option value="today">Today</option>
                 <option value="yesterday">Yesterday</option>
                 <option value="last7days">Last 7 Days</option>
-                <option value="current_month">Current Month</option>
+                <option value="current_month">MTD</option>
                 <option value="last_month">Last Month</option>
                 <option value="overall">Overall</option>
                 <option value="custom">Custom</option>

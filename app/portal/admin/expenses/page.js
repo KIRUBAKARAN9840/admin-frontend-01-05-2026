@@ -827,7 +827,7 @@ export default function ExpensesPage() {
                 <option value="yesterday">Yesterday</option>
                 <option value="last_30">Last 30 Days</option>
                 <option value="last_month">Last Month</option>
-                <option value="current_month">Current Month</option>
+                <option value="current_month">MTD</option>
                 <option value="custom">Custom</option>
               </select>
             </div>

@@ -610,7 +610,7 @@ export default function Home() {
                   <option value="week">Last 7 days</option>
                   <option value="month">Last 30 days</option>
                   <option value="lastMonth">Last Month</option>
-                  <option value="currentMonth">Current Month</option>
+                  <option value="currentMonth">MTD</option>
                   <option value="overall">Overall</option>
                   <option value="custom">Custom Range</option>
                 </select>
