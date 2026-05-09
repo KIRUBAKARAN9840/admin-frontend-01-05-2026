@@ -310,6 +310,12 @@ export default function FinancialsDashboard() {
                               {formatCurrency(financialsData.revenueSourceBreakdown.ai_credits || 0)}
                             </span>
                           </div>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
+                            <span style={{ fontSize: "13px", color: "#aaa" }}>AI Diet Coach</span>
+                            <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
+                              {formatCurrency(financialsData.revenueSourceBreakdown.ai_diet_coach || 0)}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -385,6 +391,7 @@ export default function FinancialsDashboard() {
                     {formatCurrency(
                       (financialsData.netRevenueBreakdown.fittbot_subscription?.gst || 0) +
                       (financialsData.netRevenueBreakdown.ai_credits?.gst || 0) +
+                      (financialsData.netRevenueBreakdown.ai_diet_coach?.gst || 0) +
                       (financialsData.netRevenueBreakdown.gym_membership?.gst_on_comm || 0) +
                       (financialsData.netRevenueBreakdown.daily_pass?.gst_on_comm || 0) +
                       (financialsData.netRevenueBreakdown.sessions?.gst_on_comm || 0)
@@ -403,7 +410,8 @@ export default function FinancialsDashboard() {
                        <span style={{ color: "#aaa" }}>Nutritionist/AI GST:</span>
                        <span style={{ color: "#fff", fontWeight: "600" }}>{formatCurrency(
                         (financialsData.netRevenueBreakdown.fittbot_subscription?.gst || 0) +
-                        (financialsData.netRevenueBreakdown.ai_credits?.gst || 0)
+                        (financialsData.netRevenueBreakdown.ai_credits?.gst || 0) +
+                        (financialsData.netRevenueBreakdown.ai_diet_coach?.gst || 0)
                        )}</span>
                     </div>
                   </div>
@@ -477,6 +485,12 @@ export default function FinancialsDashboard() {
                               {formatCurrency(financialsData.netRevenueBreakdown.ai_credits?.net_revenue || 0)}
                             </span>
                           </div>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
+                            <span style={{ fontSize: "13px", color: "#aaa" }}>AI Diet Coach</span>
+                            <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
+                              {formatCurrency(financialsData.netRevenueBreakdown.ai_diet_coach?.net_revenue || 0)}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -491,14 +505,16 @@ export default function FinancialsDashboard() {
             const breakdown = financialsData.netRevenueBreakdown;
             const fymbleNet = breakdown.fittbot_subscription?.net_revenue || 0;
             const aiCreditsNet = breakdown.ai_credits?.net_revenue || 0;
+            const aiDietCoachNet = breakdown.ai_diet_coach?.net_revenue || 0;
             const gymNet = breakdown.gym_membership.net_revenue;
             const dailyPassNet = breakdown.daily_pass.net_revenue;
             const sessionsNet = breakdown.sessions.net_revenue;
-            const totalNet = fymbleNet + aiCreditsNet + gymNet + dailyPassNet + sessionsNet;
+            const totalNet = fymbleNet + aiCreditsNet + aiDietCoachNet + gymNet + dailyPassNet + sessionsNet;
 
             // Calculate percentages
             const fymblePercent = totalNet > 0 ? (fymbleNet / totalNet) * 100 : 0;
             const aiCreditsPercent = totalNet > 0 ? (aiCreditsNet / totalNet) * 100 : 0;
+            const aiDietCoachPercent = totalNet > 0 ? (aiDietCoachNet / totalNet) * 100 : 0;
             const gymPercent = totalNet > 0 ? (gymNet / totalNet) * 100 : 0;
             const dailyPassPercent = totalNet > 0 ? (dailyPassNet / totalNet) * 100 : 0;
             const sessionsPercent = totalNet > 0 ? (sessionsNet / totalNet) * 100 : 0;
@@ -528,6 +544,17 @@ export default function FinancialsDashboard() {
                 endAngle: (fymblePercent + aiCreditsPercent) * 3.6
               },
               {
+                id: 'aiDietCoach',
+                name: 'AI Diet Coach',
+                shortName: 'AI Diet Coach',
+                value: aiDietCoachNet,
+                percent: aiDietCoachPercent,
+                color: '#ec4899',
+                gradient: 'linear-gradient(135deg, #ec4899 0%, #be185d 100%)',
+                startAngle: (fymblePercent + aiCreditsPercent) * 3.6,
+                endAngle: (fymblePercent + aiCreditsPercent + aiDietCoachPercent) * 3.6
+              },
+              {
                 id: 'gym',
                 name: 'Gym Membership',
                 shortName: 'Gym Membership',
@@ -535,8 +562,8 @@ export default function FinancialsDashboard() {
                 percent: gymPercent,
                 color: '#4ade80',
                 gradient: 'linear-gradient(135deg, #4ade80 0%, #22c55e 100%)',
-                startAngle: (fymblePercent + aiCreditsPercent) * 3.6,
-                endAngle: (fymblePercent + aiCreditsPercent + gymPercent) * 3.6
+                startAngle: (fymblePercent + aiCreditsPercent + aiDietCoachPercent) * 3.6,
+                endAngle: (fymblePercent + aiCreditsPercent + aiDietCoachPercent + gymPercent) * 3.6
               },
               {
                 id: 'dailyPass',
@@ -546,8 +573,8 @@ export default function FinancialsDashboard() {
                 percent: dailyPassPercent,
                 color: '#3b82f6',
                 gradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                startAngle: (fymblePercent + aiCreditsPercent + gymPercent) * 3.6,
-                endAngle: (fymblePercent + aiCreditsPercent + gymPercent + dailyPassPercent) * 3.6
+                startAngle: (fymblePercent + aiCreditsPercent + aiDietCoachPercent + gymPercent) * 3.6,
+                endAngle: (fymblePercent + aiCreditsPercent + aiDietCoachPercent + gymPercent + dailyPassPercent) * 3.6
               },
               {
                 id: 'sessions',
@@ -557,7 +584,7 @@ export default function FinancialsDashboard() {
                 percent: sessionsPercent,
                 color: '#f59e0b',
                 gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                startAngle: (fymblePercent + aiCreditsPercent + gymPercent + dailyPassPercent) * 3.6,
+                startAngle: (fymblePercent + aiCreditsPercent + aiDietCoachPercent + gymPercent + dailyPassPercent) * 3.6,
                 endAngle: 360
               }
             ];
