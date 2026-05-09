@@ -306,11 +306,11 @@ export default function UsersStatsPage() {
               </div>
             </div>
 
-            {/* Repeat Users Card */}
+            {/* Retention Users Card */}
             <div className="col-xl col-lg-4 col-md-6">
               <div className="dashboard-card">
                 <div className="card-header-custom extra-space">
-                  <h6 className="card-title">Repeat Users</h6>
+                  <h6 className="card-title">Retention Users</h6>
                 </div>
                 <div className="card-body-custom">
                   <div className="metric-number" style={{ fontSize: "28px", fontWeight: "700", color: "#a950dcff" }}>
@@ -321,7 +321,7 @@ export default function UsersStatsPage() {
                   </div>
                   {payingUsers > 0 && (
                     <div style={{ fontSize: "11px", color: "#888", marginTop: "4px", fontWeight: "600" }}>
-                      {((repeatUsers / payingUsers) * 100).toFixed(1)}% Repeat rate
+                      {((repeatUsers / payingUsers) * 100).toFixed(1)}% Retention rate
                     </div>
                   )}
                 </div>

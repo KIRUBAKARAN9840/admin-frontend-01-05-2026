@@ -250,7 +250,7 @@ export default function RoleBasedLayout({ children }) {
     { name: "Cash Flow", icon: CashFlowIcon, path: "/portal/admin/cash-flow" },
     { name: "Tax & Compliance", icon: TaxComplianceIcon, path: "/portal/admin/tax-compliance" },
     { name: "MRR", icon: MRRIcon, path: "/portal/admin/mrr" },
-    // { name: "GMV", icon: HiOutlineChartBar, path: "/portal/admin/gmv" },
+    { name: "GMV", icon: HiOutlineChartBar, path: "/portal/admin/gmv" },
   ];
 
   // Define navigation items based on role
