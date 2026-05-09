@@ -218,7 +218,7 @@ export default function PurchaseCountPage() {
   const sourceLabels = {
     daily_pass: "Daily Pass",
     sessions: "Fitness Class",
-    fittbot_subscription: "Nutritionist Plan",
+    fittbot_subscription: "Nutrition Plan",
     ai_credits: "AI Credits",
     gym_membership: "Gym Membership"
   };
@@ -367,7 +367,7 @@ export default function PurchaseCountPage() {
               <option value="all">All Sources</option>
               <option value="daily_pass">Daily Pass</option>
               <option value="sessions">Fitness Class</option>
-              <option value="fittbot_subscription">Nutritionist Plan</option>
+              <option value="fittbot_subscription">Nutrition Plan</option>
               <option value="ai_credits">AI Credits</option>
               <option value="gym_membership">Gym Membership</option>
             </select>

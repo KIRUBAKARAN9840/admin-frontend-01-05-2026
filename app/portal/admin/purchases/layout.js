@@ -36,7 +36,7 @@ export default function PurchasesLayout({ children }) {
   // Define tabs - include purchase-count only for non-support roles
   const tabs = [
     { id: "all", name: "Fitness Class/Daily Pass", path: "/portal/admin/purchases/all" },
-    { id: "nutritionist-plans", name: "Nutritionist Plans", path: "/portal/admin/purchases/nutritionist-plans" },
+    { id: "nutritionist-plans", name: "Nutrition Plans", path: "/portal/admin/purchases/nutritionist-plans" },
     { id: "gym-memberships", name: "Gym Memberships", path: "/portal/admin/purchases/gym-memberships" },
     { id: "ai-credits", name: "AI Credits", path: "/portal/admin/purchases/ai-credits" },
     { id: "today", name: "Today's Schedule", path: "/portal/admin/purchases/today" },

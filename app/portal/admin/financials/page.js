@@ -299,7 +299,7 @@ export default function FinancialsDashboard() {
                             </span>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
-                            <span style={{ fontSize: "13px", color: "#aaa" }}>Nutritionist Plan</span>
+                            <span style={{ fontSize: "13px", color: "#aaa" }}>Nutrition Plan</span>
                             <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
                               {formatCurrency(financialsData.revenueSourceBreakdown.fittbot_subscription)}
                             </span>
@@ -466,7 +466,7 @@ export default function FinancialsDashboard() {
                             </span>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
-                            <span style={{ fontSize: "13px", color: "#aaa" }}>Nutritionist Plan</span>
+                            <span style={{ fontSize: "13px", color: "#aaa" }}>Nutrition Plan</span>
                             <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
                               {formatCurrency(financialsData.netRevenueBreakdown.fittbot_subscription?.net_revenue || 0)}
                             </span>
@@ -507,7 +507,7 @@ export default function FinancialsDashboard() {
             const segments = [
               {
                 id: 'fymble',
-                name: 'Nutritionist Plan',
+                name: 'Nutrition Plan',
                 shortName: 'Fymble Sub',
                 value: fymbleNet,
                 percent: fymblePercent,
@@ -864,11 +864,11 @@ export default function FinancialsDashboard() {
             <span style={{ color: "#FF5757" }}>Net</span> Revenue Breakdown
           </h3>
           <div className="row g-4">
-            {/* Nutritionist Plan Net Revenue */}
+            {/* Nutrition Plan Net Revenue */}
             <div className="col-xl-6 col-lg-6">
               <div className="dashboard-card">
                 <div className="card-header-custom extra-space">
-                  <h6 className="card-title">Nutritionist Plan</h6>
+                  <h6 className="card-title">Nutrition Plan</h6>
                 </div>
                 <div className="card-body-custom">
                   <div className="metric-number" style={{ fontSize: "24px" }}>
@@ -1014,7 +1014,7 @@ export default function FinancialsDashboard() {
                             </span>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
-                            <span style={{ fontSize: "13px", color: "#aaa" }}>Nutritionist Plan</span>
+                            <span style={{ fontSize: "13px", color: "#aaa" }}>Nutrition Plan</span>
                             <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
                               {formatCurrency(financialsData.grossProfitBreakdown.fittbot_subscription.gross_profit)}
                             </span>
@@ -1043,11 +1043,11 @@ export default function FinancialsDashboard() {
             <span style={{ color: "#FF5757" }}>Gross</span> Profit Breakdown
           </h3>
           <div className="row g-4">
-            {/* Nutritionist Plan Gross Profit */}
+            {/* Nutrition Plan Gross Profit */}
             <div className="col-xl-6 col-lg-6">
               <div className="dashboard-card">
                 <div className="card-header-custom extra-space">
-                  <h6 className="card-title">Nutritionist Plan</h6>
+                  <h6 className="card-title">Nutrition Plan</h6>
                 </div>
                 <div className="card-body-custom">
                   <div className="metric-number" style={{ fontSize: "24px" }}>

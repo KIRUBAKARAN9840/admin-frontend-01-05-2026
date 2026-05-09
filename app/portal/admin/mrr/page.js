@@ -169,7 +169,7 @@ export default function MRR() {
             const segments = [
               {
                 id: 'fittbot',
-                name: 'Nutritionist Plan',
+                name: 'Nutrition Plan',
                 value: breakdown.fittbot_subscription || 0,
                 percent: fittbotPercent,
                 color: '#FF5757',

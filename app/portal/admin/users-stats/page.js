@@ -5,6 +5,7 @@ import axiosInstance from "@/lib/axios";
 export default function UsersStatsPage() {
   const [loading, setLoading] = useState(true);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [totalClientsConstant, setTotalClientsConstant] = useState(0);
   const [activeUsers, setActiveUsers] = useState(0);
   const [payingUsers, setPayingUsers] = useState(0);
   const [totalBookings, setTotalBookings] = useState(0);
@@ -33,6 +34,7 @@ export default function UsersStatsPage() {
 
       if (response.data.success) {
         setTotalUsers(response.data.data.total_users);
+        setTotalClientsConstant(response.data.data.total_clients_constant || response.data.data.total_users);
         setActiveUsers(response.data.data.active_users);
         setPayingUsers(response.data.data.paying_users);
         setTotalBookings(response.data.data.total_bookings || 0);
@@ -339,6 +341,11 @@ export default function UsersStatsPage() {
                   <div style={{ fontSize: "12px", color: "#888", marginTop: "4px" }}>
                     Active {filter !== "overall" && <span style={{ color: "#15cc25ff", fontSize: "10px" }}>({filter})</span>}
                   </div>
+                  {totalClientsConstant > 0 && (
+                    <div style={{ fontSize: "11px", color: "#888", marginTop: "4px", fontWeight: "600" }}>
+                      {((activeUsers / totalClientsConstant) * 100).toFixed(1)}% of total users
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

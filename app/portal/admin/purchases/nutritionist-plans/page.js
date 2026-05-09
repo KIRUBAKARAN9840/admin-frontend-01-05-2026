@@ -47,10 +47,10 @@ export default function NutritionistPlans() {
         setUsers(response.data.data.users);
         setTotalUsers(response.data.data.total);
       } else {
-        throw new Error(response.data.message || "Failed to fetch nutritionist plans");
+        throw new Error(response.data.message || "Failed to fetch nutrition plans");
       }
     } catch (err) {
-      const errorMsg = err.response?.data?.detail || err.message || "Failed to fetch nutritionist plans";
+      const errorMsg = err.response?.data?.detail || err.message || "Failed to fetch nutrition plans";
       setError(errorMsg);
       setUsers([]);
     } finally {
@@ -113,7 +113,7 @@ export default function NutritionistPlans() {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Export failed:", err);
-      alert("Failed to export nutritionist plans. Please try again.");
+      alert("Failed to export nutrition plans. Please try again.");
     } finally {
       setExporting(false);
     }
@@ -182,7 +182,7 @@ export default function NutritionistPlans() {
               margin: "0 auto 1rem",
             }}
           />
-          <p style={{ fontSize: "14px", color: "#ccc" }}>Loading nutritionist plans...</p>
+          <p style={{ fontSize: "14px", color: "#ccc" }}>Loading nutrition plans...</p>
         </div>
       ) : error ? (
         <div className="text-center py-5">
@@ -197,7 +197,7 @@ export default function NutritionistPlans() {
         </div>
       ) : users.length === 0 ? (
         <div className="text-center py-5">
-          <p style={{ fontSize: "16px", color: "#888" }}>No nutritionist plans found</p>
+          <p style={{ fontSize: "16px", color: "#888" }}>No nutrition plans found</p>
         </div>
       ) : (
         <>
