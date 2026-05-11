@@ -260,38 +260,57 @@ export default function UnitEconomicsPage() {
               </div>
             )}
 
-            {/* D30 Retention Card */}
-            {unitEconomicsData && unitEconomicsData.retainedUsers !== undefined && (
+            {/* Monthly Active Users Card */}
+            {unitEconomicsData && unitEconomicsData.monthlyActiveUsers !== undefined && (
               <div className="col-xl-4 col-lg-6">
                 <div className="dashboard-card">
                   <div className="card-header-custom extra-space">
-                    <h6 className="card-title">D30 Retention</h6>
+                    <h6 className="card-title">Monthly Active Users</h6>
                   </div>
                   <div className="card-body-custom">
                     <div className="metric-number" style={{ fontSize: "32px", fontWeight: "700", color: "#8b5cf6" }}>
-                      {unitEconomicsData.retainedUsers.toLocaleString()}
+                      {unitEconomicsData.monthlyActiveUsers.toLocaleString()}
                     </div>
                     <div style={{ fontSize: "13px", color: "#888", marginTop: "8px" }}>
-                      Retained Users from previous month
+                      Active users in the last completed month
                     </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* D7 Retention Card */}
-            {unitEconomicsData && unitEconomicsData.d7_retained_users !== undefined && (
+            {/* Weekly Active Users Card */}
+            {unitEconomicsData && unitEconomicsData.weeklyActiveUsers !== undefined && (
               <div className="col-xl-4 col-lg-6">
                 <div className="dashboard-card">
                   <div className="card-header-custom extra-space">
-                    <h6 className="card-title">D7 Retention</h6>
+                    <h6 className="card-title">Weekly Active Users</h6>
                   </div>
                   <div className="card-body-custom">
                     <div className="metric-number" style={{ fontSize: "32px", fontWeight: "700", color: "#06b6d4" }}>
-                      {unitEconomicsData.d7_retained_users.toLocaleString()}
+                      {unitEconomicsData.weeklyActiveUsers.toLocaleString()}
                     </div>
                     <div style={{ fontSize: "13px", color: "#888", marginTop: "8px" }}>
-                      Retained Users from previous weeks
+                      Active users in the last completed week
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Daily Active Users Card */}
+            {unitEconomicsData && unitEconomicsData.dailyActiveUsers !== undefined && (
+              <div className="col-xl-4 col-lg-6">
+                <div className="dashboard-card">
+                  <div className="card-header-custom extra-space">
+                    <h6 className="card-title">Daily Active Users</h6>
+                  </div>
+                  <div className="card-body-custom">
+                    <div className="metric-number" style={{ fontSize: "32px", fontWeight: "700", color: "#22c55e" }}>
+                      {unitEconomicsData.dailyActiveUsers.toLocaleString()}
+                    </div>
+                    <div style={{ fontSize: "13px", color: "#888", marginTop: "8px" }}>
+                      Active users today
                     </div>
                   </div>
                 </div>
