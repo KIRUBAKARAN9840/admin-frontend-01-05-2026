@@ -1052,6 +1052,12 @@ export default function FinancialsDashboard() {
                               {formatCurrency(financialsData.grossProfitBreakdown.ai_credits?.gross_profit || 0)}
                             </span>
                           </div>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
+                            <span style={{ fontSize: "13px", color: "#aaa" }}>AI Diet Coach</span>
+                            <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
+                              {formatCurrency(financialsData.grossProfitBreakdown.ai_diet_coach?.gross_profit || 0)}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     )}
