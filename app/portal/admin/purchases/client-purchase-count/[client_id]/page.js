@@ -135,6 +135,7 @@ export default function ClientPurchaseSummaryPage() {
           alignItems: "center",
           gap: "16px",
           marginBottom: "2rem",
+          flexWrap: "wrap"
         }}
       >
         <button
@@ -164,6 +165,25 @@ export default function ClientPurchaseSummaryPage() {
             {clientName}
           </p>
         </div>
+        <button
+          onClick={() => router.push(`/portal/admin/users/${client_id}/purchase-history`)}
+          style={{
+            marginLeft: "auto",
+            backgroundColor: "#28a745",
+            color: "#fff",
+            border: "none",
+            padding: "8px 16px",
+            borderRadius: "6px",
+            fontWeight: "600",
+            fontSize: "14px",
+            cursor: "pointer",
+            transition: "background-color 0.2s"
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#218838"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#28a745"; }}
+        >
+          Click for more info
+        </button>
       </div>
 
       {renderCategoryCards()}
