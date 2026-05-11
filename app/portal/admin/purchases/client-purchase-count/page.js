@@ -3,7 +3,10 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "@/lib/axios";
 import { FaDownload } from "react-icons/fa";
 
+import { useRouter } from "next/navigation";
+
 export default function ClientPurchaseCountPage() {
+  const router = useRouter();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -183,7 +186,12 @@ export default function ClientPurchaseCountPage() {
             </thead>
             <tbody>
               {data.map((item) => (
-                <tr key={item.client_id}>
+                <tr 
+                  key={item.client_id}
+                  onClick={() => router.push(`/portal/admin/purchases/client-purchase-count/${item.client_id}?name=${encodeURIComponent(item.client_name)}`)}
+                  style={{ cursor: "pointer" }}
+                  className="clickable-row"
+                >
                   <td className="client-name">
                     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                       {item.dp ? (
