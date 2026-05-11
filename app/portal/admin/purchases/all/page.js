@@ -784,6 +784,11 @@ export default function AllPurchases() {
                                     Fitness Classes: <span style={{ color: "#fff", fontWeight: "500" }}>{purchase.session_name}</span>
                                   </div>
                                 )}
+                                {!isSession && purchase.head_count && (
+                                  <div style={{ fontSize: "13px", color: "#888", marginBottom: "12px" }}>
+                                    Headcount: <span style={{ color: "#fff", fontWeight: "500" }}>{purchase.head_count}</span>
+                                  </div>
+                                )}
                                 <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
                                   {isSession
                                     ? purchase.session_schedule.map((schedule, idx) => (

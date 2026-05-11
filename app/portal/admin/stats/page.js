@@ -226,11 +226,18 @@ export default function GymStats() {
 
   const formatDate = (dateString) => {
     if (!dateString) return "-";
-    return new Date(dateString).toLocaleDateString("en-IN", {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString("en-IN", {
       day: "2-digit",
       month: "short",
       year: "numeric",
     });
+    const formattedTime = date.toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+    return `${formattedDate} ${formattedTime}`;
   };
 
   const totalPages = Math.ceil(totalGyms / itemsPerPage);
