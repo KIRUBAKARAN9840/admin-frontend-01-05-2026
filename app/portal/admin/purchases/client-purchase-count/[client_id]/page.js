@@ -33,36 +33,43 @@ export default function ClientPurchaseSummaryPage() {
     }
   }, [client_id]);
 
+  const categoryLabels = {
+    daily_pass: "Daily Pass",
+    sessions: "Fitness Classes",
+    fittbot_subscription: "Nutrition Plan",
+    ai_credits: "AI Credits",
+    ai_diet_coach: "AI Diet Coach",
+    gym_membership: "Gym Membership"
+  };
+
+  const categoryColors = {
+    daily_pass: "#3b82f6",
+    sessions: "#f59e0b",
+    fittbot_subscription: "#FF5757",
+    ai_credits: "#a855f7",
+    ai_diet_coach: "#E91E63",
+    gym_membership: "#22c55e"
+  };
+
   const renderCategoryCards = () => {
     if (loading) {
       return (
-        <div className="text-center py-5">
-          <div
-            style={{
-              width: "50px",
-              height: "50px",
-              border: "4px solid #3a3a3a",
-              borderTop: "4px solid #FF5757",
-              borderRadius: "50%",
-              animation: "spin 1s linear infinite",
-              margin: "0 auto 1rem",
-            }}
-          />
-          <p style={{ fontSize: "14px", color: "#ccc" }}>Loading summary...</p>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px" }}>
+          <div style={{ color: "#888" }}>Loading summary...</div>
         </div>
       );
     }
 
     if (Object.keys(data).length === 0) {
       return (
-        <div className="text-center py-5">
-          <p style={{ fontSize: "16px", color: "#888" }}>No purchases found for this client.</p>
+        <div style={{ textAlign: "center", padding: "3rem", backgroundColor: "#1e1e1e", borderRadius: "12px", border: "1px solid #333" }}>
+          <p style={{ color: "#888", fontSize: "16px", margin: 0 }}>No purchases found for this client.</p>
         </div>
       );
     }
 
     return (
-      <div className="row g-3">
+      <div className="row g-4">
         {Object.entries(data).map(([category, items]) => {
           let totalCount = 0;
           if (Array.isArray(items)) {
@@ -73,52 +80,54 @@ export default function ClientPurchaseSummaryPage() {
 
           if (totalCount === 0) return null;
 
+          const label = categoryLabels[category] || category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          const color = categoryColors[category] || "white";
+
           return (
             <div className="col-12 col-md-6 col-xl-4" key={category}>
-              <div
-                style={{
-                  backgroundColor: "#1a1a1a",
-                  border: "1px solid #333",
-                  borderRadius: "8px",
-                  padding: "20px",
-                  height: "100%",
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-                  <h6 style={{ color: "#fff", fontSize: "16px", fontWeight: "600", margin: 0 }}>
-                    {category}
-                  </h6>
+              <div className="dashboard-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                <div className="card-header-custom extra-space">
+                  <h6 className="card-title">{label}</h6>
                   <span
                     style={{
-                      backgroundColor: "rgba(255, 87, 87, 0.1)",
-                      color: "#FF5757",
+                      backgroundColor: `${color}20`,
+                      color: color,
                       padding: "4px 10px",
                       borderRadius: "6px",
                       fontWeight: "700",
-                      fontSize: "14px",
+                      fontSize: "12px",
+                      border: `1px solid ${color}40`
                     }}
                   >
                     {totalCount} Total
                   </span>
                 </div>
 
-                {Array.isArray(items) && items.length > 0 && (
-                  <div style={{ marginTop: "12px", borderTop: "1px solid #333", paddingTop: "12px" }}>
-                    <p style={{ color: "#888", fontSize: "12px", marginBottom: "8px", fontWeight: "500" }}>BREAKDOWN BY GYM</p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                      {items.map((item, idx) => (
-                        <div key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                          <span style={{ color: "#ccc", fontSize: "14px", textTransform: "capitalize" }}>
-                            {item.gym_name || "Unknown Gym"}
-                          </span>
-                          <span style={{ color: "#fff", fontSize: "14px", fontWeight: "500" }}>
-                            {item.count}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                <div className="card-body-custom" style={{ flex: 1 }}>
+                  <div className="metric-number" style={{ color: color, fontSize: "32px", marginBottom: "1rem" }}>
+                    {totalCount}
                   </div>
-                )}
+
+                  {Array.isArray(items) && items.length > 0 && (
+                    <div style={{ marginTop: "auto", borderTop: "1px solid #333", paddingTop: "1rem" }}>
+                      <p style={{ color: "#888", fontSize: "10px", marginBottom: "12px", fontWeight: "600", letterSpacing: "0.5px", textTransform: "uppercase" }}>
+                        Breakdown by Gym
+                      </p>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                        {items.map((item, idx) => (
+                          <div key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", backgroundColor: "#1e1e1e60", borderRadius: "8px" }}>
+                            <span style={{ color: "#aaa", fontSize: "13px", fontWeight: "500" }}>
+                              {item.gym_name || "Unknown Gym"}
+                            </span>
+                            <span style={{ color: "white", fontSize: "14px", fontWeight: "600" }}>
+                              {item.count}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           );

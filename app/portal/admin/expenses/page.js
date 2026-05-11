@@ -638,39 +638,59 @@ export default function ExpensesPage() {
             Marketing Expenses
           </button>
         </div>
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          style={{
-            backgroundColor: showFilters ? "#FF5757" : "#374151",
-            color: "white",
-            border: "none",
-            padding: "0.5rem 1rem",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontWeight: "500",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            transition: "all 0.2s",
-            flexShrink: 0
-          }}
-        >
-          <HiOutlineFilter size={18} />
-          Filters
-          {(filters.expense_type || filters.start_date || filters.end_date || filters.search) && (
-            <span style={{
-              backgroundColor: "#FF5757",
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          <button
+            onClick={() => {
+              setEditingExpense(null);
+              setFormData({
+                category: activeTab,
+                expense_type: "",
+                amount: "",
+                expense_date: new Date().toISOString().split('T')[0],
+                description: ""
+              });
+              setIsCustomType(false);
+              setShowAddForm(!showAddForm);
+            }}
+            style={{ ...buttonStyle, padding: "0.5rem" }}
+            title={showAddForm ? "Cancel" : "Add Expense"}
+          >
+            <HiOutlinePlus size={18} style={{ transform: showAddForm ? "rotate(45deg)" : "none", transition: "transform 0.2s" }} />
+          </button>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            style={{
+              backgroundColor: showFilters ? "#FF5757" : "#374151",
               color: "white",
-              borderRadius: "50%",
-              width: "18px",
-              height: "18px",
-              fontSize: "0.65rem",
-              display: "flex",
+              border: "none",
+              padding: "0.5rem 1rem",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "500",
+              display: "inline-flex",
               alignItems: "center",
-              justifyContent: "center"
-            }}>•</span>
-          )}
-        </button>
+              gap: "0.5rem",
+              transition: "all 0.2s",
+              flexShrink: 0
+            }}
+          >
+            <HiOutlineFilter size={18} />
+            Filters
+            {(filters.expense_type || filters.start_date || filters.end_date || filters.search) && (
+              <span style={{
+                backgroundColor: "#FF5757",
+                color: "white",
+                borderRadius: "50%",
+                width: "18px",
+                height: "18px",
+                fontSize: "0.65rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}>•</span>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Add/Edit Form */}
