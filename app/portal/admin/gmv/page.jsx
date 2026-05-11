@@ -109,8 +109,8 @@ function StatCard({ label, icon, count, revenue, color, loading }) {
 
 // ── Combined totals bar ───────────────────────────────────────────────────────
 function TotalsBar({ data, loading }) {
-  const totalCount = (data?.daily_pass?.count || 0) + (data?.session?.count || 0) + (data?.nutrition_plan?.count || 0) + (data?.gym_membership?.count || 0) + (data?.ai_credits?.count || 0);
-  const totalRevenue = (data?.daily_pass?.total_revenue || 0) + (data?.session?.total_revenue || 0) + (data?.nutrition_plan?.total_revenue || 0) + (data?.gym_membership?.total_revenue || 0) + (data?.ai_credits?.total_revenue || 0);
+  const totalCount = (data?.daily_pass?.count || 0) + (data?.session?.count || 0) + (data?.nutrition_plan?.count || 0) + (data?.gym_membership?.count || 0) + (data?.ai_credits?.count || 0) + (data?.ai_diet_coach?.count || 0);
+  const totalRevenue = (data?.daily_pass?.total_revenue || 0) + (data?.session?.total_revenue || 0) + (data?.nutrition_plan?.total_revenue || 0) + (data?.gym_membership?.total_revenue || 0) + (data?.ai_credits?.total_revenue || 0) + (data?.ai_diet_coach?.total_revenue || 0);
 
   return (
     <div style={{
@@ -128,7 +128,7 @@ function TotalsBar({ data, loading }) {
         <div style={{ fontSize: "22px" }}>📊</div>
         <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>Combined GMV</span>
         <span style={{ fontSize: "11px", color: "#666", background: "#2a2a2a", padding: "2px 8px", borderRadius: "12px" }}>
-          Daily Pass · Fitness Class · Nutrition · Gym Membership · AI Credits
+          Daily Pass · Fitness Class · Nutrition · Gym Membership · AI Credits · AI Diet Coach
         </span>
       </div>
 
@@ -163,6 +163,7 @@ function RevenueShareBar({ data, loading }) {
     { key: "nutrition_plan", label: "Nutrition Plans", color1: "#a855f7", color2: "#9333ea" },
     { key: "gym_membership", label: "Gym Membership",  color1: "#4ade80", color2: "#22c55e" },
     { key: "ai_credits",     label: "AI Credits",      color1: "#06b6d4", color2: "#0891b2" },
+    { key: "ai_diet_coach",  label: "AI Diet Coach",   color1: "#E91E63", color2: "#C2185B" },
   ];
 
   const total = SEGMENTS_CONFIG.reduce((s, seg) => s + (data?.[seg.key]?.total_revenue || 0), 0);
@@ -264,6 +265,7 @@ export default function GMVPage() {
     { key: "nutrition_plan", name: "Nutrition Plans", icon: "🥗", color: "#a855f7" },
     { key: "gym_membership", name: "Gym Membership",  icon: "🏢", color: "#4ade80" },
     { key: "ai_credits",     name: "AI Credits",      icon: "🤖", color: "#06b6d4" },
+    { key: "ai_diet_coach",  name: "AI Diet Coach",   icon: "🍎", color: "#E91E63" },
   ];
 
   return (
@@ -282,7 +284,7 @@ export default function GMVPage() {
               <span style={{ color: "#FF5757" }}>GMV</span> Overview
             </h3>
             <p style={{ fontSize: "13px", color: "#666", margin: "4px 0 0" }}>
-              Gross Merchandise Value — Daily Pass, Fitness Class, Nutrition Plans, Gym Membership &amp; AI Credits
+              Gross Merchandise Value — Daily Pass, Fitness Class, Nutrition Plans, Gym Membership, AI Credits &amp; AI Diet Coach
               {lastUpdated && (
                 <span style={{ marginLeft: "12px", color: "#444", fontSize: "11px" }}>
                   Updated {lastUpdated.toLocaleTimeString()}
@@ -347,6 +349,7 @@ export default function GMVPage() {
           <StatCard label="Nutrition Plans" icon="🥗" count={data?.nutrition_plan?.count}  revenue={data?.nutrition_plan?.total_revenue}  color="#a855f7" loading={loading} />
           <StatCard label="Gym Membership"  icon="🏢" count={data?.gym_membership?.count}  revenue={data?.gym_membership?.total_revenue}  color="#4ade80" loading={loading} />
           <StatCard label="AI Credits"      icon="🤖" count={data?.ai_credits?.count}      revenue={data?.ai_credits?.total_revenue}      color="#06b6d4" loading={loading} />
+          <StatCard label="AI Diet Coach"   icon="🍎" count={data?.ai_diet_coach?.count}   revenue={data?.ai_diet_coach?.total_revenue}   color="#E91E63" loading={loading} />
         </div>
       </div>
 

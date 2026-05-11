@@ -28,6 +28,8 @@ export default function PurchasesLayout({ children }) {
       setActiveTab("nutritionist-plans");
     } else if (pathname.includes("/ai-credits")) {
       setActiveTab("ai-credits");
+    } else if (pathname.includes("/ai-diet-coach")) {
+      setActiveTab("ai-diet-coach");
     } else {
       setActiveTab(defaultTab);
     }
@@ -39,6 +41,7 @@ export default function PurchasesLayout({ children }) {
     { id: "nutritionist-plans", name: "Nutrition Plans", path: "/portal/admin/purchases/nutritionist-plans" },
     { id: "gym-memberships", name: "Gym Memberships", path: "/portal/admin/purchases/gym-memberships" },
     { id: "ai-credits", name: "AI Credits", path: "/portal/admin/purchases/ai-credits" },
+    { id: "ai-diet-coach", name: "AI Diet Coach", path: "/portal/admin/purchases/ai-diet-coach" },
     { id: "today", name: "Today's Schedule", path: "/portal/admin/purchases/today" },
     { id: "client-purchase-count", name: "Purchase Count", path: "/portal/admin/purchases/client-purchase-count" },
     ...(role !== "support" ? [{ id: "purchase-count", name: "Purchase Analysis", path: "/portal/admin/purchases/purchase-count" }] : []),

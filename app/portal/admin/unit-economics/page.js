@@ -332,7 +332,8 @@ export default function UnitEconomicsPage() {
                       (gmvData.session?.total_revenue || 0) +
                       (gmvData.nutrition_plan?.total_revenue || 0) +
                       (gmvData.gym_membership?.total_revenue || 0) +
-                      (gmvData.ai_credits?.total_revenue || 0);
+                      (gmvData.ai_credits?.total_revenue || 0) +
+                      (gmvData.ai_diet_coach?.total_revenue || 0);
 
                     return (
                       <>
@@ -367,13 +368,15 @@ export default function UnitEconomicsPage() {
                       (gmvData.session?.total_revenue || 0) +
                       (gmvData.nutrition_plan?.total_revenue || 0) +
                       (gmvData.gym_membership?.total_revenue || 0) +
-                      (gmvData.ai_credits?.total_revenue || 0);
+                      (gmvData.ai_credits?.total_revenue || 0) +
+                      (gmvData.ai_diet_coach?.total_revenue || 0);
                     const totalBookings =
                       (gmvData.daily_pass?.count || 0) +
                       (gmvData.session?.count || 0) +
                       (gmvData.nutrition_plan?.count || 0) +
                       (gmvData.gym_membership?.count || 0) +
-                      (gmvData.ai_credits?.count || 0);
+                      (gmvData.ai_credits?.count || 0) +
+                      (gmvData.ai_diet_coach?.count || 0);
                     const revenuePerBooking = totalBookings > 0 ? totalRevenue / totalBookings : 0;
 
                     return (
