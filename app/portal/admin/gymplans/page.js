@@ -146,7 +146,7 @@ export default function GymPlans() {
   const getPlanTypeTitle = () => {
     switch (planType) {
       case "session":
-        return "Session Plans";
+        return "Fitness classes";
       case "membership":
         return "Membership Plans";
       case "dailyPass":

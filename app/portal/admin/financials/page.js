@@ -287,7 +287,7 @@ export default function FinancialsDashboard() {
                             </span>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
-                            <span style={{ fontSize: "13px", color: "#aaa" }}>Fitness class</span>
+                            <span style={{ fontSize: "13px", color: "#aaa" }}>Fitness classes</span>
                             <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
                               {formatCurrency(financialsData.revenueSourceBreakdown.sessions)}
                             </span>
@@ -462,7 +462,7 @@ export default function FinancialsDashboard() {
                             </span>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
-                            <span style={{ fontSize: "13px", color: "#aaa" }}>Fitness class</span>
+                            <span style={{ fontSize: "13px", color: "#aaa" }}>Fitness classes</span>
                             <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
                               {formatCurrency(financialsData.netRevenueBreakdown.sessions.net_revenue)}
                             </span>
@@ -578,8 +578,8 @@ export default function FinancialsDashboard() {
               },
               {
                 id: 'sessions',
-                name: 'Fitness class',
-                shortName: 'Fitness class',
+                name: 'Fitness classes',
+                shortName: 'Fitness classes',
                 value: sessionsNet,
                 percent: sessionsPercent,
                 color: '#f59e0b',
@@ -963,11 +963,11 @@ export default function FinancialsDashboard() {
               </div>
             </div>
 
-            {/* Fitness class Net Revenue */}
+            {/* Fitness classes Net Revenue */}
             <div className="col-xl-6 col-lg-6">
               <div className="dashboard-card">
                 <div className="card-header-custom extra-space">
-                  <h6 className="card-title">Fitness class</h6>
+                  <h6 className="card-title">Fitness classes</h6>
                 </div>
                 <div className="card-body-custom">
                   <div className="metric-number" style={{ fontSize: "24px" }}>
@@ -1029,7 +1029,7 @@ export default function FinancialsDashboard() {
                             </span>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
-                            <span style={{ fontSize: "13px", color: "#aaa" }}>Fitness class</span>
+                            <span style={{ fontSize: "13px", color: "#aaa" }}>Fitness classes</span>
                             <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
                               {formatCurrency(financialsData.grossProfitBreakdown.sessions.gross_profit)}
                             </span>
@@ -1076,7 +1076,7 @@ export default function FinancialsDashboard() {
             <div className="col-xl-12">
               <div className="dashboard-card">
                 <div className="card-header-custom extra-space">
-                  <h6 className="card-title" style={{ textAlign: "center" }}>Gross Margin</h6>
+                  <h6 className="card-title" style={{ textAlign: "center" }}>Gross Margin Percentage</h6>
                 </div>
                 <div className="card-body-custom">
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "60px" }}>
@@ -1091,9 +1091,6 @@ export default function FinancialsDashboard() {
                         }}
                       >
                         {financialsData.grossMargin.gross_margin_percentage}%
-                      </div>
-                      <div style={{ fontSize: "16px", fontWeight: "600", color: "#fff", marginTop: "6px" }}>
-                        {formatCurrency(financialsData.grossMargin.gross_margin)}
                       </div>
                       <div style={{ fontSize: "14px", color: "#888", marginTop: "6px" }}>
                         Gross Profit minus AWS &amp; Nutritionist Salary costs
@@ -1116,12 +1113,6 @@ export default function FinancialsDashboard() {
                           <span style={{ fontSize: "13px", color: "#aaa" }}>AWS Cost + Nutritionist Salary</span>
                           <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
                             - {formatCurrency(financialsData.grossMargin.aws_cost)}
-                          </span>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 15px", backgroundColor: "#252525", borderRadius: "6px", borderTop: "1px solid #444" }}>
-                          <span style={{ fontSize: "13px", color: "#fff", fontWeight: "600" }}>Gross Margin</span>
-                          <span style={{ fontSize: "18px", fontWeight: "700", color: "#fff" }}>
-                            {formatCurrency(financialsData.grossMargin.gross_margin)}
                           </span>
                         </div>
                       </div>
@@ -1213,11 +1204,11 @@ export default function FinancialsDashboard() {
               </div>
             </div>
 
-            {/* Fitness class Gross Profit */}
+            {/* Fitness classes Gross Profit */}
             <div className="col-xl-6 col-lg-6">
               <div className="dashboard-card">
                 <div className="card-header-custom extra-space">
-                  <h6 className="card-title">Fitness class</h6>
+                  <h6 className="card-title">Fitness classes</h6>
                 </div>
                 <div className="card-body-custom">
                   <div className="metric-number" style={{ fontSize: "24px" }}>

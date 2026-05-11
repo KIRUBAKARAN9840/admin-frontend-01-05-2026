@@ -217,7 +217,7 @@ export default function MRR() {
               },
               {
                 id: 'sessions',
-                name: 'Fitness class',
+                name: 'Fitness classes',
                 value: breakdown.sessions || 0,
                 percent: sessionsPercent,
                 color: '#fbbf24',

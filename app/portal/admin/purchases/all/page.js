@@ -360,7 +360,7 @@ export default function AllPurchases() {
             }}
           >
             <option value="all">All Types</option>
-            <option value="Session">Fitness Class</option>
+            <option value="Session">Fitness Classes</option>
             <option value="Daily Pass">Daily Pass</option>
           </select>
 
@@ -712,7 +712,7 @@ export default function AllPurchases() {
                           {purchase.gym_name || "N/A"}
                         </span>
                       </td>
-                      <td className="type">{purchase.type === "Session" ? "Fitness Class" : purchase.type}</td>
+                      <td className="type">{purchase.type === "Session" ? "Fitness Classes" : purchase.type}</td>
                       <td className="days-total">{getDisplayValue(purchase)}</td>
                       <td className="amount">{formatAmount(purchase.amount)}</td>
                       <td className="purchased-at">{formatDate(purchase.purchased_at)}</td>
@@ -781,7 +781,7 @@ export default function AllPurchases() {
                                 </p>
                                 {isSession && purchase.session_name && (
                                   <div style={{ fontSize: "13px", color: "#888", marginBottom: "12px" }}>
-                                    Fitness Class: <span style={{ color: "#fff", fontWeight: "500" }}>{purchase.session_name}</span>
+                                    Fitness Classes: <span style={{ color: "#fff", fontWeight: "500" }}>{purchase.session_name}</span>
                                   </div>
                                 )}
                                 <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>

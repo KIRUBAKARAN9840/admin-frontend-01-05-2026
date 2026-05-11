@@ -97,7 +97,75 @@ export default function UnitEconomicsPage() {
 
   return (
     <div className="dashboard-container">
-      {/* CAC Card and Supporting Metrics */}
+      <div className="section-container" style={{ marginBottom: "20px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "20px" }}>
+          <h3 className="section-heading" style={{ margin: 0 }}>
+            <span style={{ color: "#FF5757" }}>Unit</span> Economics
+          </h3>
+          
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <select
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              style={{
+                backgroundColor: "#1e1e1e",
+                border: "1px solid #333",
+                borderRadius: "8px",
+                color: "white",
+                padding: "8px 12px",
+                fontSize: "14px",
+                outline: "none",
+                cursor: "pointer",
+                minWidth: "150px"
+              }}
+            >
+              <option value="today">Today</option>
+              <option value="last_7">Last 7 Days</option>
+              <option value="last_30">Last 30 Days</option>
+              <option value="last_month">Last Month</option>
+              <option value="current_month">MTD</option>
+              <option value="overall">Overall</option>
+              <option value="custom">Custom Range</option>
+            </select>
+
+            {dateFilter === "custom" && (
+              <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  max={endDate || formatLocalDate(new Date())}
+                  style={{
+                    backgroundColor: "#1e1e1e",
+                    border: "1px solid #333",
+                    borderRadius: "8px",
+                    color: "white",
+                    padding: "8px 12px",
+                    fontSize: "14px",
+                  }}
+                />
+                <span style={{ color: "#888" }}>to</span>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  min={startDate}
+                  max={formatLocalDate(new Date())}
+                  style={{
+                    backgroundColor: "#1e1e1e",
+                    border: "1px solid #333",
+                    borderRadius: "8px",
+                    color: "white",
+                    padding: "8px 12px",
+                    fontSize: "14px",
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {loading ? (
         <div style={{
           display: "flex",
@@ -117,68 +185,6 @@ export default function UnitEconomicsPage() {
                   <h6 className="card-title">Customer Acquisition Cost</h6>
                 </div>
                 <div className="card-body-custom">
-                  {/* Date Filter Inside Card */}
-                  <div style={{ marginBottom: "1rem" }}>
-                    <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.75rem", color: "#9ca3af" }}>
-                      Date Filter
-                    </label>
-                    <select
-                      value={dateFilter}
-                      onChange={(e) => setDateFilter(e.target.value)}
-                      style={{
-                        backgroundColor: "#374151",
-                        border: "1px solid #4b5563",
-                        borderRadius: "6px",
-                        color: "white",
-                        padding: "0.5rem 0.75rem",
-                        fontSize: "0.875rem",
-                        width: "100%",
-                      }}
-                    >
-                      <option value="today">Today</option>
-                      <option value="last_7">Last 7 Days</option>
-                      <option value="last_30">Last 30 Days</option>
-                      <option value="last_month">Last Month</option>
-                      <option value="current_month">MTD</option>
-                      <option value="overall">Overall</option>
-                      <option value="custom">Custom Range</option>
-                    </select>
-                    {dateFilter === "custom" && (
-                      <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
-                        <input
-                          type="date"
-                          value={startDate}
-                          onChange={(e) => setStartDate(e.target.value)}
-                          max={endDate || formatLocalDate(new Date())}
-                          style={{
-                            backgroundColor: "#374151",
-                            border: "1px solid #4b5563",
-                            borderRadius: "6px",
-                            color: "white",
-                            padding: "0.5rem 0.75rem",
-                            fontSize: "0.875rem",
-                            flex: 1,
-                          }}
-                        />
-                        <input
-                          type="date"
-                          value={endDate}
-                          onChange={(e) => setEndDate(e.target.value)}
-                          min={startDate}
-                          max={formatLocalDate(new Date())}
-                          style={{
-                            backgroundColor: "#374151",
-                            border: "1px solid #4b5563",
-                            borderRadius: "6px",
-                            color: "white",
-                            padding: "0.5rem 0.75rem",
-                            fontSize: "0.875rem",
-                            flex: 1,
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
 
                   <div className="metric-number" style={{ fontSize: "32px", fontWeight: "700" }}>
                     {formatCurrency(unitEconomicsData.cac)}
