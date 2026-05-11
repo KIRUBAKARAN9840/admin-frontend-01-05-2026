@@ -1069,6 +1069,71 @@ export default function FinancialsDashboard() {
         </div>
       )}
 
+      {/* Gross Margin Card */}
+      {financialsData && financialsData.grossMargin && (
+        <div className="section-container">
+          <div className="row g-4">
+            <div className="col-xl-12">
+              <div className="dashboard-card">
+                <div className="card-header-custom extra-space">
+                  <h6 className="card-title" style={{ textAlign: "center" }}>Gross Margin</h6>
+                </div>
+                <div className="card-body-custom">
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "60px" }}>
+                    {/* Left - Gross Margin % */}
+                    <div style={{ flex: "1", textAlign: "center" }}>
+                      <div
+                        className="metric-number"
+                        style={{
+                          fontSize: "52px",
+                          fontWeight: "700",
+                          color: "#fff"
+                        }}
+                      >
+                        {financialsData.grossMargin.gross_margin_percentage}%
+                      </div>
+                      <div style={{ fontSize: "16px", fontWeight: "600", color: "#fff", marginTop: "6px" }}>
+                        {formatCurrency(financialsData.grossMargin.gross_margin)}
+                      </div>
+                      <div style={{ fontSize: "14px", color: "#888", marginTop: "6px" }}>
+                        Gross Profit minus AWS &amp; Nutritionist Salary costs
+                      </div>
+                    </div>
+
+                    {/* Right - Breakdown */}
+                    <div style={{ flex: "1" }}>
+                      <div style={{ fontSize: "13px", color: "#fff", marginBottom: "15px", fontWeight: "600", textAlign: "center" }}>
+                        Breakdown
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
+                          <span style={{ fontSize: "13px", color: "#aaa" }}>Total Gross Profit</span>
+                          <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
+                            {formatCurrency(financialsData.grossMargin.gross_profit)}
+                          </span>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 15px", backgroundColor: "#1e1e1e", borderRadius: "6px" }}>
+                          <span style={{ fontSize: "13px", color: "#aaa" }}>AWS Cost + Nutritionist Salary</span>
+                          <span style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>
+                            - {formatCurrency(financialsData.grossMargin.aws_cost)}
+                          </span>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 15px", backgroundColor: "#252525", borderRadius: "6px", borderTop: "1px solid #444" }}>
+                          <span style={{ fontSize: "13px", color: "#fff", fontWeight: "600" }}>Gross Margin</span>
+                          <span style={{ fontSize: "18px", fontWeight: "700", color: "#fff" }}>
+                            {formatCurrency(financialsData.grossMargin.gross_margin)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Gross Profit Breakdown by Category */}
       {false && (
         <div className="section-container">

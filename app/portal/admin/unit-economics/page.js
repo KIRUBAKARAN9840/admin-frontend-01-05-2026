@@ -65,6 +65,7 @@ export default function UnitEconomicsPage() {
       }
 
       const response = await axiosInstance.get(url);
+
       if (response.data && response.data.success) {
         setUnitEconomicsData(response.data.data);
       }
@@ -410,6 +411,94 @@ export default function UnitEconomicsPage() {
                     </div>
                     <div style={{ fontSize: "13px", color: "#888", marginTop: "8px" }}>
                       Retention rate from previous month
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* EBITA Card */}
+            {unitEconomicsData && unitEconomicsData.ebita !== undefined && (
+              <div className="col-xl-4 col-lg-6">
+                <div className="dashboard-card">
+                  <div className="card-header-custom extra-space">
+                    <h6 className="card-title">EBITA</h6>
+                  </div>
+                  <div className="card-body-custom">
+                    <div className="metric-number" style={{ fontSize: "32px", fontWeight: "700", color: "#fff" }}>
+                      {formatCurrency(unitEconomicsData.ebita)}
+                    </div>
+                    <div style={{ fontSize: "13px", color: "#888", marginTop: "8px" }}>
+                      Earnings Before Interest, Taxes and Amortization
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ARPU Card */}
+            {unitEconomicsData && unitEconomicsData.arpu !== undefined && (
+              <div className="col-xl-4 col-lg-6">
+                <div className="dashboard-card">
+                  <div className="card-header-custom extra-space">
+                    <h6 className="card-title">ARPU (Total Users)</h6>
+                  </div>
+                  <div className="card-body-custom">
+                    <div className="metric-number" style={{ fontSize: "32px", fontWeight: "700", color: "#fff" }}>
+                      {formatCurrency(unitEconomicsData.arpu)}
+                    </div>
+                    <div style={{ fontSize: "13px", color: "#888", marginTop: "8px" }}>
+                      Average Revenue Per User
+                    </div>
+                    <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid #374151" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "#9ca3af" }}>
+                        <span>Total New Users</span>
+                        <span style={{ color: "white", fontWeight: "600" }}>{unitEconomicsData.totalNewUsers.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ARPPU Card */}
+            {unitEconomicsData && unitEconomicsData.arppu !== undefined && (
+              <div className="col-xl-4 col-lg-6">
+                <div className="dashboard-card">
+                  <div className="card-header-custom extra-space">
+                    <h6 className="card-title">ARPPU</h6>
+                  </div>
+                  <div className="card-body-custom">
+                    <div className="metric-number" style={{ fontSize: "32px", fontWeight: "700", color: "#fff" }}>
+                      {formatCurrency(unitEconomicsData.arppu)}
+                    </div>
+                    <div style={{ fontSize: "13px", color: "#888", marginTop: "8px" }}>
+                      Average Revenue Per Paying User
+                    </div>
+                    <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid #374151" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "#9ca3af" }}>
+                        <span>Paying Users</span>
+                        <span style={{ color: "white", fontWeight: "600" }}>{(unitEconomicsData.totalPayingUsers || 0).toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Gross Margin Percentage Card */}
+            {unitEconomicsData?.grossMarginPercentage !== undefined && unitEconomicsData.grossMarginPercentage !== null && (
+              <div className="col-xl-4 col-lg-6">
+                <div className="dashboard-card">
+                  <div className="card-header-custom extra-space">
+                    <h6 className="card-title">Gross Margin %</h6>
+                  </div>
+                  <div className="card-body-custom">
+                    <div className="metric-number" style={{ fontSize: "32px", fontWeight: "700", color: "#fff" }}>
+                      {unitEconomicsData.grossMarginPercentage}%
+                    </div>
+                    <div style={{ fontSize: "13px", color: "#888", marginTop: "8px" }}>
+                      Gross Margin / Gross Profit
                     </div>
                   </div>
                 </div>
