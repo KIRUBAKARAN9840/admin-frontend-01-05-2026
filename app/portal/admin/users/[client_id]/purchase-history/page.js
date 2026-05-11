@@ -20,6 +20,8 @@ export default function PurchaseHistory() {
   const [gymMembershipLoading, setGymMembershipLoading] = useState(false);
   const [aiCreditsData, setAiCreditsData] = useState([]);
   const [aiCreditsLoading, setAiCreditsLoading] = useState(false);
+  const [aiDietCoachData, setAiDietCoachData] = useState([]);
+  const [aiDietCoachLoading, setAiDietCoachLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
 
   // Fetch daily pass data
@@ -99,6 +101,21 @@ export default function PurchaseHistory() {
     }
   }, [clientId]);
 
+  // Fetch AI Diet Coach data
+  const fetchAiDietCoachData = useCallback(async () => {
+    try {
+      setAiDietCoachLoading(true);
+      const response = await axiosInstance.get(`/api/admin/users/${clientId}/ai-diet-coach-purchases`);
+      if (response.data.success) {
+        setAiDietCoachData(response.data.data);
+      }
+    } catch (err) {
+      alert("Failed to load AI Diet Coach data. Please try again.");
+    } finally {
+      setAiDietCoachLoading(false);
+    }
+  }, [clientId]);
+
   useEffect(() => {
     fetchDailyPassData();
   }, [fetchDailyPassData]);
@@ -112,8 +129,10 @@ export default function PurchaseHistory() {
       fetchGymMembershipData();
     } else if (activeTab === "ai-credits") {
       fetchAiCreditsData();
+    } else if (activeTab === "ai-diet-coach") {
+      fetchAiDietCoachData();
     }
-  }, [activeTab, fetchSessionData, fetchSubscriptionData, fetchGymMembershipData, fetchAiCreditsData]);
+  }, [activeTab, fetchSessionData, fetchSubscriptionData, fetchGymMembershipData, fetchAiCreditsData, fetchAiDietCoachData]);
 
   const formatDate = (dateString) => {
     if (!dateString) return "-";
@@ -220,7 +239,8 @@ export default function PurchaseHistory() {
               sessionData.length === 0 &&
               subscriptionData.length === 0 &&
               gymMembershipData.length === 0 &&
-              aiCreditsData.length === 0
+              aiCreditsData.length === 0 &&
+              aiDietCoachData.length === 0
             )
           }
           style={{
@@ -241,7 +261,8 @@ export default function PurchaseHistory() {
                 sessionData.length === 0 &&
                 subscriptionData.length === 0 &&
                 gymMembershipData.length === 0 &&
-                aiCreditsData.length === 0
+                aiCreditsData.length === 0 &&
+                aiDietCoachData.length === 0
               )
                 ? 0.5
                 : 1,
@@ -253,7 +274,8 @@ export default function PurchaseHistory() {
                 sessionData.length === 0 &&
                 subscriptionData.length === 0 &&
                 gymMembershipData.length === 0 &&
-                aiCreditsData.length === 0
+                aiCreditsData.length === 0 &&
+                aiDietCoachData.length === 0
               )
             ) {
               e.target.style.backgroundColor = "#e64c4c";
@@ -299,6 +321,12 @@ export default function PurchaseHistory() {
           onClick={() => setActiveTab("ai-credits")}
         >
           AI Credits
+        </button>
+        <button
+          className={`tab-button ${activeTab === "ai-diet-coach" ? "active" : ""}`}
+          onClick={() => setActiveTab("ai-diet-coach")}
+        >
+          AI Diet Coach
         </button>
       </div>
 
@@ -639,6 +667,60 @@ export default function PurchaseHistory() {
                   </thead>
                   <tbody>
                     {aiCreditsData.map((ai) => (
+                      <tr key={ai.id}>
+                        <td>{formatDateTime(ai.captured_at || ai.created_at)}</td>
+                        <td>
+                          {ai.amount
+                            ? `₹${(ai.amount / 100).toFixed(2)}`
+                            : "-"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === "ai-diet-coach" && (
+          <div className="ai-diet-coach-tab">
+            {aiDietCoachLoading ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minHeight: "200px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    border: "3px solid #3a3a3a",
+                    borderTop: "3px solid #FF5757",
+                    borderRadius: "50%",
+                    animation: "spin 1s linear infinite",
+                  }}
+                />
+              </div>
+            ) : aiDietCoachData.length === 0 ? (
+              <div className="no-data-message">
+                <div style={{ fontSize: "48px", marginBottom: "1rem" }}>🍎</div>
+                <p>No AI Diet Coach purchases found</p>
+              </div>
+            ) : (
+              <div className="table-responsive">
+                <table className="purchase-table">
+                  <thead>
+                    <tr>
+                      <th>Purchase Date</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {aiDietCoachData.map((ai) => (
                       <tr key={ai.id}>
                         <td>{formatDateTime(ai.captured_at || ai.created_at)}</td>
                         <td>
