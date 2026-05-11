@@ -32,6 +32,7 @@ export default function Users() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [filteredTotal, setFilteredTotal] = useState(0);
 
   const [exportLoading, setExportLoading] = useState(false);
   const [showExportConfirm, setShowExportConfirm] = useState(false);
@@ -123,6 +124,7 @@ export default function Users() {
         // Set all data from single response
         setUsers(data.users);
         setTotalUsers(data.total);
+        setFilteredTotal(data.total);
 
         setClientCounts(data.clientCounts);
         setOnlineOfflineCounts(data.onlineOfflineCounts);
@@ -190,6 +192,7 @@ export default function Users() {
       if (response.data.success) {
         const data = response.data.data;
         setUsers(data.users);
+        setFilteredTotal(data.total); // Only update the filtered total for pagination
         // NOTE: Do NOT update totalUsers, clientCounts, onlineOfflineCounts here
         // These should remain constant and only be set by fetchInitialData
         // The filtered counts should only affect the user list, not the cards
@@ -243,6 +246,13 @@ export default function Users() {
           setItemsPerPage(restoredItemsPerPage);
           setInitialDataLoaded(true);
 
+          if (state.clientCounts) setClientCounts(state.clientCounts);
+          if (state.onlineOfflineCounts) setOnlineOfflineCounts(state.onlineOfflineCounts);
+          if (state.platformCounts) setPlatformCounts(state.platformCounts);
+          if (state.activeUsersMetrics) setActiveUsersMetrics(state.activeUsersMetrics);
+          if (state.totalUsers !== undefined) setTotalUsers(state.totalUsers);
+          if (state.filteredTotal !== undefined) setFilteredTotal(state.filteredTotal);
+
           // Fetch users with the restored parameters directly
           // We need to construct the params manually since we just updated state
           const fetchUsersWithRestoredState = async () => {
@@ -281,6 +291,7 @@ export default function Users() {
               if (response.data.success) {
                 const data = response.data.data;
                 setUsers(data.users);
+                setFilteredTotal(data.total); // Update the filtered total for pagination
                 // NOTE: Do NOT update card counts when restoring state with filters
                 // The card counts should remain at their global values from fetchInitialData
               }
@@ -333,10 +344,20 @@ export default function Users() {
       currentPage,
       itemsPerPage,
       initialDataLoaded,
-      isReturning: false
+      isReturning: false,
+      clientCounts,
+      onlineOfflineCounts,
+      platformCounts,
+      activeUsersMetrics,
+      totalUsers,
+      filteredTotal
     };
     sessionStorage.setItem('usersListState', JSON.stringify(stateToSave));
-  }, [searchTerm, platformFilter, dateFilter, customStartDate, customEndDate, sortOrder, currentPage, itemsPerPage, initialDataLoaded]);
+  }, [
+    searchTerm, platformFilter, dateFilter, customStartDate, customEndDate, 
+    sortOrder, currentPage, itemsPerPage, initialDataLoaded,
+    clientCounts, onlineOfflineCounts, platformCounts, activeUsersMetrics, totalUsers, filteredTotal
+  ]);
 
   const formatDate = (dateString) => {
     if (!dateString) return "-";
@@ -514,7 +535,7 @@ export default function Users() {
     }
   };
 
-  const totalPages = Math.ceil(totalUsers / itemsPerPage);
+  const totalPages = Math.ceil(filteredTotal / itemsPerPage);
 
   const getPaginationNumbers = () => {
     const pages = [];
@@ -1363,7 +1384,13 @@ export default function Users() {
                     sortOrder,
                     currentPage,
                     itemsPerPage,
-                    isReturning: true
+                    isReturning: true,
+                    clientCounts,
+                    onlineOfflineCounts,
+                    platformCounts,
+                    activeUsersMetrics,
+                    totalUsers,
+                    filteredTotal
                   };
                   sessionStorage.setItem('usersListState', JSON.stringify(currentState));
                   router.push(`/portal/admin/users/${user.client_id}`);
@@ -1507,8 +1534,8 @@ export default function Users() {
       {totalPages > 1 && (
         <div className="pagination-container">
           <div className="pagination-info">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-            {Math.min(currentPage * itemsPerPage, totalUsers)} of {totalUsers}{" "}
+            Showing {filteredTotal === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1} to{" "}
+            {Math.min(currentPage * itemsPerPage, filteredTotal)} of {filteredTotal}{" "}
             entries
           </div>
 
