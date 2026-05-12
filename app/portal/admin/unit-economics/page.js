@@ -292,7 +292,7 @@ export default function UnitEconomicsPage() {
             )}
 
             {/* Weekly Active Users Card */}
-            {unitEconomicsData && unitEconomicsData.weeklyActiveUsers !== undefined && (
+            {unitEconomicsData && unitEconomicsData.weeklyActiveUsers !== undefined && (         
               <div className="col-xl-4 col-lg-6">
                 <div className="dashboard-card">
                   <div className="card-header-custom extra-space">

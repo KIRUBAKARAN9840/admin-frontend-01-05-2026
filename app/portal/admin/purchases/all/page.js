@@ -712,7 +712,13 @@ export default function AllPurchases() {
                           {purchase.gym_name || "N/A"}
                         </span>
                       </td>
-                      <td className="type">{purchase.type === "Session" ? "Fitness Classes" : purchase.type}</td>
+                      <td className="type">
+                        {purchase.type === "Session" 
+                          ? "Fitness Classes" 
+                          : (purchase.type === "Daily Pass" && purchase.head_count > 1 
+                            ? "Multi Pass" 
+                            : purchase.type)}
+                      </td>
                       <td className="days-total">{getDisplayValue(purchase)}</td>
                       <td className="amount">{formatAmount(purchase.amount)}</td>
                       <td className="purchased-at">{formatDate(purchase.purchased_at)}</td>
