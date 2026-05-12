@@ -326,7 +326,7 @@ export default function ConsultationForm() {
         }} />
       </div>
 
-      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto 0 20px" }}>
         
         {/* Top Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "50px" }}>

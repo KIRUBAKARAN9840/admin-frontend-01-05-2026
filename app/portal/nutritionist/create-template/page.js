@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { FaTrash, FaSave, FaTimes, FaClock } from "react-icons/fa";
+import { FaTrash, FaSave, FaTimes, FaClock, FaChevronDown, FaChevronRight } from "react-icons/fa";
 import axios from "@/lib/axios";
 
 const MEAL_TYPES = [
@@ -30,6 +30,7 @@ export default function CreateTemplate() {
   const activeSuggestionRef = useRef({});
   const [foodPagination, setFoodPagination] = useState({}); // { key: { page: 1, hasMore: true } }
   const searchTimeoutRef = useRef({});
+  const [collapsedDays, setCollapsedDays] = useState([]);
 
   // Fetch templates on list view
   useEffect(() => {
@@ -141,6 +142,14 @@ export default function CreateTemplate() {
     }));
     setDietData(recalculatedData);
     setNumberOfDays(recalculatedData.length);
+  };
+
+  const toggleDayCollapse = (dayNumber) => {
+    setCollapsedDays(prev => 
+      prev.includes(dayNumber) 
+        ? prev.filter(d => d !== dayNumber) 
+        : [...prev, dayNumber]
+    );
   };
 
   const addMeal = (dayIndex) => {
@@ -663,9 +672,25 @@ export default function CreateTemplate() {
               {dietData.map((day, dayIndex) => (
                 <div key={day.day_number} style={{ marginBottom: "2rem", background: "#f9fafb", borderRadius: "8px", padding: "1.5rem", border: "1px solid #e5e7eb" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                    <h4 style={{ color: "#10b981", fontSize: "14px", margin: 0, fontWeight: "700" }}>
-                      Day {day.day_number}
-                    </h4>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      <button
+                        onClick={() => toggleDayCollapse(day.day_number)}
+                        style={{
+                          background: "transparent",
+                          border: "none",
+                          color: "#10b981",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          padding: 0
+                        }}
+                      >
+                        {collapsedDays.includes(day.day_number) ? <FaChevronRight size={14} /> : <FaChevronDown size={14} />}
+                      </button>
+                      <h4 style={{ color: "#10b981", fontSize: "14px", margin: 0, fontWeight: "700" }}>
+                        Day {day.day_number}
+                      </h4>
+                    </div>
                     <button
                       onClick={() => removeDay(dayIndex)}
                       style={{
@@ -679,6 +704,9 @@ export default function CreateTemplate() {
                       <FaTrash />
                     </button>
                   </div>
+
+                  {!collapsedDays.includes(day.day_number) && (
+                    <>
 
                   {day.meals.length === 0 ? (
                     <div style={{ textAlign: "center", padding: "1rem", color: "#999" }}>
@@ -1026,6 +1054,8 @@ export default function CreateTemplate() {
                   >
                     + Add Meal
                   </button>
+                    </>
+                  )}
                 </div>
               ))}
 

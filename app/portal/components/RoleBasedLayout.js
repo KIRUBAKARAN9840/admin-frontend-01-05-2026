@@ -465,7 +465,6 @@ export default function RoleBasedLayout({ children }) {
   const userInfo = getUserInfo();
   const accessDenied = !hasAccess(role, pathname);
 
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -479,6 +478,13 @@ export default function RoleBasedLayout({ children }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Auto-collapse sidebar on consultation page for better view
+  useEffect(() => {
+    if (pathname && pathname.includes("/portal/nutritionist/consultation/")) {
+      setSidebarCollapsed(true);
+    }
+  }, [pathname]);
 
   if (accessDenied) {
     return (
