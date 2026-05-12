@@ -1,7 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { HiOutlineArrowLeft, HiOutlineSave } from "react-icons/hi";
+import { 
+  HiOutlineArrowLeft, 
+  HiOutlineSave,
+  HiOutlineUser,
+  HiOutlineScale,
+  HiOutlineDocumentText,
+  HiOutlineHeart,
+  HiOutlineClock,
+  HiOutlineStar,
+  HiOutlineLightningBolt,
+  HiCheck
+} from "react-icons/hi";
 import axios from "@/lib/axios";
 
 export default function ConsultationForm() {
@@ -89,8 +100,8 @@ export default function ConsultationForm() {
     },
     exercise_routine: "",
     step_count: "",
-    activity_level: "Sedentary",
-    work_mode: "WFH",
+    activity_level: "",
+    work_mode: "",
     
     main_goals: "",
     consistency_challenges: "",
@@ -103,12 +114,10 @@ export default function ConsultationForm() {
         setLoading(true);
         const response = await axios.get(`/api/admin/nutritionist_consultation/${clientId}`);
         if (response.data?.success && response.data?.data) {
-          // Merge existing data into initial state to handle missing fields
           const existingData = response.data.data;
           setFormData(prev => ({
             ...prev,
             ...existingData,
-            // Ensure nested objects are handled
             anthropometric_table: existingData.anthropometric_table || prev.anthropometric_table,
             recent_changes: existingData.recent_changes || prev.recent_changes,
             fat_distribution: existingData.fat_distribution || prev.fat_distribution,
@@ -156,18 +165,17 @@ export default function ConsultationForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     try {
       setSaving(true);
       setMessage({ type: "", text: "" });
       const response = await axios.post("/api/admin/nutritionist_consultation/save", formData);
       if (response.data?.success) {
-        setMessage({ type: "success", text: response.data.message });
+        setMessage({ type: "success", text: "Consultation saved successfully!" });
         setTimeout(() => setMessage({ type: "", text: "" }), 3000);
       }
     } catch (err) {
-      console.error("Error saving form:", err);
-      setMessage({ type: "error", text: "Failed to save form. Please try again." });
+      setMessage({ type: "error", text: "Error connecting to server" });
     } finally {
       setSaving(false);
     }
@@ -175,383 +183,430 @@ export default function ConsultationForm() {
 
   if (loading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#111827", color: "white" }}>
-        Loading Form...
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#f9fafb" }}>
+        <div style={{ fontSize: "16px", color: "#10b981", fontWeight: "600" }}>LOADING PORTAL...</div>
       </div>
     );
   }
 
-  const inputStyle = {
-    backgroundColor: "#1f2937",
-    border: "1px solid #374151",
-    borderRadius: "6px",
-    color: "white",
-    padding: "10px 12px",
-    width: "100%",
-    outline: "none",
-    fontSize: "14px",
-    transition: "border-color 0.2s",
+  const sectionWrapper = {
+    backgroundColor: "#ffffff",
+    borderRadius: "20px",
+    padding: "40px",
+    marginBottom: "30px",
+    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)",
+    border: "1px solid #f3f4f6"
   };
 
-  const sectionStyle = {
-    backgroundColor: "#1a1f26",
+  const inputStyle = {
+    width: "100%",
+    backgroundColor: "#f9fafb",
+    border: "1px solid #e5e7eb",
     borderRadius: "12px",
-    padding: "24px",
-    marginBottom: "24px",
-    border: "1px solid #333",
+    padding: "14px 18px",
+    color: "#111827",
+    fontSize: "15px",
+    outline: "none",
+    transition: "all 0.2s ease",
+    boxSizing: "border-box"
   };
 
   const labelStyle = {
     display: "block",
-    marginBottom: "8px",
-    fontSize: "14px",
-    fontWeight: "500",
-    color: "#9ca3af",
+    fontSize: "13px",
+    fontWeight: "600",
+    color: "#6b7280",
+    marginBottom: "10px",
+    textTransform: "uppercase",
+    letterSpacing: "0.5px"
   };
 
-  return (
-    <div style={{ padding: "2rem", maxWidth: "1000px", margin: "0 auto", color: "white", backgroundColor: "#111827", minHeight: "100vh" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
-        <button 
-          onClick={() => router.back()} 
-          style={{ display: "flex", alignItems: "center", gap: "8px", background: "none", border: "none", color: "#9ca3af", cursor: "pointer", fontSize: "14px" }}
-        >
-          <HiOutlineArrowLeft size={18} /> Back
-        </button>
-        <h1 style={{ fontSize: "24px", fontWeight: "700", margin: 0 }}>
-          <span style={{ color: "#FF5757" }}>Nutrition</span> Consultation Form
-        </h1>
-        <button 
-          onClick={handleSubmit} 
-          disabled={saving}
-          style={{ 
-            display: "flex", 
-            alignItems: "center", 
-            gap: "8px", 
-            backgroundColor: "#FF5757", 
-            color: "white", 
-            border: "none", 
-            padding: "10px 20px", 
-            borderRadius: "8px", 
-            cursor: "pointer", 
-            fontWeight: "600",
-            transition: "opacity 0.2s"
-          }}
-        >
-          {saving ? "Saving..." : <><HiOutlineSave size={18} /> Save Form</>}
-        </button>
+  const SectionTitle = ({ icon: Icon, title, sub }) => (
+    <div style={{ marginBottom: "35px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
+        <div style={{ color: "#10b981" }}><Icon size={22} /></div>
+        <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#111827", margin: 0 }}>{title}</h2>
       </div>
+      <p style={{ fontSize: "14px", color: "#9ca3af", margin: 0 }}>{sub}</p>
+    </div>
+  );
 
-      {message.text && (
-        <div style={{ 
-          padding: "12px 16px", 
-          borderRadius: "8px", 
-          marginBottom: "1.5rem", 
-          backgroundColor: message.type === "success" ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)",
-          color: message.type === "success" ? "#10b981" : "#ef4444",
-          border: `1px solid ${message.type === "success" ? "#10b981" : "#ef4444"}`,
-          textAlign: "center"
-        }}>
-          {message.text}
+  return (
+    <div style={{ backgroundColor: "#f9fafb", minHeight: "100vh", padding: "60px 20px" }}>
+      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+        
+        {/* Top Header */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "50px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+            <button 
+              onClick={() => router.back()}
+              style={{ 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                background: "#fff", 
+                border: "1px solid #e5e7eb", 
+                color: "#10b981", 
+                cursor: "pointer", 
+                width: "44px",
+                height: "44px",
+                borderRadius: "12px",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.05)"
+              }}
+            >
+              <HiOutlineArrowLeft size={20} />
+            </button>
+            <h1 style={{ fontSize: "32px", fontWeight: "800", color: "#111827", margin: 0, letterSpacing: "-0.025em" }}>
+              Consultation <span style={{ color: "#10b981" }}>Report</span>
+            </h1>
+          </div>
+          
+          <button 
+            onClick={handleSubmit} 
+            disabled={saving}
+            style={{
+              backgroundColor: "#10b981",
+              color: "#ffffff",
+              border: "none",
+              padding: "16px 32px",
+              borderRadius: "14px",
+              fontSize: "15px",
+              fontWeight: "700",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              boxShadow: "0 10px 15px -3px rgba(16, 185, 129, 0.3)",
+              transition: "transform 0.1s"
+            }}
+          >
+            {saving ? "Saving..." : <><HiOutlineSave size={20} /> Finish & Save</>}
+          </button>
         </div>
-      )}
 
-      <form onSubmit={handleSubmit}>
-        {/* Section 1: Client Information */}
-        <div style={sectionStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#FF5757", borderBottom: "1px solid #333", paddingBottom: "10px" }}>
-            1. Client Information
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-            <div>
-              <label style={labelStyle}>Full Name</label>
-              <input 
-                style={inputStyle} 
-                name="full_name" 
-                value={formData.full_name || ""} 
-                onChange={handleInputChange} 
-                placeholder="Name"
-              />
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
+        {message.text && (
+          <div style={{ 
+            padding: "16px 24px", 
+            borderRadius: "14px", 
+            marginBottom: "30px", 
+            backgroundColor: message.type === "success" ? "#ecfdf5" : "#fef2f2",
+            color: message.type === "success" ? "#059669" : "#dc2626",
+            border: `1px solid ${message.type === "success" ? "#a7f3d0" : "#fecaca"}`,
+            fontWeight: "600",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px"
+          }}>
+            {message.type === "success" && <HiCheck size={18} />}
+            {message.text}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          
+          {/* Section 1: Client Profile */}
+          <div style={sectionWrapper}>
+            <SectionTitle icon={HiOutlineUser} title="Client Profile" sub="General information and health objectives" />
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px" }}>
+              <div style={{ gridColumn: "span 2" }}>
+                <label style={labelStyle}>Full Name</label>
+                <input style={inputStyle} name="full_name" value={formData.full_name || ""} onChange={handleInputChange} />
+              </div>
               <div>
                 <label style={labelStyle}>Age</label>
-                <input style={inputStyle} name="age" value={formData.age || ""} onChange={handleInputChange} placeholder="Age" />
+                <input style={inputStyle} name="age" value={formData.age || ""} onChange={handleInputChange} />
               </div>
               <div>
                 <label style={labelStyle}>Gender</label>
                 <select style={inputStyle} name="gender" value={formData.gender || ""} onChange={handleInputChange}>
-                  <option value="">Select</option>
+                  <option value="">Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
-                  <option value="Other">Other</option>
                 </select>
               </div>
-            </div>
-            <div>
-              <label style={labelStyle}>Occupation</label>
-              <input style={inputStyle} name="occupation" value={formData.occupation || ""} onChange={handleInputChange} placeholder="Occupation" />
-            </div>
-            <div>
-              <label style={labelStyle}>Main Health Goal</label>
-              <input style={inputStyle} name="main_health_goal" value={formData.main_health_goal || ""} onChange={handleInputChange} placeholder="Goal" />
+              <div>
+                <label style={labelStyle}>Occupation</label>
+                <input style={inputStyle} name="occupation" value={formData.occupation || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Health Goal</label>
+                <input style={inputStyle} name="main_health_goal" value={formData.main_health_goal || ""} onChange={handleInputChange} />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Section 2: Anthropometric Assessment */}
-        <div style={sectionStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#FF5757", borderBottom: "1px solid #333", paddingBottom: "10px" }}>
-            2. Anthropometric Assessment
-          </h2>
-          
-          <div style={{ overflowX: "auto", marginBottom: "24px" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", color: "#ccc" }}>
-              <thead>
-                <tr style={{ borderBottom: "1px solid #333" }}>
-                  <th style={{ textAlign: "left", padding: "12px", fontSize: "14px" }}>Measurement</th>
-                  <th style={{ textAlign: "left", padding: "12px", fontSize: "14px" }}>Current</th>
-                  <th style={{ textAlign: "left", padding: "12px", fontSize: "14px" }}>Goal / Ideal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { label: "Weight (kg)", field: "weight" },
-                  { label: "Height (cm)", field: "height" },
-                  { label: "BMI", field: "bmi" },
-                  { label: "Waist (cm)", field: "waist" },
-                  { label: "Hip (cm)", field: "hip" },
-                  { label: "WHR", field: "whr" },
-                  { label: "Muscle Mass", field: "muscle_mass" },
-                  { label: "Body fat %", field: "body_fat" },
-                  { label: "IBW (Ideal)", field: "ibw" },
-                ].map((item) => (
-                  <tr key={item.field} style={{ borderBottom: "1px solid #222" }}>
-                    <td style={{ padding: "10px 12px", fontSize: "14px" }}>{item.label}</td>
-                    <td style={{ padding: "8px" }}>
-                      <input 
-                        style={{ ...inputStyle, padding: "6px 10px" }} 
-                        value={formData.anthropometric_table?.[item.field]?.current || ""} 
-                        onChange={(e) => handleAnthroChange(item.field, "current", e.target.value)}
-                      />
-                    </td>
-                    <td style={{ padding: "8px" }}>
-                      <input 
-                        style={{ ...inputStyle, padding: "6px 10px" }} 
-                        value={formData.anthropometric_table?.[item.field]?.goal || ""} 
-                        onChange={(e) => handleAnthroChange(item.field, "goal", e.target.value)}
-                      />
-                    </td>
+          {/* Section 2: Body Metrics */}
+          <div style={sectionWrapper}>
+            <SectionTitle icon={HiOutlineScale} title="Body Metrics" sub="Physical assessment and measurements" />
+            
+            <div style={{ borderRadius: "16px", overflow: "hidden", border: "1px solid #f3f4f6", marginBottom: "35px" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ backgroundColor: "#f9fafb" }}>
+                    <th style={{ textAlign: "left", padding: "16px", fontSize: "12px", color: "#9ca3af", fontWeight: "700" }}>ASSESSMENT</th>
+                    <th style={{ textAlign: "left", padding: "16px", fontSize: "12px", color: "#9ca3af", fontWeight: "700" }}>CURRENT</th>
+                    <th style={{ textAlign: "left", padding: "16px", fontSize: "12px", color: "#9ca3af", fontWeight: "700" }}>IDEAL / GOAL</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "30px", marginBottom: "24px" }}>
-            <div>
-              <label style={labelStyle}>Recent Changes</label>
-              <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-                {Object.keys(formData.recent_changes).map((key) => (
-                  <label key={key} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", cursor: "pointer" }}>
-                    <input 
-                      type="checkbox" 
-                      checked={formData.recent_changes[key]} 
-                      onChange={(e) => handleNestedChange("recent_changes", key, e.target.checked)} 
-                    />
-                    {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                  </label>
-                ))}
-              </div>
-            </div>
-            <div>
-              <label style={labelStyle}>Fat Distribution</label>
-              <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-                {Object.keys(formData.fat_distribution).map((key) => (
-                  <label key={key} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", cursor: "pointer" }}>
-                    <input 
-                      type="checkbox" 
-                      checked={formData.fat_distribution[key]} 
-                      onChange={(e) => handleNestedChange("fat_distribution", key, e.target.checked)} 
-                    />
-                    {key.replace(/\b\w/g, l => l.toUpperCase())}
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label style={labelStyle}>Nutritionist Observations / Notes</label>
-            <textarea 
-              style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} 
-              name="nutritionist_notes" 
-              value={formData.nutritionist_notes || ""} 
-              onChange={handleInputChange} 
-            />
-          </div>
-        </div>
-
-        {/* Section 3: Biochemical Assessment */}
-        <div style={sectionStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#FF5757", borderBottom: "1px solid #333", paddingBottom: "10px" }}>
-            3. Biochemical Assessment
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div>
-              <label style={labelStyle}>Any vitamin deficiencies diagnosed?</label>
-              <input style={inputStyle} name="vitamin_deficiencies" value={formData.vitamin_deficiencies || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Any issues with blood sugar, thyroid, cholesterol, liver or hormones?</label>
-              <textarea style={inputStyle} name="biochemical_issues" value={formData.biochemical_issues || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Ongoing medications / supplements:</label>
-              <input style={inputStyle} name="ongoing_medications" value={formData.ongoing_medications || ""} onChange={handleInputChange} />
-            </div>
-          </div>
-        </div>
-
-        {/* Section 4: Clinical Assessment */}
-        <div style={sectionStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#FF5757", borderBottom: "1px solid #333", paddingBottom: "10px" }}>
-            4. Clinical Assessment
-          </h2>
-          
-          <div style={{ overflowX: "auto", marginBottom: "24px" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr style={{ borderBottom: "1px solid #333" }}>
-                  <th style={{ textAlign: "left", padding: "12px", fontSize: "14px", color: "#9ca3af" }}>Concern</th>
-                  {["Never", "Sometimes", "Often", "Severe"].map(opt => (
-                    <th key={opt} style={{ textAlign: "center", padding: "12px", fontSize: "14px", color: "#9ca3af" }}>{opt}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { label: "Low Energy", field: "low_energy" },
-                  { label: "Bloating / Acidity", field: "bloating_acidity" },
-                  { label: "Poor Sleep", field: "poor_sleep" },
-                  { label: "Stress", field: "stress" },
-                  { label: "Constipation", field: "constipation" },
-                  { label: "Hair Fall", field: "hair_fall" },
-                  { label: "Cravings", field: "cravings" },
-                ].map((item) => (
-                  <tr key={item.field} style={{ borderBottom: "1px solid #222" }}>
-                    <td style={{ padding: "12px", fontSize: "14px" }}>{item.label}</td>
-                    {["Never", "Sometimes", "Often", "Severe"].map(opt => (
-                      <td key={opt} style={{ textAlign: "center", padding: "12px" }}>
+                </thead>
+                <tbody>
+                  {[
+                    { label: "Weight (kg)", field: "weight" },
+                    { label: "Height (cm)", field: "height" },
+                    { label: "BMI", field: "bmi" },
+                    { label: "Waist (cm)", field: "waist" },
+                    { label: "Hip (cm)", field: "hip" },
+                    { label: "WHR", field: "whr" },
+                    { label: "Muscle Mass", field: "muscle_mass" },
+                    { label: "Body Fat %", field: "body_fat" },
+                    { label: "IBW (Ideal)", field: "ibw" },
+                  ].map((item, idx) => (
+                    <tr key={item.field} style={{ borderTop: "1px solid #f3f4f6" }}>
+                      <td style={{ padding: "16px", color: "#374151", fontWeight: "600", fontSize: "14px" }}>{item.label}</td>
+                      <td style={{ padding: "12px" }}>
                         <input 
-                          type="radio" 
-                          name={item.field} 
-                          checked={formData.clinical_concerns[item.field] === opt} 
-                          onChange={() => handleNestedChange("clinical_concerns", item.field, opt)}
-                          style={{ cursor: "pointer" }}
+                          style={{ ...inputStyle, padding: "10px 14px", fontSize: "14px" }} 
+                          value={formData.anthropometric_table?.[item.field]?.current || ""} 
+                          onChange={(e) => handleAnthroChange(item.field, "current", e.target.value)}
                         />
                       </td>
+                      <td style={{ padding: "12px" }}>
+                        <input 
+                          style={{ ...inputStyle, padding: "10px 14px", fontSize: "14px" }} 
+                          value={formData.anthropometric_table?.[item.field]?.goal || ""} 
+                          onChange={(e) => handleAnthroChange(item.field, "goal", e.target.value)}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", marginBottom: "30px" }}>
+              <div>
+                <label style={labelStyle}>Weight Trends</label>
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  {Object.keys(formData.recent_changes).map(key => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => handleNestedChange("recent_changes", key, !formData.recent_changes[key])}
+                      style={{
+                        padding: "10px 16px",
+                        borderRadius: "10px",
+                        fontSize: "13px",
+                        fontWeight: "600",
+                        border: `2px solid ${formData.recent_changes[key] ? "#10b981" : "#f3f4f6"}`,
+                        backgroundColor: formData.recent_changes[key] ? "#ecfdf5" : "#ffffff",
+                        color: formData.recent_changes[key] ? "#10b981" : "#9ca3af",
+                        cursor: "pointer",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      {key.replace(/_/g, ' ')}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label style={labelStyle}>Fat Distribution</label>
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  {Object.keys(formData.fat_distribution).map(key => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => handleNestedChange("fat_distribution", key, !formData.fat_distribution[key])}
+                      style={{
+                        padding: "10px 16px",
+                        borderRadius: "10px",
+                        fontSize: "13px",
+                        fontWeight: "600",
+                        border: `2px solid ${formData.fat_distribution[key] ? "#10b981" : "#f3f4f6"}`,
+                        backgroundColor: formData.fat_distribution[key] ? "#ecfdf5" : "#ffffff",
+                        color: formData.fat_distribution[key] ? "#10b981" : "#9ca3af",
+                        cursor: "pointer"
+                      }}
+                    >
+                      {key}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label style={labelStyle}>Clinical Observations</label>
+              <textarea 
+                style={{ ...inputStyle, minHeight: "100px", resize: "vertical" }} 
+                name="nutritionist_notes" 
+                value={formData.nutritionist_notes || ""} 
+                onChange={handleInputChange}
+                placeholder="Visual assessment, skin health, muscle tone..."
+              />
+            </div>
+          </div>
+
+          {/* Section 3: Biochemical */}
+          <div style={sectionWrapper}>
+            <SectionTitle icon={HiOutlineDocumentText} title="Biochemical Markers" sub="Blood work and metabolic status" />
+            <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
+              <div>
+                <label style={labelStyle}>Deficiencies</label>
+                <input style={inputStyle} name="vitamin_deficiencies" value={formData.vitamin_deficiencies || ""} onChange={handleInputChange} placeholder="e.g., Vitamin D, Iron" />
+              </div>
+              <div>
+                <label style={labelStyle}>Metabolic Issues (Thyroid, Sugar, Cholesterol)</label>
+                <textarea style={{ ...inputStyle, minHeight: "80px" }} name="biochemical_issues" value={formData.biochemical_issues || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Current Medications</label>
+                <input style={inputStyle} name="ongoing_medications" value={formData.ongoing_medications || ""} onChange={handleInputChange} />
+              </div>
+            </div>
+          </div>
+
+          {/* Section 4: Clinical Symptoms */}
+          <div style={sectionWrapper}>
+            <SectionTitle icon={HiOutlineHeart} title="Clinical Symptoms" sub="Physical manifestations and digestive health" />
+            
+            <div style={{ overflowX: "auto", marginBottom: "30px" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
+                    <th style={{ textAlign: "left", padding: "16px", color: "#9ca3af", fontSize: "12px" }}>CONCERN</th>
+                    {["Never", "Sometimes", "Often", "Severe"].map(opt => (
+                      <th key={opt} style={{ textAlign: "center", padding: "16px", color: "#9ca3af", fontSize: "12px" }}>{opt}</th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
-            <div>
-              <label style={labelStyle}>Edema / Swelling</label>
-              <input style={inputStyle} name="edema_swelling" value={formData.edema_swelling || ""} onChange={handleInputChange} />
+                </thead>
+                <tbody>
+                  {[
+                    { label: "Energy Fatigue", field: "low_energy" },
+                    { label: "Bloating / Acidity", field: "bloating_acidity" },
+                    { label: "Poor Sleep", field: "poor_sleep" },
+                    { label: "Stress Load", field: "stress" },
+                    { label: "Constipation", field: "constipation" },
+                    { label: "Hair Fall", field: "hair_fall" },
+                    { label: "Cravings", field: "cravings" },
+                  ].map(item => (
+                    <tr key={item.field} style={{ borderBottom: "1px solid #f9fafb" }}>
+                      <td style={{ padding: "16px", fontSize: "14px", fontWeight: "600", color: "#374151" }}>{item.label}</td>
+                      {["Never", "Sometimes", "Often", "Severe"].map(opt => (
+                        <td key={opt} style={{ textAlign: "center" }}>
+                          <input 
+                            type="radio" 
+                            name={item.field} 
+                            checked={formData.clinical_concerns[item.field] === opt} 
+                            onChange={() => handleNestedChange("clinical_concerns", item.field, opt)}
+                            style={{ width: "18px", height: "18px", accentColor: "#10b981", cursor: "pointer" }}
+                          />
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            <div>
-              <label style={labelStyle}>Joint Pain</label>
-              <input style={inputStyle} name="joint_pain" value={formData.joint_pain || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Weakness / Dizziness</label>
-              <input style={inputStyle} name="weakness_dizziness" value={formData.weakness_dizziness || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Other symptoms or concerns</label>
-              <input style={inputStyle} name="other_symptoms" value={formData.other_symptoms || ""} onChange={handleInputChange} />
-            </div>
-          </div>
-        </div>
-
-        {/* Section 5: Dietary Assessment */}
-        <div style={sectionStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#FF5757", borderBottom: "1px solid #333", paddingBottom: "10px" }}>
-            5. Dietary Assessment
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-            <div>
-              <label style={labelStyle}>How many meals do you usually eat daily?</label>
-              <input style={inputStyle} name="meals_daily" value={formData.meals_daily || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Do you skip breakfast often?</label>
-              <input style={inputStyle} name="skip_breakfast" value={formData.skip_breakfast || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Usual dinner timing</label>
-              <input style={inputStyle} name="dinner_timing" value={formData.dinner_timing || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Late-night eating habits</label>
-              <input style={inputStyle} name="late_night_eating" value={formData.late_night_eating || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Diet Preference</label>
-              <select style={inputStyle} name="diet_preference" value={formData.diet_preference || ""} onChange={handleInputChange}>
-                <option value="">Select</option>
-                <option value="Vegetarian">Vegetarian</option>
-                <option value="Eggetarian">Eggetarian</option>
-                <option value="Non-Vegetarian">Non-Vegetarian</option>
-              </select>
-            </div>
-            <div>
-              <label style={labelStyle}>Daily water intake</label>
-              <input style={inputStyle} name="water_intake" value={formData.water_intake || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>How often do you eat outside?</label>
-              <input style={inputStyle} name="eat_outside_frequency" value={formData.eat_outside_frequency || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Any food allergies or dislikes?</label>
-              <input style={inputStyle} name="food_allergies" value={formData.food_allergies || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>How much time do you get to cook daily?</label>
-              <input style={inputStyle} name="cooking_time" value={formData.cooking_time || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Where do you stay currently?</label>
-              <select style={inputStyle} name="stay_arrangement" value={formData.stay_arrangement || ""} onChange={handleInputChange}>
-                <option value="">Select</option>
-                <option value="Home">Home</option>
-                <option value="PG">PG</option>
-                <option value="Hostel">Hostel</option>
-                <option value="Alone">Alone</option>
-              </select>
-            </div>
-            <div style={{ gridColumn: "span 2" }}>
-              <label style={labelStyle}>Briefly describe your typical eating pattern:</label>
-              <textarea style={inputStyle} name="eating_pattern_desc" value={formData.eating_pattern_desc || ""} onChange={handleInputChange} />
+            
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px" }}>
+              <div>
+                <label style={labelStyle}>Edema / Swelling</label>
+                <input style={inputStyle} name="edema_swelling" value={formData.edema_swelling || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Joint Pain</label>
+                <input style={inputStyle} name="joint_pain" value={formData.joint_pain || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Weakness / Dizziness</label>
+                <input style={inputStyle} name="weakness_dizziness" value={formData.weakness_dizziness || ""} onChange={handleInputChange} />
+              </div>
+              <div style={{ gridColumn: "span 2" }}>
+                <label style={labelStyle}>Other symptoms or concerns you would like to mention</label>
+                <textarea 
+                  style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} 
+                  name="other_symptoms" 
+                  value={formData.other_symptoms || ""} 
+                  onChange={handleInputChange} 
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Section 6: Lifestyle Assessment */}
-        <div style={sectionStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#FF5757", borderBottom: "1px solid #333", paddingBottom: "10px" }}>
-            6. Lifestyle Assessment
-          </h2>
-          
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", marginBottom: "30px" }}>
-            <div>
-              <h3 style={{ fontSize: "15px", color: "#ccc", marginBottom: "15px" }}>Daily Routine</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          {/* Section 5: Dietary Habits */}
+          <div style={sectionWrapper}>
+            <SectionTitle icon={HiOutlineClock} title="Dietary Habits" sub="Eating patterns and preferences" />
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px", marginBottom: "25px" }}>
+              <div>
+                <label style={labelStyle}>How many meals do you usually eat daily?</label>
+                <input style={inputStyle} name="meals_daily" value={formData.meals_daily || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Do you skip breakfast often?</label>
+                <input style={inputStyle} name="skip_breakfast" value={formData.skip_breakfast || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Usual dinner timing</label>
+                <input style={inputStyle} name="dinner_timing" value={formData.dinner_timing || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Late-night eating habits</label>
+                <input style={inputStyle} name="late_night_eating" value={formData.late_night_eating || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Diet Preference</label>
+                <select style={inputStyle} name="diet_preference" value={formData.diet_preference || ""} onChange={handleInputChange}>
+                  <option value="">Select</option>
+                  <option value="Vegetarian">Vegetarian</option>
+                  <option value="Eggetarian">Eggetarian</option>
+                  <option value="Non-Vegetarian">Non-Vegetarian</option>
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>Daily water intake</label>
+                <input style={inputStyle} name="water_intake" value={formData.water_intake || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>How often do you eat outside?</label>
+                <input style={inputStyle} name="eat_outside_frequency" value={formData.eat_outside_frequency || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Any food allergies or dislikes?</label>
+                <input style={inputStyle} name="food_allergies" value={formData.food_allergies || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>How much time do you get to cook daily?</label>
+                <input style={inputStyle} name="cooking_time" value={formData.cooking_time || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Where do you stay currently?</label>
+                <select style={inputStyle} name="stay_arrangement" value={formData.stay_arrangement || ""} onChange={handleInputChange}>
+                  <option value="">Select</option>
+                  <option value="Home">Home</option>
+                  <option value="PG">PG</option>
+                  <option value="Hostel">Hostel</option>
+                  <option value="Alone">Alone</option>
+                </select>
+              </div>
+              <div style={{ gridColumn: "span 2" }}>
+                <label style={labelStyle}>Briefly describe your typical eating pattern</label>
+                <textarea 
+                  style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} 
+                  name="eating_pattern_desc" 
+                  value={formData.eating_pattern_desc || ""} 
+                  onChange={handleInputChange} 
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Section 6: Lifestyle Habits */}
+          <div style={sectionWrapper}>
+            <SectionTitle icon={HiOutlineStar} title="Lifestyle Habits" sub="Daily routine and habitual assessment" />
+            
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "30px" }}>
+              <div style={{ backgroundColor: "#f9fafb", padding: "25px", borderRadius: "16px" }}>
+                <h3 style={{ fontSize: "14px", fontWeight: "700", color: "#10b981", marginBottom: "20px" }}>CIRCADIAN ROUTINE</h3>
                 {[
                   { label: "Work Schedule", field: "work_schedule" },
                   { label: "Wake-up Time", field: "wake_up_time" },
@@ -559,21 +614,18 @@ export default function ConsultationForm() {
                   { label: "Screen Time", field: "screen_time" },
                   { label: "Sitting Hours", field: "sitting_hours" },
                 ].map(item => (
-                  <div key={item.field} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center" }}>
-                    <label style={{ fontSize: "13px", color: "#9ca3af" }}>{item.label}:</label>
+                  <div key={item.field} style={{ marginBottom: "15px" }}>
+                    <label style={{ fontSize: "12px", color: "#9ca3af", display: "block", marginBottom: "6px" }}>{item.label}</label>
                     <input 
-                      style={{ ...inputStyle, padding: "6px 10px" }} 
+                      style={{ ...inputStyle, padding: "10px", backgroundColor: "#fff" }} 
                       value={formData.daily_routine[item.field]} 
                       onChange={(e) => handleNestedChange("daily_routine", item.field, e.target.value)}
                     />
                   </div>
                 ))}
               </div>
-            </div>
-            
-            <div>
-              <h3 style={{ fontSize: "15px", color: "#ccc", marginBottom: "15px" }}>Lifestyle Habits</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div style={{ backgroundColor: "#f9fafb", padding: "25px", borderRadius: "16px" }}>
+                <h3 style={{ fontSize: "14px", fontWeight: "700", color: "#10b981", marginBottom: "20px" }}>HABITS & FLUIDS</h3>
                 {[
                   { label: "Water Intake", field: "water_intake" },
                   { label: "Smoking/Alcohol", field: "smoking_alcohol" },
@@ -581,10 +633,10 @@ export default function ConsultationForm() {
                   { label: "Travel Frequency", field: "travel_frequency" },
                   { label: "Cooking Time", field: "cooking_time" },
                 ].map(item => (
-                  <div key={item.field} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center" }}>
-                    <label style={{ fontSize: "13px", color: "#9ca3af" }}>{item.label}:</label>
+                  <div key={item.field} style={{ marginBottom: "15px" }}>
+                    <label style={{ fontSize: "12px", color: "#9ca3af", display: "block", marginBottom: "6px" }}>{item.label}</label>
                     <input 
-                      style={{ ...inputStyle, padding: "6px 10px" }} 
+                      style={{ ...inputStyle, padding: "10px", backgroundColor: "#fff" }} 
                       value={formData.lifestyle_habits[item.field]} 
                       onChange={(e) => handleNestedChange("lifestyle_habits", item.field, e.target.value)}
                     />
@@ -594,105 +646,105 @@ export default function ConsultationForm() {
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
-            <div style={{ gridColumn: "span 2" }}>
-              <label style={labelStyle}>Exercise Routine</label>
-              <input style={inputStyle} name="exercise_routine" value={formData.exercise_routine || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Step Count</label>
-              <input style={inputStyle} name="step_count" value={formData.step_count || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>Activity Level</label>
-              <div style={{ display: "flex", gap: "20px" }}>
-                {["Sedentary", "Moderate", "Active"].map(opt => (
-                  <label key={opt} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", cursor: "pointer" }}>
-                    <input 
-                      type="radio" 
-                      name="activity_level" 
-                      checked={formData.activity_level === opt} 
-                      onChange={() => setFormData(p => ({ ...p, activity_level: opt }))}
-                    />
-                    {opt}
-                  </label>
-                ))}
+          {/* Section 7: Movement & Activity */}
+          <div style={sectionWrapper}>
+            <SectionTitle icon={HiOutlineLightningBolt} title="Movement & Activity" sub="Physical activity and exercise patterns" />
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px" }}>
+              <div style={{ gridColumn: "span 2" }}>
+                <label style={labelStyle}>Exercise Routine</label>
+                <textarea 
+                  style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} 
+                  name="exercise_routine" 
+                  value={formData.exercise_routine || ""} 
+                  onChange={handleInputChange} 
+                />
               </div>
-            </div>
-            <div>
-              <label style={labelStyle}>Work Mode</label>
-              <div style={{ display: "flex", gap: "20px" }}>
-                {["WFH", "Office", "Hybrid"].map(opt => (
-                  <label key={opt} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", cursor: "pointer" }}>
-                    <input 
-                      type="radio" 
-                      name="work_mode" 
-                      checked={formData.work_mode === opt} 
-                      onChange={() => setFormData(p => ({ ...p, work_mode: opt }))}
-                    />
-                    {opt}
-                  </label>
-                ))}
+              <div>
+                <label style={labelStyle}>Step Count</label>
+                <input style={inputStyle} name="step_count" value={formData.step_count || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>Activity Level</label>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  {["Sedentary", "Moderate", "Active"].map(opt => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setFormData(p => ({ ...p, activity_level: p.activity_level === opt ? "" : opt }))}
+                      style={{
+                        flex: 1, padding: "12px", borderRadius: "10px", fontSize: "13px", fontWeight: "600",
+                        border: `2px solid ${formData.activity_level === opt ? "#10b981" : "#f3f4f6"}`,
+                        backgroundColor: formData.activity_level === opt ? "#ecfdf5" : "#ffffff",
+                        color: formData.activity_level === opt ? "#10b981" : "#9ca3af",
+                        cursor: "pointer"
+                      }}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div style={{ gridColumn: "span 2" }}>
+                <label style={labelStyle}>Work Mode</label>
+                <div style={{ display: "flex", gap: "15px" }}>
+                  {["WFH", "Office", "Hybrid", "None"].map(opt => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setFormData(p => ({ ...p, work_mode: p.work_mode === opt ? "" : opt }))}
+                      style={{
+                        padding: "12px 30px", borderRadius: "10px", fontSize: "13px", fontWeight: "600",
+                        border: `2px solid ${formData.work_mode === opt ? "#10b981" : "#f3f4f6"}`,
+                        backgroundColor: formData.work_mode === opt ? "#ecfdf5" : "#ffffff",
+                        color: formData.work_mode === opt ? "#10b981" : "#9ca3af",
+                        cursor: "pointer"
+                      }}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Section 7: Goals & Expectations */}
-        <div style={sectionStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#FF5757", borderBottom: "1px solid #333", paddingBottom: "10px" }}>
-            7. Goals & Expectations
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div>
-              <label style={labelStyle}>What are your main health or fitness goals?</label>
-              <textarea style={inputStyle} name="main_goals" value={formData.main_goals || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>What challenges make it difficult to stay consistent?</label>
-              <textarea style={inputStyle} name="consistency_challenges" value={formData.consistency_challenges || ""} onChange={handleInputChange} />
-            </div>
-            <div>
-              <label style={labelStyle}>What kind of support are you expecting from your nutritionist?</label>
-              <textarea style={inputStyle} name="expected_support" value={formData.expected_support || ""} onChange={handleInputChange} />
+          {/* Section 8: Goals & Expectations */}
+          <div style={sectionWrapper}>
+            <SectionTitle icon={HiOutlineStar} title="Goals & Expectations" sub="Final objectives and support requirements" />
+            <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
+              <div>
+                <label style={labelStyle}>What are your main health or fitness goals?</label>
+                <textarea style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} name="main_goals" value={formData.main_goals || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>What challenges make it difficult to stay consistent?</label>
+                <textarea style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} name="consistency_challenges" value={formData.consistency_challenges || ""} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label style={labelStyle}>What kind of support are you expecting from your nutritionist?</label>
+                <textarea style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} name="expected_support" value={formData.expected_support || ""} onChange={handleInputChange} />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: "20px", marginBottom: "4rem" }}>
-          <button 
-            type="button" 
-            onClick={() => router.back()} 
-            style={{ 
-              backgroundColor: "transparent", 
-              color: "#9ca3af", 
-              border: "1px solid #374151", 
-              padding: "12px 24px", 
-              borderRadius: "8px", 
-              cursor: "pointer", 
-              fontWeight: "600" 
-            }}
-          >
-            Cancel
-          </button>
-          <button 
-            type="submit" 
-            disabled={saving}
-            style={{ 
-              backgroundColor: "#FF5757", 
-              color: "white", 
-              border: "none", 
-              padding: "12px 32px", 
-              borderRadius: "8px", 
-              cursor: "pointer", 
-              fontWeight: "600",
-              boxShadow: "0 4px 12px rgba(255, 87, 87, 0.3)"
-            }}
-          >
-            {saving ? "Saving Changes..." : "Save All Information"}
-          </button>
-        </div>
-      </form>
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: "15px", marginBottom: "80px" }}>
+            <button 
+              type="button" 
+              onClick={() => router.back()} 
+              style={{ backgroundColor: "transparent", color: "#9ca3af", border: "1px solid #e5e7eb", padding: "16px 32px", borderRadius: "14px", cursor: "pointer", fontWeight: "600" }}
+            >
+              Cancel Changes
+            </button>
+            <button 
+              type="submit" 
+              disabled={saving}
+              style={{ backgroundColor: "#10b981", color: "#ffffff", border: "none", padding: "16px 50px", borderRadius: "14px", cursor: "pointer", fontWeight: "800", boxShadow: "0 15px 30px rgba(16, 185, 129, 0.25)" }}
+            >
+              {saving ? "SAVING..." : "COMMIT REPORT"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
