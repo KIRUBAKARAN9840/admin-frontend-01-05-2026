@@ -631,7 +631,6 @@ export default function ConsultationForm() {
                   { label: "Smoking/Alcohol", field: "smoking_alcohol" },
                   { label: "Eating Outside", field: "eating_outside" },
                   { label: "Travel Frequency", field: "travel_frequency" },
-                  { label: "Cooking Time", field: "cooking_time" },
                 ].map(item => (
                   <div key={item.field} style={{ marginBottom: "15px" }}>
                     <label style={{ fontSize: "12px", color: "#9ca3af", display: "block", marginBottom: "6px" }}>{item.label}</label>

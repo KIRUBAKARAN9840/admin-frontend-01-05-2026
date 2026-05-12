@@ -371,7 +371,7 @@ export default function CreateTemplate() {
     <div className="users-container">
       <div className="users-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2 className="users-title">
-          <span style={{ color: "#FF5757" }}>Create</span> Template
+          <span style={{ color: "#10b981" }}>Create</span> Template
         </h2>
         <div style={{ display: "flex", gap: "1rem" }}>
           <button
@@ -380,13 +380,14 @@ export default function CreateTemplate() {
               resetForm();
             }}
             style={{
-              background: view === "create" ? "#FF5757" : "transparent",
-              border: view === "create" ? "none" : "1px solid #666",
-              color: "white",
+              background: view === "create" ? "#10b981" : "transparent",
+              border: view === "create" ? "none" : "1px solid #d1d5db",
+              color: view === "create" ? "white" : "#4b5563",
               padding: "8px 16px",
-              borderRadius: "4px",
+              borderRadius: "6px",
               cursor: "pointer",
               fontSize: "13px",
+              fontWeight: "600"
             }}
           >
             Create New
@@ -394,13 +395,14 @@ export default function CreateTemplate() {
           <button
             onClick={() => setView("list")}
             style={{
-              background: view === "list" ? "#FF5757" : "transparent",
-              border: view === "list" ? "none" : "1px solid #666",
-              color: "white",
+              background: view === "list" ? "#10b981" : "transparent",
+              border: view === "list" ? "none" : "1px solid #d1d5db",
+              color: view === "list" ? "white" : "#4b5563",
               padding: "8px 16px",
-              borderRadius: "4px",
+              borderRadius: "6px",
               cursor: "pointer",
               fontSize: "13px",
+              fontWeight: "600"
             }}
           >
             My Templates
@@ -489,11 +491,11 @@ export default function CreateTemplate() {
           )}
         </div>
       ) : (
-        <div style={{ background: "#1e1e1e", border: "1px solid #333", borderRadius: "8px", padding: "1.5rem" }}>
+        <div style={{ background: "#ffffff", border: "1px solid #e5e7eb", borderRadius: "8px", padding: "1.5rem", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>
           {/* Template Basic Info */}
           <div style={{ marginBottom: "2rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem" }}>
             <div>
-              <label style={{ display: "block", color: "#ccc", fontSize: "13px", marginBottom: "0.5rem" }}>
+              <label style={{ display: "block", color: "#374151", fontSize: "13px", marginBottom: "0.5rem", fontWeight: "500" }}>
                 Template Name *
               </label>
               <input
@@ -503,17 +505,17 @@ export default function CreateTemplate() {
                 placeholder="e.g., Weight Lose, Muscle Gain"
                 style={{
                   width: "100%",
-                  background: "#252525",
-                  border: "1px solid #444",
-                  color: "white",
+                  background: "#f9fafb",
+                  border: "1px solid #d1d5db",
+                  color: "#111827",
                   padding: "8px 12px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   fontSize: "14px",
                 }}
               />
             </div>
             <div>
-              <label style={{ display: "block", color: "#ccc", fontSize: "13px", marginBottom: "0.5rem" }}>
+              <label style={{ display: "block", color: "#374151", fontSize: "13px", marginBottom: "0.5rem", fontWeight: "500" }}>
                 Number of Days *
               </label>
               <input
@@ -524,17 +526,17 @@ export default function CreateTemplate() {
                 placeholder="e.g., 7, 14, 30"
                 style={{
                   width: "100%",
-                  background: "#252525",
-                  border: "1px solid #444",
-                  color: "white",
+                  background: "#f9fafb",
+                  border: "1px solid #d1d5db",
+                  color: "#111827",
                   padding: "8px 12px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   fontSize: "14px",
                 }}
               />
             </div>
             <div>
-              <label style={{ display: "block", color: "#ccc", fontSize: "13px", marginBottom: "0.5rem" }}>
+              <label style={{ display: "block", color: "#374151", fontSize: "13px", marginBottom: "0.5rem", fontWeight: "500" }}>
                 Description (Optional)
               </label>
               <input
@@ -544,11 +546,11 @@ export default function CreateTemplate() {
                 placeholder="Brief description..."
                 style={{
                   width: "100%",
-                  background: "#252525",
-                  border: "1px solid #444",
-                  color: "white",
+                  background: "#f9fafb",
+                  border: "1px solid #d1d5db",
+                  color: "#111827",
                   padding: "8px 12px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   fontSize: "14px",
                 }}
               />
@@ -558,11 +560,11 @@ export default function CreateTemplate() {
           {/* Diet Data Builder */}
           {dietData.length > 0 && (
             <div>
-              <h3 style={{ color: "white", fontSize: "16px", marginBottom: "1rem" }}>Meal Plan</h3>
+              <h3 style={{ color: "#111827", fontSize: "16px", marginBottom: "1rem", fontWeight: "700" }}>Meal Plan</h3>
               {dietData.map((day, dayIndex) => (
-                <div key={day.day_number} style={{ marginBottom: "2rem", background: "#252525", borderRadius: "8px", padding: "1rem" }}>
+                <div key={day.day_number} style={{ marginBottom: "2rem", background: "#f9fafb", borderRadius: "8px", padding: "1.5rem", border: "1px solid #e5e7eb" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                    <h4 style={{ color: "#FF5757", fontSize: "14px", margin: 0 }}>
+                    <h4 style={{ color: "#10b981", fontSize: "14px", margin: 0, fontWeight: "700" }}>
                       Day {day.day_number}
                     </h4>
                     <button
@@ -585,9 +587,9 @@ export default function CreateTemplate() {
                     </div>
                   ) : (
                     day.meals.map((meal, mealIndex) => (
-                      <div key={mealIndex} style={{ marginBottom: "1rem", background: "#1e1e1e", borderRadius: "6px", padding: "1rem" }}>
+                      <div key={mealIndex} style={{ marginBottom: "1rem", background: "#ffffff", borderRadius: "8px", padding: "1.25rem", border: "1px solid #e5e7eb" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                          <span style={{ color: "#ccc", fontSize: "13px", fontWeight: "600" }}>
+                          <span style={{ color: "#111827", fontSize: "13px", fontWeight: "700" }}>
                             Meal {mealIndex + 1}
                           </span>
                           <button
@@ -606,7 +608,7 @@ export default function CreateTemplate() {
 
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginBottom: "1rem" }}>
                           <div>
-                            <label style={{ display: "block", color: "#999", fontSize: "12px", marginBottom: "0.25rem" }}>
+                            <label style={{ display: "block", color: "#4b5563", fontSize: "12px", marginBottom: "0.25rem", fontWeight: "500" }}>
                               Title *
                             </label>
                             <input
@@ -616,17 +618,17 @@ export default function CreateTemplate() {
                               placeholder="e.g., Pre workout"
                               style={{
                                 width: "100%",
-                                background: "#111",
-                                border: "1px solid #333",
-                                color: "white",
+                                background: "#f9fafb",
+                                border: "1px solid #d1d5db",
+                                color: "#111827",
                                 padding: "6px 10px",
-                                borderRadius: "4px",
+                                borderRadius: "6px",
                                 fontSize: "13px",
                               }}
                             />
                           </div>
                           <div>
-                            <label style={{ display: "block", color: "#999", fontSize: "12px", marginBottom: "0.25rem" }}>
+                            <label style={{ display: "block", color: "#4b5563", fontSize: "12px", marginBottom: "0.25rem", fontWeight: "500" }}>
                               Time *
                             </label>
                             <input
@@ -636,11 +638,11 @@ export default function CreateTemplate() {
                               placeholder="e.g., 6:30-7:00 AM"
                               style={{
                                 width: "100%",
-                                background: "#111",
-                                border: "1px solid #333",
-                                color: "white",
+                                background: "#f9fafb",
+                                border: "1px solid #d1d5db",
+                                color: "#111827",
                                 padding: "6px 10px",
-                                borderRadius: "4px",
+                                borderRadius: "6px",
                                 fontSize: "13px",
                               }}
                             />
@@ -648,9 +650,9 @@ export default function CreateTemplate() {
                         </div>
 
                         {meal.foods.map((food, foodIndex) => (
-                          <div key={foodIndex} style={{ marginBottom: "0.5rem", background: "#151515", borderRadius: "4px", padding: "0.75rem" }}>
+                          <div key={foodIndex} style={{ marginBottom: "0.5rem", background: "#f9fafb", borderRadius: "8px", padding: "1rem", border: "1px solid #e5e7eb" }}>
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                              <span style={{ color: "#999", fontSize: "11px" }}>Food {foodIndex + 1}</span>
+                              <span style={{ color: "#6b7280", fontSize: "11px", fontWeight: "600" }}>Food {foodIndex + 1}</span>
                               <button
                                 onClick={() => removeFood(dayIndex, mealIndex, foodIndex)}
                                 style={{
@@ -687,11 +689,11 @@ export default function CreateTemplate() {
                                   placeholder="Food name"
                                   style={{
                                     width: "100%",
-                                    background: "#111",
-                                    border: "1px solid #333",
-                                    color: "white",
+                                    background: "#ffffff",
+                                    border: "1px solid #d1d5db",
+                                    color: "#111827",
                                     padding: "6px 10px",
-                                    borderRadius: "4px",
+                                    borderRadius: "6px",
                                     fontSize: "12px",
                                   }}
                                 />
@@ -706,13 +708,14 @@ export default function CreateTemplate() {
                                         top: "100%",
                                         left: 0,
                                         right: 0,
-                                        background: "#1e1e1e",
-                                        border: "1px solid #444",
-                                        borderRadius: "4px",
+                                        background: "#ffffff",
+                                        border: "1px solid #d1d5db",
+                                        borderRadius: "6px",
                                         maxHeight: "200px",
                                         overflowY: "auto",
                                         zIndex: 1000,
-                                        marginTop: "2px"
+                                        marginTop: "4px",
+                                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
                                       }}>
                                         {suggestions.map((s, idx) => (
                                           <div
@@ -721,14 +724,14 @@ export default function CreateTemplate() {
                                             style={{
                                               padding: "8px 10px",
                                               cursor: "pointer",
-                                              background: activeSuggestionRef.current[key] === idx ? "#333" : "transparent",
-                                              color: "#ccc",
+                                              background: activeSuggestionRef.current[key] === idx ? "#f3f4f6" : "transparent",
+                                              color: "#111827",
                                               fontSize: "12px",
-                                              borderBottom: "1px solid #333"
+                                              borderBottom: "1px solid #e5e7eb"
                                             }}
                                           >
-                                            <div style={{ fontWeight: 500 }}>{s.name}</div>
-                                            <div style={{ fontSize: "10px", color: "#888" }}>Cal: {s.nutrition?.calories || 0} | P: {s.nutrition?.protein || 0}g | C: {s.nutrition?.carbs || 0}g</div>
+                                            <div style={{ fontWeight: 600, color: "#111827" }}>{s.name}</div>
+                                            <div style={{ fontSize: "10px", color: "#6b7280" }}>Cal: {s.nutrition?.calories || 0} | P: {s.nutrition?.protein || 0}g | C: {s.nutrition?.carbs || 0}g</div>
                                           </div>
                                         ))}
                                       </div>
@@ -744,9 +747,9 @@ export default function CreateTemplate() {
                                 placeholder="e.g., 2 cups"
                                 style={{
                                   width: "100%",
-                                  background: "#111",
-                                  border: "1px solid #333",
-                                  color: "white",
+                                  background: "#ffffff",
+                                  border: "1px solid #d1d5db",
+                                  color: "#111827",
                                   padding: "6px 10px",
                                   borderRadius: "4px",
                                   fontSize: "12px",
@@ -757,7 +760,7 @@ export default function CreateTemplate() {
                             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))", gap: "0.5rem" }}>
                               {Object.keys(food.nutrition).map((nutrient) => (
                                 <div key={nutrient}>
-                                  <label style={{ display: "block", color: "#666", fontSize: "10px", marginBottom: "0.25rem" }}>
+                                  <label style={{ display: "block", color: "#6b7280", fontSize: "10px", marginBottom: "0.25rem", fontWeight: "600" }}>
                                     {nutrient}
                                   </label>
                                   <input
@@ -766,11 +769,11 @@ export default function CreateTemplate() {
                                     onChange={(e) => updateFood(dayIndex, mealIndex, foodIndex, nutrient, e.target.value === "" ? 0 : parseFloat(e.target.value) || 0)}
                                     style={{
                                       width: "100%",
-                                      background: "#111",
-                                      border: "1px solid #333",
-                                      color: "white",
+                                      background: "#ffffff",
+                                      border: "1px solid #d1d5db",
+                                      color: "#111827",
                                       padding: "4px 6px",
-                                      borderRadius: "3px",
+                                      borderRadius: "4px",
                                       fontSize: "11px",
                                     }}
                                   />
@@ -784,13 +787,14 @@ export default function CreateTemplate() {
                           onClick={() => addFood(dayIndex, mealIndex)}
                           style={{
                             background: "transparent",
-                            border: "1px dashed #666",
-                            color: "#4CAF50",
+                            border: "1px dashed #10b981",
+                            color: "#059669",
                             padding: "6px 12px",
-                            borderRadius: "4px",
+                            borderRadius: "6px",
                             cursor: "pointer",
                             fontSize: "12px",
                             width: "100%",
+                            fontWeight: "600"
                           }}
                         >
                           + Add Food
@@ -802,13 +806,14 @@ export default function CreateTemplate() {
                   <button
                     onClick={() => addMeal(dayIndex)}
                     style={{
-                      background: "#FF5757",
+                      background: "#10b981",
                       border: "none",
                       color: "white",
                       padding: "8px 16px",
-                      borderRadius: "4px",
+                      borderRadius: "6px",
                       cursor: "pointer",
                       fontSize: "13px",
+                      fontWeight: "600"
                     }}
                   >
                     + Add Meal
@@ -821,13 +826,14 @@ export default function CreateTemplate() {
                 <button
                   onClick={addDay}
                   style={{
-                    background: "#FF5757",
+                    background: "#10b981",
                     border: "none",
                     color: "white",
                     padding: "10px 24px",
-                    borderRadius: "4px",
+                    borderRadius: "6px",
                     cursor: "pointer",
                     fontSize: "14px",
+                    fontWeight: "600"
                   }}
                 >
                   + Add Day
@@ -843,13 +849,14 @@ export default function CreateTemplate() {
                 onClick={resetForm}
                 style={{
                   background: "transparent",
-                  border: "1px solid #666",
-                  color: "#ccc",
+                  border: "1px solid #d1d5db",
+                  color: "#4b5563",
                   padding: "10px 20px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   cursor: "pointer",
                   fontSize: "14px",
                   marginRight: "1rem",
+                  fontWeight: "600"
                 }}
               >
                 Cancel
@@ -858,14 +865,15 @@ export default function CreateTemplate() {
                 onClick={handleSaveTemplate}
                 disabled={loading}
                 style={{
-                  background: "#FF5757",
+                  background: "#10b981",
                   border: "none",
                   color: "white",
                   padding: "10px 20px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   cursor: loading ? "not-allowed" : "pointer",
                   fontSize: "14px",
                   opacity: loading ? 0.6 : 1,
+                  fontWeight: "600"
                 }}
               >
                 {loading ? "Saving..." : <><FaSave style={{ marginRight: "8px" }} /> {editingTemplate ? "Update" : "Save"} Template</>}
@@ -894,19 +902,20 @@ export default function CreateTemplate() {
         >
           <div
             style={{
-              background: "#1e1e1e",
-              border: "1px solid #333",
-              borderRadius: "8px",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
+              borderRadius: "12px",
               padding: "2rem",
               minWidth: "800px",
               maxWidth: "900px",
               maxHeight: "80vh",
               overflow: "auto",
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-              <h3 style={{ color: "white", fontSize: "20px", fontWeight: "600", margin: 0 }}>
+              <h3 style={{ color: "#111827", fontSize: "20px", fontWeight: "700", margin: 0 }}>
                 {viewingTemplate.template_name}
               </h3>
               <button
@@ -914,7 +923,7 @@ export default function CreateTemplate() {
                 style={{
                   background: "transparent",
                   border: "none",
-                  color: "#999",
+                  color: "#6b7280",
                   cursor: "pointer",
                   fontSize: "20px",
                 }}
@@ -923,13 +932,13 @@ export default function CreateTemplate() {
               </button>
             </div>
 
-            <div style={{ marginBottom: "1rem" }}>
-              <span style={{ color: "#999", fontSize: "13px", marginRight: "1rem" }}>
-                <strong>Days:</strong> {viewingTemplate.number_of_days}
+            <div style={{ marginBottom: "1rem", display: "flex", gap: "2rem" }}>
+              <span style={{ color: "#4b5563", fontSize: "13px" }}>
+                <strong style={{ color: "#111827" }}>Days:</strong> {viewingTemplate.number_of_days}
               </span>
               {viewingTemplate.description && (
-                <span style={{ color: "#999", fontSize: "13px" }}>
-                  <strong>Description:</strong> {viewingTemplate.description}
+                <span style={{ color: "#4b5563", fontSize: "13px" }}>
+                  <strong style={{ color: "#111827" }}>Description:</strong> {viewingTemplate.description}
                 </span>
               )}
             </div>
@@ -943,7 +952,7 @@ export default function CreateTemplate() {
                     padding: "1rem",
                   }}
                 >
-                  <h4 style={{ color: "white", fontSize: "15px", fontWeight: "600", marginBottom: "1rem", margin: 0 }}>
+                  <h4 style={{ color: "#10b981", fontSize: "15px", fontWeight: "700", marginBottom: "1rem", margin: 0 }}>
                     Day {day.day_number}
                   </h4>
 
@@ -955,11 +964,11 @@ export default function CreateTemplate() {
                         padding: "0.75rem",
                       }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                        <span style={{ color: "white", fontSize: "14px", fontWeight: "600" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem", borderBottom: "1px solid #f3f4f6", paddingBottom: "4px" }}>
+                        <span style={{ color: "#111827", fontSize: "14px", fontWeight: "700" }}>
                           {meal.title}
                         </span>
-                        <span style={{ color: "#999", fontSize: "12px" }}>{meal.time}</span>
+                        <span style={{ color: "#6b7280", fontSize: "12px", fontWeight: "500" }}>{meal.time}</span>
                       </div>
 
                       {meal.foods && meal.foods.map((food, foodIndex) => (
@@ -970,15 +979,15 @@ export default function CreateTemplate() {
                             padding: "0.5rem",
                           }}
                         >
-                          <div style={{ color: "#ccc", fontSize: "13px", marginBottom: "0.5rem" }}>
+                          <div style={{ color: "#374151", fontSize: "13px", marginBottom: "0.5rem", fontWeight: "600" }}>
                             {food.name || food.name_quantity}
                             {(food.quantity !== undefined && food.quantity !== null && food.quantity !== "") ? ` (Qty: ${food.quantity})` : ""}
                           </div>
-                          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", fontSize: "12px", color: "#999" }}>
-                            <span>Cal: {food.nutrition?.calories || 0}</span>
-                            <span>Protein: {food.nutrition?.protein || 0}g</span>
-                            <span>Fat: {food.nutrition?.fat || 0}g</span>
-                            <span>Carbs: {food.nutrition?.carbs || 0}g</span>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", fontSize: "12px", color: "#6b7280" }}>
+                            <span>Cal: <strong style={{ color: "#111827" }}>{food.nutrition?.calories || 0}</strong></span>
+                            <span>Protein: <strong style={{ color: "#111827" }}>{food.nutrition?.protein || 0}g</strong></span>
+                            <span>Fat: <strong style={{ color: "#111827" }}>{food.nutrition?.fat || 0}g</strong></span>
+                            <span>Carbs: <strong style={{ color: "#111827" }}>{food.nutrition?.carbs || 0}g</strong></span>
                             <span>Fiber: {food.nutrition?.fiber || 0}g</span>
                             <span>Sugar: {food.nutrition?.sugar || 0}g</span>
                             <span>Sodium: {food.nutrition?.sodium || 0}mg</span>
@@ -999,13 +1008,14 @@ export default function CreateTemplate() {
               <button
                 onClick={() => setViewingTemplate(null)}
                 style={{
-                  background: "#FF5757",
+                  background: "#10b981",
                   border: "none",
                   color: "white",
                   padding: "8px 20px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   cursor: "pointer",
                   fontSize: "13px",
+                  fontWeight: "600"
                 }}
               >
                 Close

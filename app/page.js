@@ -110,7 +110,7 @@ export default function AdminLogin() {
           } else if (response.data.data.role === "nutritionist") {
             router.push("/portal/nutritionist/home");
           } else {
-            setError("Only admins are allowed to access this portal");
+            setError("Only nutritionists are allowed to access this portal");
             localStorage.removeItem("user");
             handleBack();
           }
@@ -785,7 +785,7 @@ export default function AdminLogin() {
                 paddingBottom: "1.5rem",
               }}
             >
-              <h3 className={[styles.otpTitle]} style={{ color: "#FF5757" }}>
+              <h3 className={[styles.otpTitle]}>
                 Forgot Password
               </h3>
             </div>

@@ -198,8 +198,8 @@ export default function ClientDetails() {
 
     return (
       <div key={log.record_id} style={{
-        background: "#252525",
-        border: "1px solid #333",
+        background: "#f9fafb",
+        border: "1px solid #e5e7eb",
         borderRadius: "8px",
         padding: "16px",
         marginBottom: "12px"
@@ -210,11 +210,11 @@ export default function ClientDetails() {
           alignItems: "center",
           marginBottom: "12px",
           paddingBottom: "8px",
-          borderBottom: "1px solid #333"
+          borderBottom: "1px solid #e5e7eb"
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <FaCalendar style={{ color: "#FF5757" }} />
-            <span style={{ color: "#fff", fontWeight: "600" }}>
+            <FaCalendar style={{ color: "#10b981" }} />
+            <span style={{ color: "#111827", fontWeight: "700" }}>
               {formatDate(log.date)}
             </span>
           </div>
@@ -232,12 +232,13 @@ export default function ClientDetails() {
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {mealsWithFood.map((meal) => (
               <div key={meal.id} style={{
-                background: "#1e1e1e",
+                background: "#ffffff",
                 padding: "12px",
-                borderRadius: "6px"
+                borderRadius: "8px",
+                border: "1px solid #e5e7eb"
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                  <div style={{ color: "#FF5757", fontSize: "13px", fontWeight: "600" }}>
+                  <div style={{ color: "#10b981", fontSize: "13px", fontWeight: "700" }}>
                     {meal.title}
                   </div>
                   {meal.timeRange && (
@@ -247,7 +248,7 @@ export default function ClientDetails() {
                   )}
                 </div>
                 {meal.tagline && (
-                  <div style={{ color: "#666", fontSize: "11px", marginBottom: "8px", fontStyle: "italic" }}>
+                  <div style={{ color: "#6b7280", fontSize: "11px", marginBottom: "8px", fontStyle: "italic" }}>
                     {meal.tagline}
                   </div>
                 )}
@@ -258,15 +259,16 @@ export default function ClientDetails() {
                       justifyContent: "space-between",
                       alignItems: "center",
                       padding: "8px",
-                      background: "#151515",
-                      borderRadius: "4px"
+                      background: "#ffffff",
+                      borderRadius: "6px",
+                      border: "1px solid #f3f4f6"
                     }}>
                       <div style={{ flex: 1 }}>
-                        <div style={{ color: "#ccc", fontSize: "12px", fontWeight: "500" }}>
+                        <div style={{ color: "#374151", fontSize: "12px", fontWeight: "600" }}>
                           {food.name}
                         </div>
-                        <div style={{ color: "#666", fontSize: "11px" }}>
-                          {food.quantity} • Protein: {food.protein}g • Carbs: {food.carbs}g • Fat: {food.fat}g
+                        <div style={{ color: "#6b7280", fontSize: "11px" }}>
+                          {food.quantity} • Protein: <strong style={{ color: "#111827" }}>{food.protein}g</strong> • Carbs: <strong style={{ color: "#111827" }}>{food.carbs}g</strong> • Fat: <strong style={{ color: "#111827" }}>{food.fat}g</strong>
                         </div>
                       </div>
                       <div style={{ color: "#FF9800", fontSize: "12px", fontWeight: "600" }}>
@@ -319,24 +321,24 @@ export default function ClientDetails() {
     });
 
     return (
-      <div key={log.record_id} style={{
-        background: "#252525",
-        border: "1px solid #333",
-        borderRadius: "8px",
-        padding: "16px",
-        marginBottom: "12px"
-      }}>
+        <div style={{
+          background: "#f9fafb",
+          border: "1px solid #e5e7eb",
+          borderRadius: "8px",
+          padding: "16px",
+          marginBottom: "12px"
+        }}>
         <div style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "12px",
           paddingBottom: "8px",
-          borderBottom: "1px solid #333"
+          borderBottom: "1px solid #e5e7eb"
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <FaCalendar style={{ color: "#FF5757" }} />
-            <span style={{ color: "#fff", fontWeight: "600" }}>
+            <FaCalendar style={{ color: "#10b981" }} />
+            <span style={{ color: "#111827", fontWeight: "700" }}>
               {formatDate(log.date)}
             </span>
           </div>
@@ -370,35 +372,36 @@ export default function ClientDetails() {
               const avgWeight = exerciseSets.length > 0 ? totalWeight / exerciseSets.length : 0;
 
               return (
-                <div key={idx} style={{
-                  background: "#1e1e1e",
+                <div style={{
+                  background: "#ffffff",
                   padding: "12px",
-                  borderRadius: "6px"
+                  borderRadius: "8px",
+                  border: "1px solid #e5e7eb"
                 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div style={{
-                          background: "#FF5757",
+                          background: "#10b981",
                           color: "#fff",
                           fontSize: "10px",
-                          fontWeight: "600",
+                          fontWeight: "700",
                           padding: "2px 6px",
                           borderRadius: "4px",
                           textTransform: "uppercase"
                         }}>
                           {exercise.muscle}
                         </div>
-                        <div style={{ color: "#ccc", fontSize: "14px", fontWeight: "600" }}>
+                        <div style={{ color: "#4b5563", fontSize: "14px", fontWeight: "600" }}>
                           {exercise.name}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div style={{ display: "flex", gap: "16px", fontSize: "11px", color: "#999" }}>
-                    <div>{exerciseSets.length} {exerciseSets.length === 1 ? 'set' : 'sets'}</div>
-                    <div>{totalReps} reps</div>
-                    {avgWeight > 0 && <div>{avgWeight} kg</div>}
+                  <div style={{ display: "flex", gap: "16px", fontSize: "11px", color: "#6b7280" }}>
+                    <div><strong style={{ color: "#111827" }}>{exerciseSets.length}</strong> {exerciseSets.length === 1 ? 'set' : 'sets'}</div>
+                    <div><strong style={{ color: "#111827" }}>{totalReps}</strong> reps</div>
+                    {avgWeight > 0 && <div><strong style={{ color: "#111827" }}>{avgWeight}</strong> kg</div>}
                   </div>
                 </div>
               );
@@ -415,21 +418,21 @@ export default function ClientDetails() {
     const waterIntake = log.water_intake || 0;
 
     return (
-      <div key={log.record_id} style={{
-        background: "#252525",
-        border: "1px solid #333",
-        borderRadius: "8px",
-        padding: "16px",
-        marginBottom: "12px"
-      }}>
+        <div style={{
+          background: "#f9fafb",
+          border: "1px solid #e5e7eb",
+          borderRadius: "8px",
+          padding: "16px",
+          marginBottom: "12px"
+        }}>
         <div style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center"
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <FaCalendar style={{ color: "#FF5757" }} />
-            <span style={{ color: "#fff", fontWeight: "600" }}>
+            <FaCalendar style={{ color: "#10b981" }} />
+            <span style={{ color: "#111827", fontWeight: "700" }}>
               {formatDate(log.date)}
             </span>
           </div>
@@ -472,31 +475,43 @@ export default function ClientDetails() {
           onClick={() => router.back()}
           style={{
             background: "transparent",
-            border: "1px solid #444",
-            color: "#fff",
+            border: "1px solid #d1d5db",
+            color: "#4b5563",
             padding: "8px 12px",
             borderRadius: "6px",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
-            gap: "8px"
+            gap: "8px",
+            fontWeight: "600"
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#f9fafb";
+            e.currentTarget.style.borderColor = "#10b981";
+            e.currentTarget.style.color = "#10b981";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.borderColor = "#d1d5db";
+            e.currentTarget.style.color = "#4b5563";
           }}
         >
           <FaArrowLeft size={14} />
           Back
         </button>
         <h2 className="users-title">
-          <span style={{ color: "#FF5757" }}>Client</span> Details
+          <span style={{ color: "#10b981" }}>Client</span> Details
         </h2>
       </div>
 
       {/* Client Info Card */}
       <div style={{
-        background: "#1e1e1e",
-        border: "1px solid #333",
+        background: "#ffffff",
+        border: "1px solid #e5e7eb",
         borderRadius: "8px",
         padding: "24px",
-        marginBottom: "24px"
+        marginBottom: "24px",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
       }}>
         <div style={{ display: "flex", gap: "24px", alignItems: "flex-start" }}>
           {client?.profile && (
@@ -508,20 +523,20 @@ export default function ClientDetails() {
                 height: "100px",
                 borderRadius: "50%",
                 objectFit: "cover",
-                border: "3px solid #FF5757"
+                border: "3px solid #10b981"
               }}
             />
           )}
           <div style={{ flex: 1 }}>
-            <h3 style={{ color: "#fff", fontSize: "24px", marginBottom: "8px" }}>
+            <h3 style={{ color: "#111827", fontSize: "24px", marginBottom: "8px", fontWeight: "700" }}>
               {client?.name || "Client"}
             </h3>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", color: "#999", fontSize: "14px" }}>
-              <div><span style={{ color: "#666" }}>Email:</span> {client?.email || "-"}</div>
-              <div><span style={{ color: "#666" }}>Contact:</span> {client?.contact || "-"}</div>
-              <div><span style={{ color: "#666" }}>Location:</span> {client?.location || "-"}</div>
-              <div><span style={{ color: "#666" }}>Age:</span> {calculateAge(client?.dob) || client?.age || "-"}</div>
-              <div><span style={{ color: "#666" }}>Gender:</span> {client?.gender || "-"}</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", color: "#4b5563", fontSize: "14px" }}>
+              <div><span style={{ color: "#6b7280", fontWeight: "600" }}>Email:</span> {client?.email || "-"}</div>
+              <div><span style={{ color: "#6b7280", fontWeight: "600" }}>Contact:</span> {client?.contact || "-"}</div>
+              <div><span style={{ color: "#6b7280", fontWeight: "600" }}>Location:</span> {client?.location || "-"}</div>
+              <div><span style={{ color: "#6b7280", fontWeight: "600" }}>Age:</span> {calculateAge(client?.dob) || client?.age || "-"}</div>
+              <div><span style={{ color: "#6b7280", fontWeight: "600" }}>Gender:</span> {client?.gender || "-"}</div>
             </div>
           </div>
         </div>
@@ -533,52 +548,56 @@ export default function ClientDetails() {
           gap: "16px",
           marginTop: "24px",
           paddingTop: "20px",
-          borderTop: "1px solid #333"
+          borderTop: "1px solid #e5e7eb"
         }}>
           <div style={{
-            background: "#252525",
+            background: "#f9fafb",
             padding: "16px",
             borderRadius: "8px",
-            textAlign: "center"
+            textAlign: "center",
+            border: "1px solid #e5e7eb"
           }}>
-            <FaWeight style={{ color: "#FF5757", fontSize: "20px", marginBottom: "8px" }} />
-            <div style={{ color: "#fff", fontSize: "20px", fontWeight: "600" }}>
+            <FaWeight style={{ color: "#10b981", fontSize: "20px", marginBottom: "8px" }} />
+            <div style={{ color: "#111827", fontSize: "20px", fontWeight: "700" }}>
               {client?.weight || "-"}
             </div>
-            <div style={{ color: "#999", fontSize: "12px" }}>Weight (kg)</div>
+            <div style={{ color: "#6b7280", fontSize: "12px", fontWeight: "600" }}>Weight (kg)</div>
           </div>
           <div style={{
-            background: "#252525",
+            background: "#f9fafb",
             padding: "16px",
             borderRadius: "8px",
-            textAlign: "center"
+            textAlign: "center",
+            border: "1px solid #e5e7eb"
           }}>
-            <div style={{ color: "#4CAF50", fontSize: "20px", fontWeight: "600", marginBottom: "8px" }}>
+            <div style={{ color: "#059669", fontSize: "20px", fontWeight: "700", marginBottom: "8px" }}>
               {client?.height || "-"}
             </div>
-            <div style={{ color: "#999", fontSize: "12px" }}>Height (cm)</div>
+            <div style={{ color: "#6b7280", fontSize: "12px", fontWeight: "600" }}>Height (cm)</div>
           </div>
           <div style={{
-            background: "#252525",
+            background: "#f9fafb",
             padding: "16px",
             borderRadius: "8px",
-            textAlign: "center"
+            textAlign: "center",
+            border: "1px solid #e5e7eb"
           }}>
-            <div style={{ color: "#FF9800", fontSize: "20px", fontWeight: "600", marginBottom: "8px" }}>
+            <div style={{ color: "#d97706", fontSize: "20px", fontWeight: "700", marginBottom: "8px" }}>
               {client?.bmi || "-"}
             </div>
-            <div style={{ color: "#999", fontSize: "12px" }}>BMI</div>
+            <div style={{ color: "#6b7280", fontSize: "12px", fontWeight: "600" }}>BMI</div>
           </div>
           <div style={{
-            background: "#252525",
+            background: "#f9fafb",
             padding: "16px",
             borderRadius: "8px",
-            textAlign: "center"
+            textAlign: "center",
+            border: "1px solid #e5e7eb"
           }}>
-            <div style={{ color: "#2196F3", fontSize: "20px", fontWeight: "600", marginBottom: "8px" }}>
+            <div style={{ color: "#2563eb", fontSize: "20px", fontWeight: "700", marginBottom: "8px" }}>
               {client?.status === "active" ? "Active" : "Inactive"}
             </div>
-            <div style={{ color: "#999", fontSize: "12px" }}>Status</div>
+            <div style={{ color: "#6b7280", fontSize: "12px", fontWeight: "600" }}>Status</div>
           </div>
         </div>
 
@@ -587,20 +606,20 @@ export default function ClientDetails() {
           <div style={{ marginTop: "20px" }}>
             {client?.goals && (
               <div style={{ marginBottom: "12px" }}>
-                <div style={{ color: "#FF5757", fontSize: "12px", fontWeight: "600", marginBottom: "4px" }}>GOALS</div>
-                <div style={{ color: "#ccc", fontSize: "14px" }}>{client.goals}</div>
+                <div style={{ color: "#10b981", fontSize: "12px", fontWeight: "700", marginBottom: "4px" }}>GOALS</div>
+                <div style={{ color: "#374151", fontSize: "14px", fontWeight: "500" }}>{client.goals}</div>
               </div>
             )}
             {client?.lifestyle && (
               <div style={{ marginBottom: "12px" }}>
-                <div style={{ color: "#FF5757", fontSize: "12px", fontWeight: "600", marginBottom: "4px" }}>LIFESTYLE</div>
-                <div style={{ color: "#ccc", fontSize: "14px" }}>{client.lifestyle}</div>
+                <div style={{ color: "#10b981", fontSize: "12px", fontWeight: "700", marginBottom: "4px" }}>LIFESTYLE</div>
+                <div style={{ color: "#374151", fontSize: "14px", fontWeight: "500" }}>{client.lifestyle}</div>
               </div>
             )}
             {client?.medical_issues && (
               <div>
-                <div style={{ color: "#FF5757", fontSize: "12px", fontWeight: "600", marginBottom: "4px" }}>MEDICAL ISSUES</div>
-                <div style={{ color: "#ccc", fontSize: "14px" }}>{client.medical_issues}</div>
+                <div style={{ color: "#10b981", fontSize: "12px", fontWeight: "700", marginBottom: "4px" }}>MEDICAL ISSUES</div>
+                <div style={{ color: "#374151", fontSize: "14px", fontWeight: "500" }}>{client.medical_issues}</div>
               </div>
             )}
           </div>
@@ -609,10 +628,11 @@ export default function ClientDetails() {
 
       {/* Logs Section */}
       <div style={{
-        background: "#1e1e1e",
-        border: "1px solid #333",
+        background: "#ffffff",
+        border: "1px solid #e5e7eb",
         borderRadius: "8px",
-        padding: "20px"
+        padding: "20px",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
       }}>
         {/* Tabs */}
         <div style={{ display: "flex", gap: "8px", marginBottom: "20px" }}>
@@ -620,9 +640,9 @@ export default function ClientDetails() {
             onClick={() => setActiveTab("food")}
             style={{
               flex: 1,
-              background: activeTab === "food" ? "#FF5757" : "#252525",
-              border: "none",
-              color: "#fff",
+              background: activeTab === "food" ? "#10b981" : "#f9fafb",
+              border: activeTab === "food" ? "none" : "1px solid #d1d5db",
+              color: activeTab === "food" ? "#fff" : "#4b5563",
               padding: "12px 20px",
               borderRadius: "8px",
               cursor: "pointer",
@@ -630,7 +650,7 @@ export default function ClientDetails() {
               alignItems: "center",
               justifyContent: "center",
               gap: "8px",
-              fontWeight: "600",
+              fontWeight: "700",
               transition: "all 0.2s"
             }}
           >
@@ -641,9 +661,9 @@ export default function ClientDetails() {
             onClick={() => setActiveTab("workout")}
             style={{
               flex: 1,
-              background: activeTab === "workout" ? "#FF5757" : "#252525",
-              border: "none",
-              color: "#fff",
+              background: activeTab === "workout" ? "#10b981" : "#f9fafb",
+              border: activeTab === "workout" ? "none" : "1px solid #d1d5db",
+              color: activeTab === "workout" ? "#fff" : "#4b5563",
               padding: "12px 20px",
               borderRadius: "8px",
               cursor: "pointer",
@@ -651,7 +671,7 @@ export default function ClientDetails() {
               alignItems: "center",
               justifyContent: "center",
               gap: "8px",
-              fontWeight: "600",
+              fontWeight: "700",
               transition: "all 0.2s"
             }}
           >
@@ -662,9 +682,9 @@ export default function ClientDetails() {
             onClick={() => setActiveTab("water")}
             style={{
               flex: 1,
-              background: activeTab === "water" ? "#FF5757" : "#252525",
-              border: "none",
-              color: "#fff",
+              background: activeTab === "water" ? "#10b981" : "#f9fafb",
+              border: activeTab === "water" ? "none" : "1px solid #d1d5db",
+              color: activeTab === "water" ? "#fff" : "#4b5563",
               padding: "12px 20px",
               borderRadius: "8px",
               cursor: "pointer",
@@ -672,7 +692,7 @@ export default function ClientDetails() {
               alignItems: "center",
               justifyContent: "center",
               gap: "8px",
-              fontWeight: "600",
+              fontWeight: "700",
               transition: "all 0.2s"
             }}
           >
@@ -738,7 +758,7 @@ export default function ClientDetails() {
                   alignItems: "center",
                   marginTop: "16px",
                   paddingTop: "16px",
-                  borderTop: "1px solid #333"
+                  borderTop: "1px solid #e5e7eb"
                 }}>
                   <div style={{ color: "#999", fontSize: "13px" }}>
                     {(() => {
@@ -768,10 +788,16 @@ export default function ClientDetails() {
                             : activeTab === "workout" ? workoutPagination
                             : activeTab === "water" ? waterPagination
                             : { has_previous: false };
-                          return !currentPagination.has_previous ? "#333" : "#FF5757";
+                          return !currentPagination.has_previous ? "#f3f4f6" : "#10b981";
                         })(),
                         border: "none",
-                        color: "#fff",
+                        color: (() => {
+                          const currentPagination = activeTab === "food" ? foodPagination
+                            : activeTab === "workout" ? workoutPagination
+                            : activeTab === "water" ? waterPagination
+                            : { has_previous: false };
+                          return !currentPagination.has_previous ? "#9ca3af" : "#fff";
+                        })(),
                         padding: "8px 16px",
                         borderRadius: "6px",
                         cursor: (() => {
@@ -785,12 +811,13 @@ export default function ClientDetails() {
                         alignItems: "center",
                         gap: "6px",
                         fontSize: "13px",
+                        fontWeight: "600",
                         opacity: (() => {
                           const currentPagination = activeTab === "food" ? foodPagination
                             : activeTab === "workout" ? workoutPagination
                             : activeTab === "water" ? waterPagination
                             : { has_previous: false };
-                          return !currentPagination.has_previous ? 0.5 : 1;
+                          return !currentPagination.has_previous ? 0.7 : 1;
                         })()
                       }}
                     >
@@ -799,13 +826,15 @@ export default function ClientDetails() {
                     </button>
 
                     <div style={{
-                      background: "#252525",
+                      background: "#f9fafb",
                       padding: "8px 16px",
                       borderRadius: "6px",
                       fontSize: "13px",
-                      color: "#fff",
+                      color: "#4b5563",
                       minWidth: "80px",
-                      textAlign: "center"
+                      textAlign: "center",
+                      border: "1px solid #e5e7eb",
+                      fontWeight: "600"
                     }}>
                       {(() => {
                         const currentPagination = activeTab === "food" ? foodPagination
@@ -831,10 +860,16 @@ export default function ClientDetails() {
                             : activeTab === "workout" ? workoutPagination
                             : activeTab === "water" ? waterPagination
                             : { has_next: false };
-                          return !currentPagination.has_next ? "#333" : "#FF5757";
+                          return !currentPagination.has_next ? "#f3f4f6" : "#10b981";
                         })(),
                         border: "none",
-                        color: "#fff",
+                        color: (() => {
+                          const currentPagination = activeTab === "food" ? foodPagination
+                            : activeTab === "workout" ? workoutPagination
+                            : activeTab === "water" ? waterPagination
+                            : { has_next: false };
+                          return !currentPagination.has_next ? "#9ca3af" : "#fff";
+                        })(),
                         padding: "8px 16px",
                         borderRadius: "6px",
                         cursor: (() => {

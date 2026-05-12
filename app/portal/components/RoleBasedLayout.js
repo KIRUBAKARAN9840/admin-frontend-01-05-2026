@@ -239,6 +239,7 @@ export default function RoleBasedLayout({ children }) {
   const pathname = usePathname();
   const dropdownRef = useRef(null);
   const { role, user } = useRole(); // Get role and user from context
+  const themeColor = role === "nutritionist" ? "#10b981" : "#FF5757";
 
   // Strategic Insights sub-items
   const strategicInsightsItems = [
@@ -499,7 +500,7 @@ export default function RoleBasedLayout({ children }) {
           <button
             onClick={() => router.push(`/portal/${role}/home`)}
             style={{
-              backgroundColor: "#FF5757",
+              backgroundColor: themeColor,
               color: "white",
               border: "none",
               padding: "8px 16px",
@@ -575,8 +576,8 @@ export default function RoleBasedLayout({ children }) {
     left: 0,
     top: 0,
     height: "100vh",
-    backgroundColor: "#121717",
-    borderRight: "1px solid #374151",
+    backgroundColor: role === "nutritionist" ? "#ffffff" : "#121717",
+    borderRight: role === "nutritionist" ? "1px solid #e5e7eb" : "1px solid #374151",
     transition: "all 0.3s ease-in-out",
     zIndex: 1030,
     width: sidebarCollapsed ? "64px" : "256px",
@@ -591,7 +592,8 @@ export default function RoleBasedLayout({ children }) {
 
   return (
     <div
-      style={{ minHeight: "100vh", backgroundColor: "#111827", color: "white" }}
+      className={role === "nutritionist" ? "theme-nutritionist" : "theme-admin"}
+      style={{ minHeight: "100vh", backgroundColor: role === "nutritionist" ? "#f9fafb" : "#111827", color: role === "nutritionist" ? "#111827" : "white" }}
     >
       {/* Sidebar */}
       <div style={sidebarStyle}>
@@ -599,7 +601,7 @@ export default function RoleBasedLayout({ children }) {
         <div
           style={{
             padding: "1rem",
-            borderBottom: "1px solid #374151",
+            borderBottom: role === "nutritionist" ? "1px solid #e5e7eb" : "1px solid #374151",
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-start",
@@ -611,7 +613,7 @@ export default function RoleBasedLayout({ children }) {
             style={{
               background: "none",
               border: "none",
-              color: "#FFFFFF",
+              color: role === "nutritionist" ? "#10b981" : "#FFFFFF",
               padding: "8px",
               borderRadius: "8px",
               cursor: "pointer",
@@ -631,9 +633,9 @@ export default function RoleBasedLayout({ children }) {
               style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
             >
               <span
-                style={{ fontWeight: "600", fontSize: "24px", color: "white" }}
+                style={{ fontWeight: "600", fontSize: "24px", color: role === "nutritionist" ? "#111827" : "white" }}
               >
-                <span style={{ color: "#FF5757" }}>Fy</span><span style={{ color: "#fff" }}>mble</span>
+                <span style={{ color: themeColor }}>Fy</span><span style={{ color: role === "nutritionist" ? "#111827" : "#fff" }}>mble</span>
               </span>
             </div>
           )}
@@ -667,22 +669,22 @@ export default function RoleBasedLayout({ children }) {
                       margin: "4px 0",
                       borderRadius: "8px",
                       cursor: "pointer",
-                      backgroundColor: hasActiveSubItem ? "#374151" : "transparent",
-                      color: hasActiveSubItem ? "white" : "#9ca3af",
+                      backgroundColor: hasActiveSubItem ? (role === "nutritionist" ? "#ecfdf5" : "#374151") : "transparent",
+                      color: hasActiveSubItem ? (role === "nutritionist" ? "#10b981" : "white") : (role === "nutritionist" ? "#4b5563" : "#9ca3af"),
                       transition: "all 0.2s ease-in-out",
                       userSelect: "none",
                     }}
                     onClick={() => setStrategicInsightsOpen(!strategicInsightsOpen)}
                     onMouseEnter={(e) => {
                       if (!hasActiveSubItem) {
-                        e.currentTarget.style.backgroundColor = "#1f2937";
-                        e.currentTarget.style.color = "white";
+                        e.currentTarget.style.backgroundColor = role === "nutritionist" ? "#f3f4f6" : "#1f2937";
+                        e.currentTarget.style.color = role === "nutritionist" ? "#111827" : "white";
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!hasActiveSubItem) {
                         e.currentTarget.style.backgroundColor = "transparent";
-                        e.currentTarget.style.color = "#9ca3af";
+                        e.currentTarget.style.color = role === "nutritionist" ? "#4b5563" : "#9ca3af";
                       }
                     }}
                   >
@@ -719,7 +721,7 @@ export default function RoleBasedLayout({ children }) {
                       marginLeft: sidebarCollapsed ? "0" : "16px",
                       marginTop: "4px",
                       paddingLeft: sidebarCollapsed ? "0" : "12px",
-                      borderLeft: sidebarCollapsed ? "none" : "1px solid #374151",
+                      borderLeft: sidebarCollapsed ? "none" : (role === "nutritionist" ? "1px solid #e5e7eb" : "1px solid #374151"),
                     }}>
                       {strategicInsightsItems.map((subItem) => {
                         const subActive = isActive(subItem.path);
@@ -735,7 +737,7 @@ export default function RoleBasedLayout({ children }) {
                               margin: "2px 0",
                               borderRadius: "6px",
                               cursor: "pointer",
-                              backgroundColor: subActive ? "#FF5757" : "transparent",
+                              backgroundColor: subActive ? themeColor : "transparent",
                               color: subActive ? "white" : "#6b7280",
                               transition: "all 0.2s ease-in-out",
                               userSelect: "none",
@@ -743,14 +745,14 @@ export default function RoleBasedLayout({ children }) {
                             onClick={() => handleNavigation(subItem.path)}
                             onMouseEnter={(e) => {
                               if (!subActive) {
-                                e.currentTarget.style.backgroundColor = "#1f2937";
-                                e.currentTarget.style.color = "white";
+                                e.currentTarget.style.backgroundColor = role === "nutritionist" ? "#f3f4f6" : "#1f2937";
+                                e.currentTarget.style.color = role === "nutritionist" ? "#111827" : "white";
                               }
                             }}
                             onMouseLeave={(e) => {
                               if (!subActive) {
                                 e.currentTarget.style.backgroundColor = "transparent";
-                                e.currentTarget.style.color = "#6b7280";
+                                e.currentTarget.style.color = role === "nutritionist" ? "#6b7280" : "#6b7280";
                               }
                             }}
                           >
@@ -796,8 +798,8 @@ export default function RoleBasedLayout({ children }) {
                   margin: "4px 0",
                   borderRadius: "8px",
                   cursor: "pointer",
-                  backgroundColor: active ? "#565656" : "transparent",
-                  color: active ? "white" : "#9ca3af",
+                  backgroundColor: active ? (role === "nutritionist" ? "#ecfdf5" : "#565656") : "transparent",
+                  color: active ? (role === "nutritionist" ? "#10b981" : "white") : (role === "nutritionist" ? "#4b5563" : "#9ca3af"),
                   textDecoration: "none",
                   transition: "all 0.2s ease-in-out",
                   userSelect: "none",
@@ -805,14 +807,14 @@ export default function RoleBasedLayout({ children }) {
                 onClick={() => handleNavigation(item.path)}
                 onMouseEnter={(e) => {
                   if (!active) {
-                    e.currentTarget.style.backgroundColor = "#374151";
-                    e.currentTarget.style.color = "white";
+                    e.currentTarget.style.backgroundColor = role === "nutritionist" ? "#f3f4f6" : "#374151";
+                    e.currentTarget.style.color = role === "nutritionist" ? "#111827" : "white";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!active) {
                     e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.color = "#9ca3af";
+                    e.currentTarget.style.color = role === "nutritionist" ? "#4b5563" : "#9ca3af";
                   }
                 }}
               >
@@ -834,7 +836,7 @@ export default function RoleBasedLayout({ children }) {
                     style={{
                       width: "4px",
                       height: "20px",
-                      backgroundColor: "#FF5757",
+                      backgroundColor: themeColor,
                       borderRadius: "2px",
                       marginLeft: "auto",
                       display: sidebarCollapsed ? "none" : "block",
@@ -852,8 +854,8 @@ export default function RoleBasedLayout({ children }) {
         {/* Header */}
         <header
           style={{
-            backgroundColor: "#121717",
-            borderBottom: "1px solid #374151",
+            backgroundColor: role === "nutritionist" ? "#ffffff" : "#121717",
+            borderBottom: role === "nutritionist" ? "1px solid #e5e7eb" : "1px solid #374151",
             padding: "0.7rem 1.5rem",
             position: "fixed",
             top: 0,
@@ -875,7 +877,7 @@ export default function RoleBasedLayout({ children }) {
                 style={{
                   fontSize: "16px",
                   fontWeight: "600",
-                  color: "white",
+                  color: role === "nutritionist" ? "#111827" : "white",
                   margin: "0",
                 }}
               >
@@ -883,12 +885,12 @@ export default function RoleBasedLayout({ children }) {
               </h1>
               <p
                 style={{
-                  color: "#9ca3af",
+                  color: role === "nutritionist" ? "#4b5563" : "#9ca3af",
                   fontSize: "16px",
                   margin: "4px 0 0 0",
                 }}
               >
-                Welcome to <span style={{ color: "#FF5757" }}>Fy</span><span style={{ color: "#fff" }}>mble</span>{" "}
+                Welcome to <span style={{ color: themeColor }}>Fy</span><span style={{ color: role === "nutritionist" ? "#111827" : "#fff" }}>mble</span>{" "}
                 {userInfo.dashboardType}
               </p>
             </div>
@@ -907,7 +909,7 @@ export default function RoleBasedLayout({ children }) {
                 }}
                 onClick={handleProfileClick}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#374151";
+                  e.currentTarget.style.backgroundColor = role === "nutritionist" ? "#f3f4f6" : "#374151";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = "transparent";
@@ -917,7 +919,7 @@ export default function RoleBasedLayout({ children }) {
                 <div style={{ textAlign: "left" }}>
                   <div
                     style={{
-                      color: "white",
+                      color: role === "nutritionist" ? "#111827" : "white",
                       fontWeight: "600",
                       fontSize: "14px",
                       margin: "0",
@@ -928,7 +930,7 @@ export default function RoleBasedLayout({ children }) {
                   </div>
                   <div
                     style={{
-                      color: "#9ca3af",
+                      color: role === "nutritionist" ? "#6b7280" : "#9ca3af",
                       fontSize: "12px",
                       margin: "2px 0 0 0",
                       lineHeight: "1.2",
@@ -942,7 +944,7 @@ export default function RoleBasedLayout({ children }) {
                     width: "35px",
                     height: "35px",
                     borderRadius: "50%",
-                    backgroundColor: "#FF5757",
+                    backgroundColor: themeColor,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -956,7 +958,7 @@ export default function RoleBasedLayout({ children }) {
                 <HiOutlineChevronDown
                   size={16}
                   style={{
-                    color: "#9ca3af",
+                    color: role === "nutritionist" ? "#111827" : "#9ca3af",
                     transform: profileDropdownOpen
                       ? "rotate(180deg)"
                       : "rotate(0deg)",
@@ -974,8 +976,8 @@ export default function RoleBasedLayout({ children }) {
                     right: 0,
                     marginTop: "8px",
                     width: "200px",
-                    backgroundColor: "#1f2937",
-                    border: "1px solid #374151",
+                    backgroundColor: role === "nutritionist" ? "#ffffff" : "#1f2937",
+                    border: role === "nutritionist" ? "1px solid #e5e7eb" : "1px solid #374151",
                     borderRadius: "8px",
                     boxShadow:
                       "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
@@ -995,7 +997,7 @@ export default function RoleBasedLayout({ children }) {
                       }}
                       onClick={handleTOTPSetup}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = "#374151";
+                        e.currentTarget.style.backgroundColor = role === "nutritionist" ? "#f3f4f6" : "#374151";
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.backgroundColor = "transparent";
@@ -1025,7 +1027,7 @@ export default function RoleBasedLayout({ children }) {
                       }}
                       onClick={handleLogout}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = "#374151";
+                        e.currentTarget.style.backgroundColor = role === "nutritionist" ? "#f3f4f6" : "#374151";
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.backgroundColor = "transparent";
@@ -1053,7 +1055,7 @@ export default function RoleBasedLayout({ children }) {
         <div
           style={{
             padding: "1rem",
-            backgroundColor: "#121717",
+            backgroundColor: role === "nutritionist" ? "#f9fafb" : "#121717",
             marginTop: "70px",
           }}
         >

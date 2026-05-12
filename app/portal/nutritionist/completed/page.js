@@ -197,16 +197,16 @@ export default function Completed() {
     return (
       <div key={`${monthData.month}-${monthIndex}`} style={{ marginBottom: "24px" }}>
         <div style={{ textAlign: "center", marginBottom: "16px" }}>
-          <h3
-            style={{
-              fontSize: "16px",
-              fontWeight: "600",
-              color: "white",
-              margin: 0,
-            }}
-          >
-            {monthData.month}
-          </h3>
+            <h3
+              style={{
+                fontSize: "16px",
+                fontWeight: "700",
+                color: "#111827",
+                margin: 0,
+              }}
+            >
+              {monthData.month}
+            </h3>
         </div>
 
         {/* Week day headers */}
@@ -226,7 +226,7 @@ export default function Completed() {
                   textAlign: "center",
                   fontSize: "11px",
                   fontWeight: "600",
-                  color: "#999",
+                  color: "#6b7280",
                   textTransform: "uppercase",
                 }}
               >
@@ -270,15 +270,15 @@ export default function Completed() {
                     onClick={() => !isFuture && handleDateClick(date)}
                     style={{
                       background: selected
-                        ? "#FF5757"
+                        ? "#10b981"
                         : isToday
-                        ? "#2a2a2a"
-                        : "#252525",
+                        ? "#f0fdf4"
+                        : "#ffffff",
                       border:
                         isToday && !selected
-                          ? "2px solid #FF5757"
-                          : "1px solid #333",
-                      borderRadius: "8px",
+                          ? "2px solid #10b981"
+                          : "1px solid #e5e7eb",
+                      borderRadius: "12px",
                       padding: "12px 8px",
                       textAlign: "center",
                       cursor: isFuture ? "not-allowed" : "pointer",
@@ -289,17 +289,20 @@ export default function Completed() {
                       alignItems: "center",
                       justifyContent: "center",
                       opacity: isFuture ? 0.4 : 1,
+                      boxShadow: selected ? "0 4px 6px -1px rgba(16, 185, 129, 0.4)" : "none"
                     }}
                     onMouseEnter={(e) => {
                       if (!selected && !isFuture) {
-                        e.currentTarget.style.background = "#2a2a2a";
+                        e.currentTarget.style.background = "#f0fdf4";
+                        e.currentTarget.style.borderColor = "#10b981";
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!selected && !isFuture) {
                         e.currentTarget.style.background = isToday
-                          ? "#2a2a2a"
-                          : "#252525";
+                          ? "#f0fdf4"
+                          : "#ffffff";
+                        e.currentTarget.style.borderColor = isToday ? "#10b981" : "#e5e7eb";
                       }
                     }}
                   >
@@ -308,9 +311,7 @@ export default function Completed() {
                         fontSize: "18px",
                         color: selected
                           ? "white"
-                          : isToday
-                          ? "#FF5757"
-                          : "#ccc",
+                          : "#111827",
                         fontWeight: "600",
                         marginBottom: count > 0 ? "4px" : "0",
                       }}
@@ -321,11 +322,14 @@ export default function Completed() {
                       <div
                         style={{
                           fontSize: "10px",
-                          color: selected ? "white" : "#FF5757",
+                          color: selected ? "#ecfdf5" : "#059669",
                           fontWeight: "600",
+                          backgroundColor: selected ? "rgba(255,255,255,0.2)" : "#ecfdf5",
+                          padding: "2px 6px",
+                          borderRadius: "10px"
                         }}
                       >
-                        {count} session{count > 1 ? "s" : ""}
+                        {count} {count > 1 ? "sessions" : "session"}
                       </div>
                     )}
                   </div>
@@ -342,18 +346,19 @@ export default function Completed() {
     <div className="users-container">
       <div className="users-header">
         <h2 className="users-title">
-          <span style={{ color: "#FF5757" }}>Completed</span> Sessions
+          <span style={{ color: "#10b981" }}>Completed</span> Sessions
         </h2>
       </div>
 
       {/* Calendar */}
       <div
         style={{
-          background: "#1e1e1e",
-          border: "1px solid #333",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
           borderRadius: "8px",
           padding: "1.5rem",
           marginBottom: "2rem",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
         }}
       >
         {calendarLoading ? (
@@ -370,10 +375,11 @@ export default function Completed() {
         <div className="table-container">
           <h3
             style={{
-              color: "white",
+              color: "#111827",
               marginBottom: "1rem",
               fontSize: "16px",
               padding: "10px",
+              fontWeight: "700"
             }}
           >
             Completed Sessions for {formatDate(selectedDate)}
@@ -424,7 +430,7 @@ export default function Completed() {
                                   width: "8px",
                                   height: "8px",
                                   borderRadius: "50%",
-                                  backgroundColor: "#00C853",
+                                  backgroundColor: "#10b981",
                                 }}
                               />
                               {session.client_name || "-"}
@@ -434,10 +440,10 @@ export default function Completed() {
                           <td>
                             <span
                               style={{
-                                color: session.interested_in_nutrition_product ? "#4CAF50" : "#999",
+                                color: session.interested_in_nutrition_product ? "#059669" : "#6b7280",
                                 backgroundColor: session.interested_in_nutrition_product
-                                  ? "rgba(76, 175, 80, 0.1)"
-                                  : "rgba(153, 153, 153, 0.1)",
+                                  ? "#ecfdf5"
+                                  : "#f3f4f6",
                                 padding: "4px 12px",
                                 borderRadius: "12px",
                                 fontSize: "12px",
@@ -449,22 +455,23 @@ export default function Completed() {
                           </td>
                           <td>
                             {expandedRow === index ? (
-                              <FaChevronUp />
+                              <FaChevronUp style={{ color: "#10b981" }} />
                             ) : (
-                              <FaChevronDown />
+                              <FaChevronDown style={{ color: "#6b7280" }} />
                             )}
                           </td>
                         </tr>
                         {expandedRow === index && session.feedback_advice && (
                           <tr>
                             <td colSpan="6">
-                              <div
-                                style={{
-                                  background: "#252525",
-                                  padding: "1rem",
-                                  borderRadius: "4px",
-                                }}
-                              >
+                                <div
+                                  style={{
+                                    background: "#f9fafb",
+                                    padding: "1rem",
+                                    borderRadius: "8px",
+                                    border: "1px solid #e5e7eb"
+                                  }}
+                                >
                                 <div
                                   style={{
                                     fontSize: "11px",
@@ -478,11 +485,12 @@ export default function Completed() {
                                 <div
                                   style={{
                                     fontSize: "13px",
-                                    color: "#ccc",
+                                    color: "#374151",
                                     lineHeight: "1.6",
-                                    backgroundColor: "#1e1e1e",
+                                    backgroundColor: "#ffffff",
                                     padding: "12px",
-                                    borderRadius: "4px",
+                                    borderRadius: "6px",
+                                    border: "1px solid #e5e7eb"
                                   }}
                                 >
                                   {session.feedback_advice}

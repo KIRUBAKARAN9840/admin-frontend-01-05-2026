@@ -110,18 +110,19 @@ export default function CompletedList() {
     <div className="users-container">
       <div className="users-header">
         <h2 className="users-title">
-          <span style={{ color: "#FF5757" }}>Completed</span> List
+          <span style={{ color: "#10b981" }}>Completed</span> List
         </h2>
       </div>
 
       {/* Filters */}
       <div
         style={{
-          background: "#1e1e1e",
-          border: "1px solid #333",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
           borderRadius: "8px",
           padding: "1.5rem",
           marginBottom: "1.5rem",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
         }}
       >
         <div
@@ -137,9 +138,10 @@ export default function CompletedList() {
             <label
               style={{
                 display: "block",
-                color: "#ccc",
+                color: "#4b5563",
                 fontSize: "13px",
                 marginBottom: "0.5rem",
+                fontWeight: "500"
               }}
             >
               Search
@@ -151,11 +153,11 @@ export default function CompletedList() {
               placeholder="Search by name or booking ID..."
               style={{
                 width: "100%",
-                background: "#252525",
-                border: "1px solid #444",
-                color: "white",
+                background: "#f9fafb",
+                border: "1px solid #d1d5db",
+                color: "#111827",
                 padding: "8px 12px",
-                borderRadius: "4px",
+                borderRadius: "6px",
                 fontSize: "14px",
               }}
             />
@@ -166,9 +168,10 @@ export default function CompletedList() {
             <label
               style={{
                 display: "block",
-                color: "#ccc",
+                color: "#4b5563",
                 fontSize: "13px",
                 marginBottom: "0.5rem",
+                fontWeight: "500"
               }}
             >
               Start Date
@@ -179,11 +182,11 @@ export default function CompletedList() {
               onChange={(e) => setStartDate(e.target.value)}
               style={{
                 width: "100%",
-                background: "#252525",
-                border: "1px solid #444",
-                color: "white",
+                background: "#f9fafb",
+                border: "1px solid #d1d5db",
+                color: "#111827",
                 padding: "8px 12px",
-                borderRadius: "4px",
+                borderRadius: "6px",
                 fontSize: "14px",
               }}
             />
@@ -194,9 +197,10 @@ export default function CompletedList() {
             <label
               style={{
                 display: "block",
-                color: "#ccc",
+                color: "#4b5563",
                 fontSize: "13px",
                 marginBottom: "0.5rem",
+                fontWeight: "500"
               }}
             >
               End Date
@@ -207,11 +211,11 @@ export default function CompletedList() {
               onChange={(e) => setEndDate(e.target.value)}
               style={{
                 width: "100%",
-                background: "#252525",
-                border: "1px solid #444",
-                color: "white",
+                background: "#f9fafb",
+                border: "1px solid #d1d5db",
+                color: "#111827",
                 padding: "8px 12px",
-                borderRadius: "4px",
+                borderRadius: "6px",
                 fontSize: "14px",
               }}
             />
@@ -222,9 +226,10 @@ export default function CompletedList() {
             <label
               style={{
                 display: "block",
-                color: "#ccc",
+                color: "#4b5563",
                 fontSize: "13px",
                 marginBottom: "0.5rem",
+                fontWeight: "500"
               }}
             >
               Product Interest
@@ -234,11 +239,11 @@ export default function CompletedList() {
               onChange={(e) => setInterestedInProduct(e.target.value)}
               style={{
                 width: "100%",
-                background: "#252525",
-                border: "1px solid #444",
-                color: "white",
+                background: "#f9fafb",
+                border: "1px solid #d1d5db",
+                color: "#111827",
                 padding: "8px 12px",
-                borderRadius: "4px",
+                borderRadius: "6px",
                 fontSize: "14px",
               }}
             >
@@ -253,11 +258,11 @@ export default function CompletedList() {
             <button
               onClick={handleDateFilter}
               style={{
-                background: "#FF5757",
+                background: "#10b981",
                 border: "none",
                 color: "white",
                 padding: "8px 16px",
-                borderRadius: "4px",
+                borderRadius: "6px",
                 cursor: "pointer",
                 fontSize: "13px",
                 fontWeight: "600",
@@ -269,10 +274,10 @@ export default function CompletedList() {
               onClick={clearFilters}
               style={{
                 background: "transparent",
-                border: "1px solid #666",
-                color: "#ccc",
+                border: "1px solid #d1d5db",
+                color: "#4b5563",
                 padding: "8px 16px",
-                borderRadius: "4px",
+                borderRadius: "6px",
                 cursor: "pointer",
                 fontSize: "13px",
               }}
@@ -346,14 +351,15 @@ export default function CompletedList() {
                                   router.push(`/portal/nutritionist/client/${session.client_id}`);
                                 }}
                                 style={{
-                                  color: "#ffffffff",
+                                  color: "#111827",
                                   cursor: "pointer",
+                                  fontWeight: "600",
                                   textDecoration: "underline",
                                   textDecorationColor: "transparent",
                                   transition: "textDecorationColor 0.2s"
                                 }}
                                 onMouseEnter={(e) => {
-                                  e.currentTarget.style.textDecorationColor = "#ffffffff";
+                                  e.currentTarget.style.textDecorationColor = "#111827";
                                 }}
                                 onMouseLeave={(e) => {
                                   e.currentTarget.style.textDecorationColor = "transparent";
@@ -368,12 +374,12 @@ export default function CompletedList() {
                             <span
                               style={{
                                 color: session.interested_in_nutrition_product
-                                  ? "#4CAF50"
-                                  : "#999",
+                                  ? "#059669"
+                                  : "#6b7280",
                                 backgroundColor:
                                   session.interested_in_nutrition_product
-                                    ? "rgba(76, 175, 80, 0.1)"
-                                    : "rgba(153, 153, 153, 0.1)",
+                                    ? "#ecfdf5"
+                                    : "#f3f4f6",
                                 padding: "4px 12px",
                                 borderRadius: "12px",
                                 fontSize: "12px",
@@ -394,7 +400,7 @@ export default function CompletedList() {
                               <span
                                 style={{
                                   fontSize: "13px",
-                                  color: session.assigned_diet_template_name ? "#fff" : "#666",
+                                  color: session.assigned_diet_template_name ? "#111827" : "#9ca3af",
                                 }}
                               >
                                 {session.assigned_diet_template_name || "Not assigned"}
@@ -414,8 +420,8 @@ export default function CompletedList() {
                                 }}
                                 style={{
                                   background: "transparent",
-                                  border: "1px solid #ccc",
-                                  color: "#ccc",
+                                  border: "1px solid #d1d5db",
+                                  color: "#4b5563",
                                   padding: "4px 8px",
                                   borderRadius: "4px",
                                   cursor: "pointer",
@@ -428,14 +434,14 @@ export default function CompletedList() {
                                   whiteSpace: "nowrap",
                                 }}
                                 onMouseEnter={(e) => {
-                                  e.currentTarget.style.background = "#333";
-                                  e.currentTarget.style.borderColor = "#fff";
-                                  e.currentTarget.style.color = "#fff";
+                                  e.currentTarget.style.background = "#f9fafb";
+                                  e.currentTarget.style.borderColor = "#10b981";
+                                  e.currentTarget.style.color = "#10b981";
                                 }}
                                 onMouseLeave={(e) => {
                                   e.currentTarget.style.background = "transparent";
-                                  e.currentTarget.style.borderColor = "#ccc";
-                                  e.currentTarget.style.color = "#ccc";
+                                  e.currentTarget.style.borderColor = "#d1d5db";
+                                  e.currentTarget.style.color = "#4b5563";
                                 }}
                               >
                                 <FaEdit size={12} />
@@ -456,15 +462,16 @@ export default function CompletedList() {
                             <td colSpan="9">
                               <div
                                 style={{
-                                  background: "#252525",
+                                  background: "#f9fafb",
                                   padding: "1rem",
-                                  borderRadius: "4px",
+                                  borderRadius: "8px",
+                                  border: "1px solid #e5e7eb"
                                 }}
                               >
                                 <div
                                   style={{
                                     fontSize: "11px",
-                                    color: "#999",
+                                    color: "#6b7280",
                                     marginBottom: "8px",
                                     fontWeight: "600",
                                   }}
@@ -474,11 +481,12 @@ export default function CompletedList() {
                                 <div
                                   style={{
                                     fontSize: "13px",
-                                    color: "#ccc",
+                                    color: "#374151",
                                     lineHeight: "1.6",
-                                    backgroundColor: "#1e1e1e",
+                                    backgroundColor: "#ffffff",
                                     padding: "12px",
-                                    borderRadius: "4px",
+                                    borderRadius: "6px",
+                                    border: "1px solid #e5e7eb"
                                   }}
                                 >
                                   {session.feedback_advice}
@@ -517,22 +525,22 @@ export default function CompletedList() {
                 </div>
 
                 <div style={{ display: "flex", gap: "0.5rem" }}>
-                  <button
-                    onClick={() => setPage((p) => Math.max(1, p - 1))}
-                    disabled={page === 1}
-                    style={{
-                      background: page === 1 ? "#333" : "#FF5757",
-                      border: "none",
-                      color: "white",
-                      padding: "8px 16px",
-                      borderRadius: "4px",
-                      cursor: page === 1 ? "not-allowed" : "pointer",
-                      fontSize: "13px",
-                      opacity: page === 1 ? 0.5 : 1,
-                    }}
-                  >
-                    Previous
-                  </button>
+                    <button
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                      style={{
+                        background: page === 1 ? "#f3f4f6" : "#10b981",
+                        border: "none",
+                        color: page === 1 ? "#9ca3af" : "white",
+                        padding: "8px 16px",
+                        borderRadius: "6px",
+                        cursor: page === 1 ? "not-allowed" : "pointer",
+                        fontSize: "13px",
+                        fontWeight: "600"
+                      }}
+                    >
+                      Previous
+                    </button>
 
                   <div
                     style={{
@@ -554,45 +562,46 @@ export default function CompletedList() {
                       }
 
                       return (
-                        <button
-                          key={pageNum}
-                          onClick={() => setPage(pageNum)}
-                          style={{
-                            background:
-                              page === pageNum ? "#FF5757" : "#333",
-                            border: "none",
-                            color: "white",
-                            padding: "8px 12px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            fontSize: "13px",
-                            minWidth: "36px",
-                          }}
-                        >
-                          {pageNum}
-                        </button>
+                          <button
+                            key={pageNum}
+                            onClick={() => setPage(pageNum)}
+                            style={{
+                              background:
+                                page === pageNum ? "#10b981" : "#ffffff",
+                              border: page === pageNum ? "none" : "1px solid #d1d5db",
+                              color: page === pageNum ? "white" : "#4b5563",
+                              padding: "8px 12px",
+                              borderRadius: "6px",
+                              cursor: "pointer",
+                              fontSize: "13px",
+                              minWidth: "36px",
+                              fontWeight: page === pageNum ? "600" : "400"
+                            }}
+                          >
+                            {pageNum}
+                          </button>
                       );
                     })}
                   </div>
 
-                  <button
-                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                    disabled={page === totalPages}
-                    style={{
-                      background:
-                        page === totalPages ? "#333" : "#FF5757",
-                      border: "none",
-                      color: "white",
-                      padding: "8px 16px",
-                      borderRadius: "4px",
-                      cursor:
-                        page === totalPages ? "not-allowed" : "pointer",
-                      fontSize: "13px",
-                      opacity: page === totalPages ? 0.5 : 1,
-                    }}
-                  >
-                    Next
-                  </button>
+                    <button
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={page === totalPages}
+                      style={{
+                        background:
+                          page === totalPages ? "#f3f4f6" : "#10b981",
+                        border: "none",
+                        color: page === totalPages ? "#9ca3af" : "white",
+                        padding: "8px 16px",
+                        borderRadius: "6px",
+                        cursor:
+                          page === totalPages ? "not-allowed" : "pointer",
+                        fontSize: "13px",
+                        fontWeight: "600"
+                      }}
+                    >
+                      Next
+                    </button>
                 </div>
               </div>
             )}

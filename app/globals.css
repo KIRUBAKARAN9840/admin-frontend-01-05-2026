@@ -1752,3 +1752,75 @@ a {
     min-width: 100%;
   }
 }
+
+/* Nutritionist Portal Theme Overrides */
+.theme-nutritionist {
+  background-color: #f9fafb !important;
+  color: #111827 !important;
+}
+
+.theme-nutritionist header {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  color: #111827 !important;
+}
+
+.theme-nutritionist .users-container {
+  background-color: #f9fafb !important;
+  color: #111827 !important;
+}
+
+.theme-nutritionist .table-container {
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.theme-nutritionist .users-table th {
+  background-color: #f9fafb !important;
+  color: #4b5563 !important;
+  border-bottom: 2px solid #10b981 !important;
+}
+
+.theme-nutritionist .users-table td {
+  color: #374151 !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+}
+
+.theme-nutritionist .users-table tr:hover {
+  background-color: #f9fafb !important;
+}
+
+.theme-nutritionist .users-title {
+  color: #111827 !important;
+}
+
+.theme-nutritionist .filters-section {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.theme-nutritionist .search-input, 
+.theme-nutritionist .filter-select, 
+.theme-nutritionist .sort-btn {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #111827 !important;
+}
+
+.theme-nutritionist .search-input:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+}
+
+.theme-nutritionist .pagination-btn {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+}
+
+.theme-nutritionist .pagination-btn.active {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+}

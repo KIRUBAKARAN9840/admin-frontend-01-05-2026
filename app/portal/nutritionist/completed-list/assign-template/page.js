@@ -153,25 +153,26 @@ export default function AssignTemplate() {
           onClick={() => router.back()}
           style={{
             background: "transparent",
-            border: "1px solid #666",
-            color: "#ccc",
+            border: "1px solid #d1d5db",
+            color: "#4b5563",
             padding: "8px 12px",
-            borderRadius: "4px",
+            borderRadius: "6px",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             gap: "8px",
             transition: "all 0.2s",
+            fontWeight: "600"
           }}
           onMouseEnter={(e) => {
-            e.target.style.background = "#333";
-            e.target.style.borderColor = "#FF5757";
-            e.target.style.color = "#FF5757";
+            e.currentTarget.style.background = "#f9fafb";
+            e.currentTarget.style.borderColor = "#10b981";
+            e.currentTarget.style.color = "#10b981";
           }}
           onMouseLeave={(e) => {
-            e.target.style.background = "transparent";
-            e.target.style.borderColor = "#666";
-            e.target.style.color = "#ccc";
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.borderColor = "#d1d5db";
+            e.currentTarget.style.color = "#4b5563";
           }}
         >
           <FaArrowLeft />
@@ -185,15 +186,16 @@ export default function AssignTemplate() {
       {/* Client Info */}
       <div
         style={{
-          background: "#1e1e1e",
-          border: "1px solid #333",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
           borderRadius: "8px",
           padding: "1.5rem",
           marginBottom: "1.5rem",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
         }}
       >
-        <div style={{ color: "#999", fontSize: "13px", marginBottom: "4px" }}>Client</div>
-        <div style={{ color: "#fff", fontSize: "18px", fontWeight: "600" }}>
+        <div style={{ color: "#6b7280", fontSize: "13px", marginBottom: "4px", fontWeight: "600" }}>Client</div>
+        <div style={{ color: "#111827", fontSize: "18px", fontWeight: "700" }}>
           {decodeURIComponent(clientName || "Unknown")}
         </div>
       </div>
@@ -233,16 +235,16 @@ export default function AssignTemplate() {
                       onClick={() => setSelectedTemplateId(selectedTemplateId === template.id.toString() ? null : template.id.toString())}
                       style={{
                         cursor: "pointer",
-                        background: selectedTemplateId === template.id.toString() ? "#2a2a2a" : "transparent",
+                        background: selectedTemplateId === template.id.toString() ? "#ecfdf5" : "transparent",
                       }}
                       onMouseEnter={(e) => {
                         if (selectedTemplateId !== template.id.toString()) {
-                          e.target.style.background = "#252525";
+                          e.currentTarget.style.background = "#f9fafb";
                         }
                       }}
                       onMouseLeave={(e) => {
                         if (selectedTemplateId !== template.id.toString()) {
-                          e.target.style.background = "transparent";
+                          e.currentTarget.style.background = "transparent";
                         }
                       }}
                     >
@@ -250,24 +252,25 @@ export default function AssignTemplate() {
                         {selectedTemplateId === template.id.toString() && (
                           <div
                             style={{
-                              background: "#FF5757",
+                              background: "#10b981",
                               borderRadius: "50%",
-                              width: "20px",
-                              height: "20px",
+                              width: "24px",
+                              height: "24px",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
+                              boxShadow: "0 2px 4px rgba(16, 185, 129, 0.2)"
                             }}
                           >
-                            <FaCheck size={12} color="#fff" />
+                            <FaCheck size={14} color="#fff" />
                           </div>
                         )}
                       </td>
                       <td>
                         <span
                           style={{
-                            color: selectedTemplateId === template.id.toString() ? "#FF5757" : "#fff",
-                            fontWeight: selectedTemplateId === template.id.toString() ? "600" : "400",
+                            color: selectedTemplateId === template.id.toString() ? "#10b981" : "#111827",
+                            fontWeight: selectedTemplateId === template.id.toString() ? "700" : "500",
                           }}
                         >
                           {template.template_name}
@@ -276,14 +279,14 @@ export default function AssignTemplate() {
                       <td>
                         <span
                           style={{
-                            color: "#FF5757",
-                            fontWeight: "500",
+                            color: "#10b981",
+                            fontWeight: "700",
                           }}
                         >
                           {template.number_of_days}
                         </span>
                       </td>
-                      <td style={{ color: "#ccc", fontSize: "13px" }}>
+                      <td style={{ color: "#4b5563", fontSize: "13px" }}>
                         {template.description || "-"}
                       </td>
                       <td onClick={(e) => e.stopPropagation()}>
@@ -291,22 +294,23 @@ export default function AssignTemplate() {
                           onClick={(e) => handleViewTemplate(template.id, e)}
                           style={{
                             background: "transparent",
-                            border: "1px solid #666",
-                            color: "#ccc",
+                            border: "1px solid #d1d5db",
+                            color: "#4b5563",
                             padding: "4px 12px",
                             borderRadius: "4px",
                             cursor: "pointer",
                             fontSize: "12px",
+                            fontWeight: "600"
                           }}
                           onMouseEnter={(e) => {
-                            e.target.style.background = "#333";
-                            e.target.style.borderColor = "#FF5757";
-                            e.target.style.color = "#FF5757";
+                            e.currentTarget.style.background = "#f9fafb";
+                            e.currentTarget.style.borderColor = "#10b981";
+                            e.currentTarget.style.color = "#10b981";
                           }}
                           onMouseLeave={(e) => {
-                            e.target.style.background = "transparent";
-                            e.target.style.borderColor = "#666";
-                            e.target.style.color = "#ccc";
+                            e.currentTarget.style.background = "transparent";
+                            e.currentTarget.style.borderColor = "#d1d5db";
+                            e.currentTarget.style.color = "#4b5563";
                           }}
                         >
                           View
@@ -333,10 +337,10 @@ export default function AssignTemplate() {
                 disabled={assigning}
                 style={{
                   background: "transparent",
-                  border: "1px solid #666",
-                  color: "#ccc",
+                  border: "1px solid #d1d5db",
+                  color: "#4b5563",
                   padding: "12px 24px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   cursor: assigning ? "not-allowed" : "pointer",
                   fontSize: "14px",
                   fontWeight: "600",
@@ -345,15 +349,15 @@ export default function AssignTemplate() {
                 }}
                 onMouseEnter={(e) => {
                   if (!assigning) {
-                    e.target.style.background = "#333";
-                    e.target.style.borderColor = "#f44";
-                    e.target.style.color = "#f44";
+                    e.currentTarget.style.background = "#fef2f2";
+                    e.currentTarget.style.borderColor = "#ef4444";
+                    e.currentTarget.style.color = "#ef4444";
                   }
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.background = "transparent";
-                  e.target.style.borderColor = "#666";
-                  e.target.style.color = "#ccc";
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.borderColor = "#d1d5db";
+                  e.currentTarget.style.color = "#4b5563";
                 }}
               >
                 Remove Template
@@ -364,27 +368,30 @@ export default function AssignTemplate() {
                 onClick={handleAssignTemplate}
                 disabled={assigning || !selectedTemplateId}
                 style={{
-                  background: assigning || !selectedTemplateId ? "#666" : "#FF5757",
+                  background: assigning || !selectedTemplateId ? "#f3f4f6" : "#10b981",
                   border: "none",
-                  color: "white",
+                  color: assigning || !selectedTemplateId ? "#9ca3af" : "white",
                   padding: "12px 32px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   cursor: assigning || !selectedTemplateId ? "not-allowed" : "pointer",
                   fontSize: "14px",
-                  fontWeight: "600",
-                  opacity: assigning || !selectedTemplateId ? 0.5 : 1,
+                  fontWeight: "700",
+                  opacity: assigning || !selectedTemplateId ? 0.7 : 1,
                   transition: "all 0.2s",
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
+                  boxShadow: assigning || !selectedTemplateId ? "none" : "0 4px 6px -1px rgba(16, 185, 129, 0.3)"
                 }}
                 onMouseEnter={(e) => {
                   if (!assigning && selectedTemplateId) {
-                    e.target.style.background = "#ff4444";
+                    e.currentTarget.style.background = "#059669";
                   }
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.background = "#FF5757";
+                  if (!assigning && selectedTemplateId) {
+                    e.currentTarget.style.background = "#10b981";
+                  }
                 }}
               >
                 {assigning ? (
@@ -423,19 +430,20 @@ export default function AssignTemplate() {
         >
           <div
             style={{
-              background: "#1e1e1e",
-              border: "1px solid #333",
-              borderRadius: "8px",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
+              borderRadius: "12px",
               padding: "2rem",
               minWidth: "800px",
               maxWidth: "900px",
               maxHeight: "80vh",
               overflow: "auto",
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-              <h3 style={{ color: "white", fontSize: "20px", fontWeight: "600", margin: 0 }}>
+              <h3 style={{ color: "#111827", fontSize: "20px", fontWeight: "700", margin: 0 }}>
                 {viewingTemplate.template_name}
               </h3>
               <button
@@ -443,7 +451,7 @@ export default function AssignTemplate() {
                 style={{
                   background: "transparent",
                   border: "none",
-                  color: "#999",
+                  color: "#6b7280",
                   cursor: "pointer",
                   fontSize: "20px",
                 }}
@@ -452,13 +460,13 @@ export default function AssignTemplate() {
               </button>
             </div>
 
-            <div style={{ marginBottom: "1rem" }}>
-              <span style={{ color: "#999", fontSize: "13px", marginRight: "1rem" }}>
-                <strong>Days:</strong> {viewingTemplate.number_of_days}
+            <div style={{ marginBottom: "1rem", display: "flex", gap: "2rem" }}>
+              <span style={{ color: "#4b5563", fontSize: "13px" }}>
+                <strong style={{ color: "#111827" }}>Days:</strong> {viewingTemplate.number_of_days}
               </span>
               {viewingTemplate.description && (
-                <span style={{ color: "#999", fontSize: "13px" }}>
-                  <strong>Description:</strong> {viewingTemplate.description}
+                <span style={{ color: "#4b5563", fontSize: "13px" }}>
+                  <strong style={{ color: "#111827" }}>Description:</strong> {viewingTemplate.description}
                 </span>
               )}
             </div>
@@ -472,7 +480,7 @@ export default function AssignTemplate() {
                     padding: "1rem",
                   }}
                 >
-                  <h4 style={{ color: "white", fontSize: "15px", fontWeight: "600", marginBottom: "1rem", margin: 0 }}>
+                  <h4 style={{ color: "#10b981", fontSize: "15px", fontWeight: "700", marginBottom: "1rem", margin: 0 }}>
                     Day {day.day_number}
                   </h4>
 
@@ -484,11 +492,11 @@ export default function AssignTemplate() {
                         padding: "0.75rem",
                       }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                        <span style={{ color: "white", fontSize: "14px", fontWeight: "600" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem", borderBottom: "1px solid #f3f4f6", paddingBottom: "4px" }}>
+                        <span style={{ color: "#111827", fontSize: "14px", fontWeight: "700" }}>
                           {meal.title}
                         </span>
-                        <span style={{ color: "#999", fontSize: "12px" }}>{meal.time}</span>
+                        <span style={{ color: "#6b7280", fontSize: "12px", fontWeight: "500" }}>{meal.time}</span>
                       </div>
 
                       {meal.foods && meal.foods.map((food, foodIndex) => (
@@ -499,15 +507,15 @@ export default function AssignTemplate() {
                             padding: "0.5rem",
                           }}
                         >
-                          <div style={{ color: "#ccc", fontSize: "13px", marginBottom: "0.5rem" }}>
+                          <div style={{ color: "#374151", fontSize: "13px", marginBottom: "0.5rem", fontWeight: "600" }}>
                             {food.name || food.name_quantity}
                             {(food.quantity !== undefined && food.quantity !== null && food.quantity !== "") ? ` (Qty: ${food.quantity})` : ""}
                           </div>
-                          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", fontSize: "12px", color: "#999" }}>
-                            <span>Cal: {food.nutrition?.calories || 0}</span>
-                            <span>Protein: {food.nutrition?.protein || 0}g</span>
-                            <span>Fat: {food.nutrition?.fat || 0}g</span>
-                            <span>Carbs: {food.nutrition?.carbs || 0}g</span>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", fontSize: "12px", color: "#6b7280" }}>
+                            <span>Cal: <strong style={{ color: "#111827" }}>{food.nutrition?.calories || 0}</strong></span>
+                            <span>Protein: <strong style={{ color: "#111827" }}>{food.nutrition?.protein || 0}g</strong></span>
+                            <span>Fat: <strong style={{ color: "#111827" }}>{food.nutrition?.fat || 0}g</strong></span>
+                            <span>Carbs: <strong style={{ color: "#111827" }}>{food.nutrition?.carbs || 0}g</strong></span>
                             <span>Fiber: {food.nutrition?.fiber || 0}g</span>
                             <span>Sugar: {food.nutrition?.sugar || 0}g</span>
                             <span>Sodium: {food.nutrition?.sodium || 0}mg</span>
@@ -528,13 +536,14 @@ export default function AssignTemplate() {
               <button
                 onClick={() => setViewingTemplate(null)}
                 style={{
-                  background: "#FF5757",
+                  background: "#10b981",
                   border: "none",
                   color: "white",
                   padding: "8px 20px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   cursor: "pointer",
                   fontSize: "13px",
+                  fontWeight: "600"
                 }}
               >
                 Close

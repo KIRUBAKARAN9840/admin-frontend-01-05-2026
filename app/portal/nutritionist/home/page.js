@@ -316,17 +316,17 @@ export default function Home() {
   const getStatusStyle = (status) => {
     switch (status) {
       case "Pending":
-        return { color: "#FFA500", backgroundColor: "rgba(255, 165, 0, 0.1)" };
+        return { color: "#d97706", backgroundColor: "#fffbeb" };
       case "Scheduled":
-        return { color: "#4CAF50", backgroundColor: "rgba(76, 175, 80, 0.1)" };
+        return { color: "#059669", backgroundColor: "#ecfdf5" };
       case "Booked":
-        return { color: "#4CAF50", backgroundColor: "rgba(76, 175, 80, 0.1)" };
+        return { color: "#059669", backgroundColor: "#ecfdf5" };
       case "Rescheduled":
-        return { color: "#2196F3", backgroundColor: "rgba(33, 150, 243, 0.1)" };
+        return { color: "#2563eb", backgroundColor: "#eff6ff" };
       case "Completed":
-        return { color: "#00C853", backgroundColor: "rgba(0, 200, 83, 0.1)" };
+        return { color: "#059669", backgroundColor: "#ecfdf5" };
       default:
-        return { color: "#999", backgroundColor: "rgba(153, 153, 153, 0.1)" };
+        return { color: "#6b7280", backgroundColor: "#f3f4f6" };
     }
   };
 
@@ -374,13 +374,14 @@ export default function Home() {
             style={{
               fontSize: "16px",
               fontWeight: "600",
-              color: "white",
+              color: "#111827",
               margin: 0,
             }}
           >
             {monthData.month}
           </h3>
-        </div>
+          
+      </div>
 
         {/* Week day headers */}
         <div
@@ -404,10 +405,12 @@ export default function Home() {
                 }}
               >
                 {day}
-              </div>
+                
+      </div>
             )
           )}
-        </div>
+          
+      </div>
 
         {/* Calendar grid */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -442,14 +445,14 @@ export default function Home() {
                     onClick={() => handleDateClick(date)}
                     style={{
                       background: selected
-                        ? "#FF5757"
+                        ? "#10b981"
                         : isToday
-                        ? "#2a2a2a"
-                        : "#252525",
+                        ? "#ecfdf5"
+                        : "#ffffff",
                       border:
                         isToday && !selected
-                          ? "2px solid #FF5757"
-                          : "1px solid #333",
+                          ? "2px solid #10b981"
+                          : "1px solid #e5e7eb",
                       borderRadius: "8px",
                       padding: "12px 8px",
                       textAlign: "center",
@@ -463,14 +466,14 @@ export default function Home() {
                     }}
                     onMouseEnter={(e) => {
                       if (!selected) {
-                        e.currentTarget.style.background = "#2a2a2a";
+                        e.currentTarget.style.background = "#f9fafb";
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!selected) {
                         e.currentTarget.style.background = isToday
-                          ? "#2a2a2a"
-                          : "#252525";
+                          ? "#ecfdf5"
+                          : "#ffffff";
                       }
                     }}
                   >
@@ -480,31 +483,37 @@ export default function Home() {
                         color: selected
                           ? "white"
                           : isToday
-                          ? "#FF5757"
-                          : "#ccc",
+                          ? "#10b981"
+                          : "#374151",
                         fontWeight: "600",
                         marginBottom: count > 0 ? "4px" : "0",
                       }}
                     >
                       {date.getDate()}
-                    </div>
+                      
+      </div>
                     {count > 0 && (
                       <div
                         style={{
                           fontSize: "14px",
-                          color: selected ? "white" : "#FF5757",
+                          color: selected ? "white" : "#10b981",
                           fontWeight: "600",
                         }}
                       >
                         {count} session{count > 1 ? "s" : ""}
-                      </div>
+                        
+      </div>
                     )}
-                  </div>
+                    
+      </div>
                 );
               })}
-            </div>
+              
+      </div>
           ))}
-        </div>
+          
+      </div>
+        
       </div>
     );
   };
@@ -513,8 +522,10 @@ export default function Home() {
     return (
       <div className="users-container">
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
-          <div style={{ color: "#FF5757", fontSize: "18px" }}>Loading calendar...</div>
-        </div>
+          <div style={{ color: "#10b981", fontSize: "18px" }}>Loading calendar...</div>
+          
+      </div>
+        
       </div>
     );
   }
@@ -524,7 +535,9 @@ export default function Home() {
       <div className="users-container">
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
           <div style={{ color: "#ff4444", fontSize: "16px" }}>{error}</div>
-        </div>
+          
+      </div>
+        
       </div>
     );
   }
@@ -533,23 +546,26 @@ export default function Home() {
     <div className="users-container">
       <div className="users-header">
         <h2 className="users-title">
-          <span style={{ color: "#FF5757" }}>Session</span> Calendar
+          <span style={{ color: "#10b981" }}>Session</span> Calendar
         </h2>
+        
       </div>
 
       {/* Calendar */}
       <div
         style={{
-          background: "#1e1e1e",
-          border: "1px solid #333",
-          borderRadius: "8px",
-          padding: "1.5rem",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
+          borderRadius: "12px",
+          padding: "2rem",
           marginBottom: "2rem",
+          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)",
         }}
       >
         {monthsData.map((monthData) => (
           <div key={monthData.month}>{renderMonth(monthData)}</div>
         ))}
+        
       </div>
 
       {/* Sessions Table */}
@@ -557,9 +573,10 @@ export default function Home() {
         <div className="table-container">
           <h3
             style={{
-              color: "white",
+              color: "#111827",
               marginBottom: "1rem",
-              fontSize: "16px",
+              fontSize: "18px",
+              fontWeight: "700",
               padding: "10px",
             }}
           >
@@ -569,7 +586,8 @@ export default function Home() {
           {sessionsLoading ? (
             <div style={{ display: "flex", justifyContent: "center", padding: "2rem", color: "#999" }}>
               Loading sessions...
-            </div>
+              
+      </div>
           ) : (
             <div className="table-responsive">
               <table className="users-table">
@@ -603,14 +621,14 @@ export default function Home() {
                                 router.push(`/portal/nutritionist/client/${session.client_id}`);
                               }}
                               style={{
-                                color: "#FF5757",
+                                color: "#10b981",
                                 cursor: "pointer",
                                 textDecoration: "underline",
                                 textDecorationColor: "transparent",
                                 transition: "textDecorationColor 0.2s"
                               }}
                               onMouseEnter={(e) => {
-                                e.currentTarget.style.textDecorationColor = "#FF5757";
+                                e.currentTarget.style.textDecorationColor = "#10b981";
                               }}
                               onMouseLeave={(e) => {
                                 e.currentTarget.style.textDecorationColor = "transparent";
@@ -637,13 +655,23 @@ export default function Home() {
                                   handleGenerateLink(session.id);
                                 }}
                                 style={{
-                                  background: "#FF5757",
-                                  border: "none",
-                                  color: "white",
+                                  background: "rgba(16, 185, 129, 0.1)",
+                                  border: "1px solid #10b981",
+                                  color: "#10b981",
                                   padding: "6px 12px",
-                                  borderRadius: "4px",
+                                  borderRadius: "6px",
                                   cursor: "pointer",
                                   fontSize: "12px",
+                                  fontWeight: "600",
+                                  transition: "all 0.2s"
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.background = "#10b981";
+                                  e.currentTarget.style.color = "white";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.background = "rgba(16, 185, 129, 0.1)";
+                                  e.currentTarget.style.color = "#10b981";
                                 }}
                               >
                                 Generate Link
@@ -668,15 +696,16 @@ export default function Home() {
                                     }
                                   }}
                                   style={{
-                                    background: session.status === "Completed" ? "#4b5563" : "#10b981",
+                                    background: "#10b981",
                                     border: "none",
                                     color: "white",
                                     padding: "6px 12px",
-                                    borderRadius: "4px",
-                                    textDecoration: "none",
+                                    borderRadius: "6px",
+                                    cursor: "pointer",
                                     fontSize: "12px",
-                                    cursor: session.status === "Completed" ? "not-allowed" : "pointer",
+                                    fontWeight: "600",
                                     opacity: session.status === "Completed" ? 0.5 : 1,
+                                    cursor: session.status === "Completed" ? "not-allowed" : "pointer"
                                   }}
                                 >
                                   Join Meeting
@@ -690,7 +719,7 @@ export default function Home() {
                                   style={{
                                     background: "transparent",
                                     border: "1px solid #374151",
-                                    color: "#9ca3af",
+                                    color: "#6b7280",
                                     padding: "6px 8px",
                                     borderRadius: "4px",
                                     cursor: session.status === "Completed" ? "not-allowed" : "pointer",
@@ -701,7 +730,8 @@ export default function Home() {
                                 >
                                   <FaEdit size={12} />
                                 </button>
-                              </div>
+                                
+      </div>
                             )}
                           </td>
                           <td>
@@ -711,22 +741,23 @@ export default function Home() {
                                 router.push(`/portal/nutritionist/consultation/${session.client_id}`);
                               }}
                               style={{
-                                background: "rgba(255, 87, 87, 0.1)",
-                                border: "1px solid #FF5757",
-                                color: "#FF5757",
+                                background: "rgba(16, 185, 129, 0.1)",
+                                border: "1px solid #10b981",
+                                color: "#10b981",
                                 padding: "6px 12px",
-                                borderRadius: "4px",
+                                borderRadius: "6px",
                                 cursor: "pointer",
                                 fontSize: "12px",
+                                fontWeight: "600",
                                 transition: "all 0.2s"
                               }}
                               onMouseEnter={(e) => {
-                                e.currentTarget.style.background = "#FF5757";
+                                e.currentTarget.style.background = "#10b981";
                                 e.currentTarget.style.color = "white";
                               }}
                               onMouseLeave={(e) => {
-                                e.currentTarget.style.background = "rgba(255, 87, 87, 0.1)";
-                                e.currentTarget.style.color = "#FF5757";
+                                e.currentTarget.style.background = "rgba(16, 185, 129, 0.1)";
+                                e.currentTarget.style.color = "#10b981";
                               }}
                             >
                               Comments
@@ -744,19 +775,19 @@ export default function Home() {
                                   padding: "6px 14px",
                                   borderRadius: "12px",
                                   fontSize: "12px",
-                                  fontWeight: "600",
-                                  border: "2px solid #4CAF50",
+                                  fontWeight: "700",
+                                  border: "2px solid #10b981",
                                   cursor: "pointer",
                                   transition: "all 0.2s",
-                                  boxShadow: "0 2px 4px rgba(76, 175, 80, 0.2)",
+                                  boxShadow: "0 2px 4px rgba(16, 185, 129, 0.2)",
                                 }}
                                 onMouseEnter={(e) => {
                                   e.currentTarget.style.transform = "scale(1.05)";
-                                  e.currentTarget.style.boxShadow = "0 4px 8px rgba(76, 175, 80, 0.3)";
+                                  e.currentTarget.style.boxShadow = "0 4px 8px rgba(16, 185, 129, 0.3)";
                                 }}
                                 onMouseLeave={(e) => {
                                   e.currentTarget.style.transform = "scale(1)";
-                                  e.currentTarget.style.boxShadow = "0 2px 4px rgba(76, 175, 80, 0.2)";
+                                  e.currentTarget.style.boxShadow = "0 2px 4px rgba(16, 185, 129, 0.2)";
                                 }}
                               >
                                 Complete ✓
@@ -816,9 +847,10 @@ export default function Home() {
                             <td colSpan="7">
                               <div
                                 style={{
-                                  background: "#252525",
+                                  background: "#f9fafb",
                                   padding: "1rem",
-                                  borderRadius: "4px",
+                                  borderRadius: "8px",
+                                  border: "1px solid #e5e7eb",
                                   display: "grid",
                                   gridTemplateColumns: session.rescheduled_at ? "repeat(3, 1fr)" : "repeat(5, 1fr)",
                                   gap: "1rem",
@@ -828,14 +860,16 @@ export default function Home() {
                                   <div
                                     style={{
                                       fontSize: "11px",
-                                      color: "#999",
+                                      color: "#6b7280",
                                       marginBottom: "4px",
+                                      fontWeight: "600",
+                                      textTransform: "uppercase",
                                     }}
                                   >
                                     Client ID
                                   </div>
                                   <div
-                                    style={{ fontSize: "14px", color: "#ccc" }}
+                                    style={{ fontSize: "14px", color: "#111827", fontWeight: "600" }}
                                   >
                                     {session.client_id || "-"}
                                   </div>
@@ -844,14 +878,16 @@ export default function Home() {
                                   <div
                                     style={{
                                       fontSize: "11px",
-                                      color: "#999",
+                                      color: "#6b7280",
                                       marginBottom: "4px",
+                                      fontWeight: "600",
+                                      textTransform: "uppercase",
                                     }}
                                   >
                                     Booking ID
                                   </div>
                                   <div
-                                    style={{ fontSize: "14px", color: "#ccc" }}
+                                    style={{ fontSize: "14px", color: "#111827", fontWeight: "600" }}
                                   >
                                     {session.id || "-"}
                                   </div>
@@ -862,20 +898,21 @@ export default function Home() {
                                       <div
                                         style={{
                                           fontSize: "11px",
-                                          color: "#2196F3",
+                                          color: "#2563eb",
                                           marginBottom: "4px",
                                           fontWeight: "600",
+                                          textTransform: "uppercase",
                                         }}
                                       >
                                         Original Schedule
                                       </div>
                                       <div
-                                        style={{ fontSize: "13px", color: "#ccc" }}
+                                        style={{ fontSize: "13px", color: "#374151", fontWeight: "500" }}
                                       >
                                         {session.original_date || "-"}
                                       </div>
                                       <div
-                                        style={{ fontSize: "13px", color: "#ccc", marginTop: "2px" }}
+                                        style={{ fontSize: "13px", color: "#374151", marginTop: "2px" }}
                                       >
                                         {session.original_slot || "-"}
                                       </div>
@@ -884,15 +921,16 @@ export default function Home() {
                                       <div
                                         style={{
                                           fontSize: "11px",
-                                          color: "#4CAF50",
+                                          color: "#059669",
                                           marginBottom: "4px",
                                           fontWeight: "600",
+                                          textTransform: "uppercase",
                                         }}
                                       >
                                         Rescheduled To
                                       </div>
                                       <div
-                                        style={{ fontSize: "13px", color: "#ccc" }}
+                                        style={{ fontSize: "13px", color: "#374151", fontWeight: "500" }}
                                       >
                                         {session.rescheduled_at ? new Date(session.rescheduled_at).toLocaleDateString("en-IN", {
                                           day: "2-digit",
@@ -901,7 +939,7 @@ export default function Home() {
                                         }) : "-"}
                                       </div>
                                       <div
-                                        style={{ fontSize: "13px", color: "#ccc", marginTop: "2px" }}
+                                        style={{ fontSize: "13px", color: "#374151", marginTop: "2px" }}
                                       >
                                         {session.slot || "-"}
                                       </div>
@@ -910,14 +948,16 @@ export default function Home() {
                                       <div
                                         style={{
                                           fontSize: "11px",
-                                          color: "#999",
+                                          color: "#6b7280",
                                           marginBottom: "4px",
+                                          fontWeight: "600",
+                                          textTransform: "uppercase",
                                         }}
                                       >
                                         Reschedule Reason
                                       </div>
                                       <div
-                                        style={{ fontSize: "13px", color: "#ccc" }}
+                                        style={{ fontSize: "13px", color: "#374151" }}
                                       >
                                         {session.reschedule_reason || "-"}
                                       </div>
@@ -929,26 +969,28 @@ export default function Home() {
                                       <div
                                         style={{
                                           fontSize: "11px",
-                                          color: "#999",
+                                          color: "#6b7280",
                                           marginBottom: "4px",
+                                          fontWeight: "600",
+                                          textTransform: "uppercase",
                                         }}
                                       >
                                         Meeting Link
                                       </div>
                                       <div
-                                        style={{ fontSize: "14px", color: "#ccc" }}
+                                        style={{ fontSize: "14px", color: "#111827" }}
                                       >
                                         {session.meeting_link ? (
                                           <a
                                             href={session.meeting_link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            style={{ color: "#4CAF50" }}
+                                            style={{ color: "#10b981", fontWeight: "600" }}
                                           >
-                                            Link
+                                            Open Link
                                           </a>
                                         ) : (
-                                          "-"
+                                          <span style={{ color: "#9ca3af" }}>Not generated</span>
                                         )}
                                       </div>
                                     </div>
@@ -969,9 +1011,11 @@ export default function Home() {
                   )}
                 </tbody>
               </table>
-            </div>
+              
+      </div>
           )}
-        </div>
+          
+      </div>
       )}
 
       {/* Completion Modal */}
@@ -992,32 +1036,34 @@ export default function Home() {
         >
           <div
             style={{
-              background: "#1e1e1e",
-              border: "1px solid #333",
-              borderRadius: "8px",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
+              borderRadius: "12px",
               padding: "2rem",
               minWidth: "400px",
-              maxWidth: "500px",
+              maxWidth: "600px",
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
             }}
           >
             <h3
               style={{
-                color: "white",
+                color: "#111827",
                 marginBottom: "1.5rem",
-                fontSize: "18px",
-                fontWeight: "600",
+                fontSize: "20px",
+                fontWeight: "700",
               }}
             >
-              Complete Session
+              Complete Meeting
             </h3>
 
             <div style={{ marginBottom: "1rem" }}>
               <label
                 style={{
                   display: "block",
-                  color: "#ccc",
+                  color: "#4b5563",
                   fontSize: "13px",
                   marginBottom: "0.5rem",
+                  fontWeight: "600"
                 }}
               >
                 Meeting Duration
@@ -1031,23 +1077,25 @@ export default function Home() {
                 }
                 style={{
                   width: "100%",
-                  background: "#252525",
-                  border: "1px solid #444",
-                  color: "white",
+                  background: "#ffffff",
+                  border: "1px solid #d1d5db",
+                  color: "#111827",
                   padding: "8px 12px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   fontSize: "14px",
                 }}
               />
-            </div>
+              
+      </div>
 
             <div style={{ marginBottom: "1rem" }}>
               <label
                 style={{
                   display: "block",
-                  color: "#ccc",
+                  color: "#4b5563",
                   fontSize: "13px",
                   marginBottom: "0.5rem",
+                  fontWeight: "600"
                 }}
               >
                 Feedback/Advice
@@ -1064,24 +1112,25 @@ export default function Home() {
                 placeholder="Enter your feedback or advice for the client..."
                 style={{
                   width: "100%",
-                  background: "#252525",
-                  border: "1px solid #444",
-                  color: "white",
+                  background: "#ffffff",
+                  border: "1px solid #d1d5db",
+                  color: "#111827",
                   padding: "8px 12px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   fontSize: "14px",
-                  resize: "vertical",
                 }}
               />
-            </div>
+              
+      </div>
 
             <div style={{ marginBottom: "1.5rem" }}>
               <label
                 style={{
                   display: "block",
-                  color: "#ccc",
+                  color: "#4b5563",
                   fontSize: "13px",
                   marginBottom: "0.5rem",
+                  fontWeight: "600"
                 }}
               >
                 Interested in Nutrition Product
@@ -1143,16 +1192,19 @@ export default function Home() {
                   />
                   No
                 </label>
-              </div>
-            </div>
+                
+      </div>
+              
+      </div>
 
             <div style={{ marginBottom: "1.5rem" }}>
               <label
                 style={{
                   display: "block",
-                  color: "#ccc",
+                  color: "#4b5563",
                   fontSize: "13px",
                   marginBottom: "0.5rem",
+                  fontWeight: "600"
                 }}
               >
                 Assign Diet Template (Optional)
@@ -1167,11 +1219,11 @@ export default function Home() {
                 }
                 style={{
                   width: "100%",
-                  background: "#252525",
-                  border: "1px solid #444",
-                  color: "white",
+                  background: "#ffffff",
+                  border: "1px solid #d1d5db",
+                  color: "#111827",
                   padding: "8px 12px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   fontSize: "14px",
                   cursor: "pointer",
                 }}
@@ -1183,7 +1235,8 @@ export default function Home() {
                   </option>
                 ))}
               </select>
-            </div>
+              
+      </div>
 
             <div
               style={{
@@ -1199,23 +1252,8 @@ export default function Home() {
                 }}
                 style={{
                   background: "transparent",
-                  border: "1px solid #444",
-                  color: "white",
-                  padding: "8px 20px",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  fontSize: "13px",
-                  fontWeight: "500",
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={submitCompletion}
-                style={{
-                  background: "#FF5757",
-                  border: "none",
-                  color: "white",
+                  border: "1px solid #d1d5db",
+                  color: "#4b5563",
                   padding: "8px 20px",
                   borderRadius: "6px",
                   cursor: "pointer",
@@ -1223,11 +1261,30 @@ export default function Home() {
                   fontWeight: "600",
                 }}
               >
+                Cancel
+              </button>
+              <button
+                onClick={submitCompletion}
+                style={{
+                  background: "#10b981",
+                  border: "none",
+                  color: "white",
+                  padding: "8px 20px",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: "700",
+                  boxShadow: "0 4px 6px -1px rgba(16, 185, 129, 0.3)"
+                }}
+              >
                 Submit
               </button>
-            </div>
-          </div>
-        </div>
+              
+      </div>
+            
+      </div>
+          
+      </div>
       )}
 
       {/* Reschedule Modal */}
@@ -1248,20 +1305,21 @@ export default function Home() {
         >
           <div
             style={{
-              background: "#1e1e1e",
-              border: "1px solid #333",
-              borderRadius: "8px",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
+              borderRadius: "12px",
               padding: "2rem",
               minWidth: "400px",
               maxWidth: "500px",
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
             }}
           >
             <h3
               style={{
-                color: "white",
+                color: "#111827",
                 marginBottom: "1.5rem",
-                fontSize: "18px",
-                fontWeight: "600",
+                fontSize: "20px",
+                fontWeight: "700",
               }}
             >
               Reschedule Meeting
@@ -1271,9 +1329,10 @@ export default function Home() {
               <label
                 style={{
                   display: "block",
-                  color: "#ccc",
+                  color: "#4b5563",
                   fontSize: "13px",
                   marginBottom: "0.5rem",
+                  fontWeight: "600"
                 }}
               >
                 Date
@@ -1286,23 +1345,25 @@ export default function Home() {
                 }
                 style={{
                   width: "100%",
-                  background: "#252525",
-                  border: "1px solid #444",
-                  color: "white",
+                  background: "#ffffff",
+                  border: "1px solid #d1d5db",
+                  color: "#111827",
                   padding: "8px 12px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   fontSize: "14px",
                 }}
               />
-            </div>
+              
+      </div>
 
             <div style={{ marginBottom: "1rem" }}>
               <label
                 style={{
                   display: "block",
-                  color: "#ccc",
+                  color: "#4b5563",
                   fontSize: "13px",
                   marginBottom: "0.5rem",
+                  fontWeight: "600"
                 }}
               >
                 Time
@@ -1315,23 +1376,25 @@ export default function Home() {
                 }
                 style={{
                   width: "100%",
-                  background: "#252525",
-                  border: "1px solid #444",
-                  color: "white",
+                  background: "#ffffff",
+                  border: "1px solid #d1d5db",
+                  color: "#111827",
                   padding: "8px 12px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   fontSize: "14px",
                 }}
               />
-            </div>
+              
+      </div>
 
             <div style={{ marginBottom: "1.5rem" }}>
               <label
                 style={{
                   display: "block",
-                  color: "#ccc",
+                  color: "#4b5563",
                   fontSize: "13px",
                   marginBottom: "0.5rem",
+                  fontWeight: "600"
                 }}
               >
                 Reason
@@ -1347,16 +1410,16 @@ export default function Home() {
                 rows={3}
                 style={{
                   width: "100%",
-                  background: "#252525",
-                  border: "1px solid #444",
-                  color: "white",
+                  background: "#ffffff",
+                  border: "1px solid #d1d5db",
+                  color: "#111827",
                   padding: "8px 12px",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
                   fontSize: "14px",
-                  resize: "vertical",
                 }}
               />
-            </div>
+              
+      </div>
 
             <div
               style={{
@@ -1372,23 +1435,8 @@ export default function Home() {
                 }}
                 style={{
                   background: "transparent",
-                  border: "1px solid #444",
-                  color: "white",
-                  padding: "8px 20px",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  fontSize: "13px",
-                  fontWeight: "500",
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={submitReschedule}
-                style={{
-                  background: "#FF5757",
-                  border: "none",
-                  color: "white",
+                  border: "1px solid #d1d5db",
+                  color: "#4b5563",
                   padding: "8px 20px",
                   borderRadius: "6px",
                   cursor: "pointer",
@@ -1396,11 +1444,30 @@ export default function Home() {
                   fontWeight: "600",
                 }}
               >
+                Cancel
+              </button>
+              <button
+                onClick={submitReschedule}
+                style={{
+                  background: "#10b981",
+                  border: "none",
+                  color: "white",
+                  padding: "8px 20px",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: "700",
+                  boxShadow: "0 4px 6px -1px rgba(16, 185, 129, 0.3)"
+                }}
+              >
                 Reschedule
               </button>
-            </div>
-          </div>
-        </div>
+              
+      </div>
+            
+      </div>
+          
+      </div>
       )}
     </div>
   );
