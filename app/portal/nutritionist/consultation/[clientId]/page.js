@@ -11,6 +11,8 @@ import {
   HiOutlineClock,
   HiOutlineStar,
   HiOutlineLightningBolt,
+  HiOutlineBeaker,
+  HiOutlineChartBar,
   HiCheck
 } from "react-icons/hi";
 import axios from "@/lib/axios";
@@ -231,8 +233,99 @@ export default function ConsultationForm() {
     </div>
   );
 
+  const SectionIcon = ({ icon: Icon }) => (
+    <Icon size={18} style={{ color: "inherit" }} />
+  );
+
+  const sections = [
+    { id: "section-profile",      label: "Profile",      icon: HiOutlineUser },
+    { id: "section-body",         label: "Body",         icon: HiOutlineScale },
+    { id: "section-biochemical",  label: "Biochemical",  icon: HiOutlineBeaker },
+    { id: "section-symptoms",     label: "Symptoms",     icon: HiOutlineHeart },
+    { id: "section-dietary",      label: "Dietary",      icon: HiOutlineClock },
+    { id: "section-lifestyle",    label: "Lifestyle",    icon: HiOutlineStar },
+    { id: "section-movement",     label: "Movement",     icon: HiOutlineLightningBolt },
+    { id: "section-goals",        label: "Goals",        icon: HiOutlineChartBar },
+  ];
+
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <div style={{ backgroundColor: "#f9fafb", minHeight: "100vh", padding: "60px 20px" }}>
+
+      {/* Fixed Section Navigation - Right Side */}
+      <div style={{
+        position: "fixed",
+        right: "16px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        zIndex: 1000,
+        display: "flex",
+        flexDirection: "column",
+        gap: "4px",
+        backgroundColor: "#111827",
+        borderRadius: "18px",
+        padding: "12px 8px",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+        border: "1px solid #1f2937",
+      }}>
+        {/* Emerald top accent bar */}
+        <div style={{
+          width: "32px",
+          height: "3px",
+          backgroundColor: "#10b981",
+          borderRadius: "4px",
+          margin: "0 auto 8px auto",
+        }} />
+        {sections.map((s) => (
+          <button
+            key={s.id}
+            onClick={() => scrollToSection(s.id)}
+            title={s.label}
+            style={{
+              background: "transparent",
+              border: "none",
+              borderRadius: "12px",
+              padding: "7px 10px",
+              cursor: "pointer",
+              fontSize: "10px",
+              fontWeight: "700",
+              color: "#9ca3af",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "3px",
+              transition: "all 0.15s ease",
+              minWidth: "52px",
+              lineHeight: "1.2",
+              letterSpacing: "0.3px",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(16, 185, 129, 0.15)";
+              e.currentTarget.style.color = "#10b981";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.color = "#9ca3af";
+            }}
+          >
+            <SectionIcon icon={s.icon} />
+            <span>{s.label}</span>
+          </button>
+        ))}
+        {/* Emerald bottom accent dot */}
+        <div style={{
+          width: "6px",
+          height: "6px",
+          backgroundColor: "#10b981",
+          borderRadius: "50%",
+          margin: "8px auto 0 auto",
+        }} />
+      </div>
+
       <div style={{ maxWidth: "900px", margin: "0 auto" }}>
         
         {/* Top Header */}
@@ -305,7 +398,7 @@ export default function ConsultationForm() {
         <form onSubmit={handleSubmit}>
           
           {/* Section 1: Client Profile */}
-          <div style={sectionWrapper}>
+          <div id="section-profile" style={sectionWrapper}>
             <SectionTitle icon={HiOutlineUser} title="Client Profile" sub="General information and health objectives" />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px" }}>
               <div style={{ gridColumn: "span 2" }}>
@@ -336,7 +429,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Section 2: Body Metrics */}
-          <div style={sectionWrapper}>
+          <div id="section-body" style={sectionWrapper}>
             <SectionTitle icon={HiOutlineScale} title="Body Metrics" sub="Physical assessment and measurements" />
             
             <div style={{ borderRadius: "16px", overflow: "hidden", border: "1px solid #f3f4f6", marginBottom: "35px" }}>
@@ -447,7 +540,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Section 3: Biochemical */}
-          <div style={sectionWrapper}>
+          <div id="section-biochemical" style={sectionWrapper}>
             <SectionTitle icon={HiOutlineDocumentText} title="Biochemical Markers" sub="Blood work and metabolic status" />
             <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
               <div>
@@ -466,7 +559,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Section 4: Clinical Symptoms */}
-          <div style={sectionWrapper}>
+          <div id="section-symptoms" style={sectionWrapper}>
             <SectionTitle icon={HiOutlineHeart} title="Clinical Symptoms" sub="Physical manifestations and digestive health" />
             
             <div style={{ overflowX: "auto", marginBottom: "30px" }}>
@@ -534,7 +627,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Section 5: Dietary Habits */}
-          <div style={sectionWrapper}>
+          <div id="section-dietary" style={sectionWrapper}>
             <SectionTitle icon={HiOutlineClock} title="Dietary Habits" sub="Eating patterns and preferences" />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px", marginBottom: "25px" }}>
               <div>
@@ -601,7 +694,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Section 6: Lifestyle Habits */}
-          <div style={sectionWrapper}>
+          <div id="section-lifestyle" style={sectionWrapper}>
             <SectionTitle icon={HiOutlineStar} title="Lifestyle Habits" sub="Daily routine and habitual assessment" />
             
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "30px" }}>
@@ -646,7 +739,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Section 7: Movement & Activity */}
-          <div style={sectionWrapper}>
+          <div id="section-movement" style={sectionWrapper}>
             <SectionTitle icon={HiOutlineLightningBolt} title="Movement & Activity" sub="Physical activity and exercise patterns" />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px" }}>
               <div style={{ gridColumn: "span 2" }}>
@@ -708,7 +801,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Section 8: Goals & Expectations */}
-          <div style={sectionWrapper}>
+          <div id="section-goals" style={sectionWrapper}>
             <SectionTitle icon={HiOutlineStar} title="Goals & Expectations" sub="Final objectives and support requirements" />
             <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
               <div>
