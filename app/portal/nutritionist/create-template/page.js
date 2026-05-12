@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { FaTrash, FaSave, FaTimes } from "react-icons/fa";
+import { FaTrash, FaSave, FaTimes, FaClock } from "react-icons/fa";
 import axios from "@/lib/axios";
 
 const MEAL_TYPES = [
@@ -163,6 +163,30 @@ export default function CreateTemplate() {
     const newDietData = [...dietData];
     newDietData[dayIndex].meals[mealIndex][field] = value;
     setDietData(newDietData);
+  };
+
+  const handleTimePick = (dayIndex, mealIndex, timeValue) => {
+    if (!timeValue) return;
+    
+    const [hours, minutes] = timeValue.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0);
+    
+    const formatTime = (d) => {
+      let h = d.getHours();
+      let m = d.getMinutes();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12;
+      h = h ? h : 12;
+      const mStr = m < 10 ? `0${m}` : m;
+      return `${h}:${mStr} ${ampm}`;
+    };
+
+    const startTime = formatTime(date);
+    date.setMinutes(date.getMinutes() + 30);
+    const endTime = formatTime(date);
+    
+    updateMeal(dayIndex, mealIndex, "time", `${startTime} - ${endTime}`);
   };
 
   const addFood = (dayIndex, mealIndex) => {
@@ -768,21 +792,52 @@ export default function CreateTemplate() {
                             <label style={{ display: "block", color: "#4b5563", fontSize: "12px", marginBottom: "0.25rem", fontWeight: "500" }}>
                               Time *
                             </label>
-                            <input
-                              type="text"
-                              value={meal.time}
-                              onChange={(e) => updateMeal(dayIndex, mealIndex, "time", e.target.value)}
-                              placeholder="e.g., 6:30-7:00 AM"
-                              style={{
-                                width: "100%",
-                                background: "#f9fafb",
-                                border: "1px solid #d1d5db",
-                                color: "#111827",
-                                padding: "6px 10px",
-                                borderRadius: "6px",
-                                fontSize: "13px",
-                              }}
-                            />
+                            <div style={{ position: "relative" }}>
+                              <input
+                                type="text"
+                                value={meal.time}
+                                onChange={(e) => updateMeal(dayIndex, mealIndex, "time", e.target.value)}
+                                placeholder="e.g., 6:30-7:00 AM"
+                                style={{
+                                  width: "100%",
+                                  background: "#f9fafb",
+                                  border: "1px solid #d1d5db",
+                                  color: "#111827",
+                                  padding: "6px 10px",
+                                  paddingRight: "35px",
+                                  borderRadius: "6px",
+                                  fontSize: "13px",
+                                  outline: "none"
+                                }}
+                              />
+                              <div style={{
+                                position: "absolute",
+                                right: "0",
+                                top: "0",
+                                bottom: "0",
+                                width: "40px",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                cursor: "pointer",
+                                color: "#10b981"
+                              }}>
+                                <FaClock size={14} />
+                                <input
+                                  type="time"
+                                  onChange={(e) => handleTimePick(dayIndex, mealIndex, e.target.value)}
+                                  style={{
+                                    position: "absolute",
+                                    opacity: 0,
+                                    width: "100%",
+                                    height: "100%",
+                                    cursor: "pointer",
+                                    left: 0,
+                                    top: 0
+                                  }}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
 
