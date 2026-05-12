@@ -3,6 +3,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaTrash, FaSave, FaTimes } from "react-icons/fa";
 import axios from "@/lib/axios";
 
+const MEAL_TYPES = [
+  "Pre-Breakfast", "Breakfast", "Mid-Morning Snack", "Brunch", "Lunch", 
+  "Evening Snack", "Pre-Workout", "Post-Workout", "Dinner", 
+  "Late Night Snack", "Bedtime Drink", "Detox", "Snack", "Mini Meal"
+];
+
 export default function CreateTemplate() {
   const [view, setView] = useState("create"); // "create" or "list"
   const [templates, setTemplates] = useState([]);
@@ -58,20 +64,39 @@ export default function CreateTemplate() {
   };
 
   // Migrate old format to new format for backwards compatibility
-  const migrateFoodFormat = (food) => {
-    if (food.name && food.quantity !== undefined) {
-      return food; // Already new format
-    }
+  const migrateOldFoodFormat = (food) => {
     // Old format: name_quantity field
+    const nutrition = food.nutrition || {
+      calories: 0, protein: 0, fat: 0, carbs: 0,
+      fiber: 0, sugar: 0, sodium: 0, calcium: 0,
+      iron: 0, magnesium: 0, potassium: 0
+    };
     return {
       name: food.name_quantity || "",
       quantity: "",
-      nutrition: food.nutrition || {
-        calories: 0, protein: 0, fat: 0, carbs: 0,
-        fiber: 0, sugar: 0, sodium: 0, calcium: 0,
-        iron: 0, magnesium: 0, potassium: 0
-      }
+      base_nutrition: { ...nutrition },
+      nutrition: { ...nutrition }
     };
+  };
+
+  const migrateFoodFormat = (food) => {
+    if (food.name && food.quantity !== undefined) {
+      // Ensure base_nutrition is present for existing foods in new format
+      if (!food.base_nutrition && food.nutrition) {
+        const qty = parseFloat(food.quantity);
+        if (!isNaN(qty) && qty > 0) {
+          const base = {};
+          Object.keys(food.nutrition).forEach(k => {
+            base[k] = parseFloat(((food.nutrition[k] / qty) * 100).toFixed(2));
+          });
+          food.base_nutrition = base;
+        } else {
+          food.base_nutrition = { ...food.nutrition };
+        }
+      }
+      return food;
+    }
+    return migrateOldFoodFormat(food);
   };
 
   const migrateDietData = (dietData) => {
@@ -79,6 +104,7 @@ export default function CreateTemplate() {
       ...day,
       meals: day.meals.map(meal => ({
         ...meal,
+        isCustomTitle: meal.title && !MEAL_TYPES.includes(meal.title),
         foods: meal.foods.map(migrateFoodFormat)
       }))
     }));
@@ -167,10 +193,22 @@ export default function CreateTemplate() {
 
   const updateFood = (dayIndex, mealIndex, foodIndex, field, value) => {
     const newDietData = [...dietData];
-    if (field === "name" || field === "quantity") {
-      newDietData[dayIndex].meals[mealIndex].foods[foodIndex][field] = value;
+    const food = newDietData[dayIndex].meals[mealIndex].foods[foodIndex];
+    
+    if (field === "quantity") {
+      food.quantity = value;
+      // Recalculate nutrition proportionally if quantity is numeric
+      const numericQty = parseFloat(value);
+      if (!isNaN(numericQty) && food.base_nutrition) {
+        Object.keys(food.base_nutrition).forEach(k => {
+          const baseVal = food.base_nutrition[k] || 0;
+          food.nutrition[k] = parseFloat(((baseVal / 100) * numericQty).toFixed(2));
+        });
+      }
+    } else if (field === "name") {
+      food.name = value;
     } else {
-      newDietData[dayIndex].meals[mealIndex].foods[foodIndex].nutrition[field] = parseFloat(value) || 0;
+      food.nutrition[field] = parseFloat(value) || 0;
     }
     setDietData(newDietData);
   };
@@ -203,14 +241,24 @@ export default function CreateTemplate() {
   // Handle suggestion selection
   const selectFoodSuggestion = (suggestion, dayIndex, mealIndex, foodIndex) => {
     const newDietData = [...dietData];
+    const baseNutrition = suggestion.nutrition || {
+      calories: 0, protein: 0, fat: 0, carbs: 0,
+      fiber: 0, sugar: 0, sodium: 0, calcium: 0,
+      iron: 0, magnesium: 0, potassium: 0
+    };
+    const displayQty = suggestion.quantity || "100g";
+    const numericQty = parseFloat(displayQty) || 100;
+
+    const initialNutrition = {};
+    Object.keys(baseNutrition).forEach(k => {
+      initialNutrition[k] = parseFloat(((baseNutrition[k] / 100) * numericQty).toFixed(2));
+    });
+
     newDietData[dayIndex].meals[mealIndex].foods[foodIndex] = {
       name: suggestion.name,
-      quantity: suggestion.quantity || "",
-      nutrition: suggestion.nutrition || {
-        calories: 0, protein: 0, fat: 0, carbs: 0,
-        fiber: 0, sugar: 0, sodium: 0, calcium: 0,
-        iron: 0, magnesium: 0, potassium: 0
-      }
+      quantity: displayQty,
+      base_nutrition: { ...baseNutrition },
+      nutrition: initialNutrition
     };
     setDietData(newDietData);
 
@@ -611,21 +659,83 @@ export default function CreateTemplate() {
                             <label style={{ display: "block", color: "#4b5563", fontSize: "12px", marginBottom: "0.25rem", fontWeight: "500" }}>
                               Title *
                             </label>
-                            <input
-                              type="text"
-                              value={meal.title}
-                              onChange={(e) => updateMeal(dayIndex, mealIndex, "title", e.target.value)}
-                              placeholder="e.g., Pre workout"
-                              style={{
-                                width: "100%",
-                                background: "#f9fafb",
-                                border: "1px solid #d1d5db",
-                                color: "#111827",
-                                padding: "6px 10px",
-                                borderRadius: "6px",
-                                fontSize: "13px",
-                              }}
-                            />
+                            {!meal.isCustomTitle && (MEAL_TYPES.includes(meal.title) || meal.title === "") ? (
+                              <select
+                                value={meal.title}
+                                onChange={(e) => {
+                                  if (e.target.value === "Others") {
+                                    const newDietData = [...dietData];
+                                    newDietData[dayIndex].meals[mealIndex].isCustomTitle = true;
+                                    newDietData[dayIndex].meals[mealIndex].title = "";
+                                    setDietData(newDietData);
+                                  } else {
+                                    updateMeal(dayIndex, mealIndex, "title", e.target.value);
+                                  }
+                                }}
+                                style={{
+                                  width: "100%",
+                                  background: "#f9fafb",
+                                  border: "1px solid #d1d5db",
+                                  color: "#111827",
+                                  padding: "6px 10px",
+                                  borderRadius: "6px",
+                                  fontSize: "13px",
+                                  outline: "none",
+                                  cursor: "pointer"
+                                }}
+                              >
+                                <option value="">Select Meal Type</option>
+                                {MEAL_TYPES.map(type => (
+                                  <option key={type} value={type}>{type}</option>
+                                ))}
+                                <option value="Others">Others</option>
+                              </select>
+                            ) : (
+                              <div style={{ position: "relative" }}>
+                                <input
+                                  type="text"
+                                  value={meal.title}
+                                  onChange={(e) => updateMeal(dayIndex, mealIndex, "title", e.target.value)}
+                                  placeholder="Enter custom title"
+                                  style={{
+                                    width: "100%",
+                                    background: "#f9fafb",
+                                    border: "1px solid #d1d5db",
+                                    color: "#111827",
+                                    padding: "6px 10px",
+                                    borderRadius: "6px",
+                                    fontSize: "13px",
+                                    paddingRight: "30px",
+                                    outline: "none"
+                                  }}
+                                  autoFocus
+                                />
+                                <button
+                                  onClick={() => {
+                                    const newDietData = [...dietData];
+                                    newDietData[dayIndex].meals[mealIndex].isCustomTitle = false;
+                                    newDietData[dayIndex].meals[mealIndex].title = "";
+                                    setDietData(newDietData);
+                                  }}
+                                  style={{
+                                    position: "absolute",
+                                    right: "8px",
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                    background: "transparent",
+                                    border: "none",
+                                    color: "#9ca3af",
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    padding: "2px"
+                                  }}
+                                  title="Back to predefined list"
+                                >
+                                  <FaTimes size={12} />
+                                </button>
+                              </div>
+                            )}
                           </div>
                           <div>
                             <label style={{ display: "block", color: "#4b5563", fontSize: "12px", marginBottom: "0.25rem", fontWeight: "500" }}>
