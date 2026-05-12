@@ -28,6 +28,8 @@ export default function CreateTemplate() {
   const [searchingFood, setSearchingFood] = useState({});
   const [showSuggestions, setShowSuggestions] = useState({});
   const activeSuggestionRef = useRef({});
+  const [foodPagination, setFoodPagination] = useState({}); // { key: { page: 1, hasMore: true } }
+  const searchTimeoutRef = useRef({});
 
   // Fetch templates on list view
   useEffect(() => {
@@ -213,28 +215,53 @@ export default function CreateTemplate() {
     setDietData(newDietData);
   };
 
-  // Search foods for autocomplete
-  const searchFoods = async (query, dayIndex, mealIndex, foodIndex) => {
+  // Search foods for autocomplete with pagination
+  const searchFoods = async (query, dayIndex, mealIndex, foodIndex, page = 1) => {
     const key = `${dayIndex}-${mealIndex}-${foodIndex}`;
     if (!query || query.length < 1) {
       setFoodSuggestions(prev => ({ ...prev, [key]: [] }));
       setShowSuggestions(prev => ({ ...prev, [key]: false }));
+      setFoodPagination(prev => ({ ...prev, [key]: { page: 1, hasMore: false } }));
       return;
     }
 
     setSearchingFood(prev => ({ ...prev, [key]: true }));
 
     try {
-      const response = await axios.get(`/api/admin/nutritionist_diet_templates/food-search?query=${encodeURIComponent(query)}`);
+      const response = await axios.get(`/api/admin/nutritionist_diet_templates/food-search?query=${encodeURIComponent(query)}&page=${page}&limit=20`);
       if (response.data?.success) {
-        setFoodSuggestions(prev => ({ ...prev, [key]: response.data.data.foods || [] }));
+        const newFoods = response.data.data.foods || [];
+        setFoodSuggestions(prev => ({ 
+          ...prev, 
+          [key]: page === 1 ? newFoods : [...(prev[key] || []), ...newFoods] 
+        }));
+        
+        // If we got 20 items, there's likely more
+        setFoodPagination(prev => ({ 
+          ...prev, 
+          [key]: { page: page, hasMore: newFoods.length === 20 } 
+        }));
+        
         setShowSuggestions(prev => ({ ...prev, [key]: true }));
       }
     } catch (err) {
       console.error("Error searching foods:", err);
-      setFoodSuggestions(prev => ({ ...prev, [key]: [] }));
     } finally {
       setSearchingFood(prev => ({ ...prev, [key]: false }));
+    }
+  };
+
+  const handleSuggestionsScroll = (e, dayIndex, mealIndex, foodIndex) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - scrollTop <= clientHeight + 50) { // Near bottom
+      const key = `${dayIndex}-${mealIndex}-${foodIndex}`;
+      const pagination = foodPagination[key];
+      const food = dietData[dayIndex].meals[mealIndex].foods[foodIndex];
+      const query = food.name || food.name_quantity || "";
+      
+      if (pagination && pagination.hasMore && !searchingFood[key]) {
+        searchFoods(query, dayIndex, mealIndex, foodIndex, pagination.page + 1);
+      }
     }
   };
 
@@ -783,8 +810,17 @@ export default function CreateTemplate() {
                                   type="text"
                                   value={food.name || food.name_quantity || ""}
                                   onChange={(e) => {
-                                    updateFood(dayIndex, mealIndex, foodIndex, "name", e.target.value);
-                                    searchFoods(e.target.value, dayIndex, mealIndex, foodIndex);
+                                    const val = e.target.value;
+                                    updateFood(dayIndex, mealIndex, foodIndex, "name", val);
+                                    
+                                    const key = `${dayIndex}-${mealIndex}-${foodIndex}`;
+                                    if (searchTimeoutRef.current[key]) {
+                                      clearTimeout(searchTimeoutRef.current[key]);
+                                    }
+                                    
+                                    searchTimeoutRef.current[key] = setTimeout(() => {
+                                      searchFoods(val, dayIndex, mealIndex, foodIndex, 1);
+                                    }, 300);
                                   }}
                                   onKeyDown={(e) => {
                                     const key = `${dayIndex}-${mealIndex}-${foodIndex}`;
@@ -826,7 +862,9 @@ export default function CreateTemplate() {
                                         zIndex: 1000,
                                         marginTop: "4px",
                                         boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-                                      }}>
+                                      }}
+                                      onScroll={(e) => handleSuggestionsScroll(e, dayIndex, mealIndex, foodIndex)}
+                                      >
                                         {suggestions.map((s, idx) => (
                                           <div
                                             key={s.id}
@@ -844,6 +882,11 @@ export default function CreateTemplate() {
                                             <div style={{ fontSize: "10px", color: "#6b7280" }}>Cal: {s.nutrition?.calories || 0} | P: {s.nutrition?.protein || 0}g | C: {s.nutrition?.carbs || 0}g</div>
                                           </div>
                                         ))}
+                                        {searchingFood[key] && (
+                                          <div style={{ padding: "8px 10px", textAlign: "center", fontSize: "11px", color: "#6b7280", background: "#f9fafb" }}>
+                                            Loading more...
+                                          </div>
+                                        )}
                                       </div>
                                     );
                                   }
