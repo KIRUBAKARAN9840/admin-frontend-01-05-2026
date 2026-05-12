@@ -579,6 +579,7 @@ export default function Home() {
                     <th>Slot</th>
                     <th>Client Name</th>
                     <th>Meeting Link</th>
+                    <th>Comments</th>
                     <th>Status</th>
                     <th></th>
                   </tr>
@@ -623,7 +624,7 @@ export default function Home() {
                               <span
                                 style={{
                                   fontSize: "12px",
-                                  color: "#999",
+                                  color: "#9ca3af",
                                   fontStyle: "italic",
                                 }}
                               >
@@ -667,7 +668,7 @@ export default function Home() {
                                     }
                                   }}
                                   style={{
-                                    background: session.status === "Completed" ? "#666" : "#4CAF50",
+                                    background: session.status === "Completed" ? "#4b5563" : "#10b981",
                                     border: "none",
                                     color: "white",
                                     padding: "6px 12px",
@@ -688,8 +689,8 @@ export default function Home() {
                                   disabled={session.status === "Completed"}
                                   style={{
                                     background: "transparent",
-                                    border: "1px solid #444",
-                                    color: "#ccc",
+                                    border: "1px solid #374151",
+                                    color: "#9ca3af",
                                     padding: "6px 8px",
                                     borderRadius: "4px",
                                     cursor: session.status === "Completed" ? "not-allowed" : "pointer",
@@ -702,6 +703,34 @@ export default function Home() {
                                 </button>
                               </div>
                             )}
+                          </td>
+                          <td>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                router.push(`/portal/nutritionist/consultation/${session.client_id}`);
+                              }}
+                              style={{
+                                background: "rgba(255, 87, 87, 0.1)",
+                                border: "1px solid #FF5757",
+                                color: "#FF5757",
+                                padding: "6px 12px",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                fontSize: "12px",
+                                transition: "all 0.2s"
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = "#FF5757";
+                                e.currentTarget.style.color = "white";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = "rgba(255, 87, 87, 0.1)";
+                                e.currentTarget.style.color = "#FF5757";
+                              }}
+                            >
+                              Comments
+                            </button>
                           </td>
                           <td>
                             {session.status === "Scheduled" || session.status === "Pending" ? (
@@ -782,9 +811,9 @@ export default function Home() {
                             )}
                           </td>
                         </tr>
-                        {expandedRow === index && (
+                         {expandedRow === index && (
                           <tr>
-                            <td colSpan="6">
+                            <td colSpan="7">
                               <div
                                 style={{
                                   background: "#252525",
