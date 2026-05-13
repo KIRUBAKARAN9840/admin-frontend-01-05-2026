@@ -207,41 +207,20 @@ export default function FoodCollections() {
 
   return (
     <div style={{ padding: "2rem", backgroundColor: "#f9fafb", minHeight: "100vh" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
-        <div>
-          <h1 style={{ fontSize: "24px", fontWeight: "700", color: "#111827", margin: 0 }}>Food Collections</h1>
-          <p style={{ fontSize: "14px", color: "#6b7280", marginTop: "4px" }}>Manage and edit food database items</p>
-        </div>
-        <button
-          onClick={() => { resetModal(); setShowAddModal(true); }}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            backgroundColor: "#10b981",
-            color: "white",
-            padding: "10px 20px",
-            borderRadius: "8px",
-            border: "none",
-            fontWeight: "600",
-            cursor: "pointer",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-          }}
-        >
-          <FaPlus /> Add New Food
-        </button>
-      </div>
-
-      {/* Filters */}
+      {/* Filters & Actions - Sticky */}
       <div style={{ 
         display: "flex", 
         gap: "1rem", 
+        alignItems: "center",
         marginBottom: "1.5rem", 
         background: "white", 
-        padding: "1.5rem", 
+        padding: "1rem 1.5rem", 
         borderRadius: "12px", 
         border: "1px solid #e5e7eb",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
+        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+        position: "sticky",
+        top: "-0.5rem", // Slight offset to look better when stuck
+        zIndex: 100
       }}>
         <div style={{ flex: 2, position: "relative" }}>
           <FaSearch style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#9ca3af" }} />
@@ -280,6 +259,25 @@ export default function FoodCollections() {
             ))}
           </select>
         </div>
+        <button
+          onClick={() => { resetModal(); setShowAddModal(true); }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            backgroundColor: "#10b981",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            border: "none",
+            fontWeight: "600",
+            cursor: "pointer",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            whiteSpace: "nowrap"
+          }}
+        >
+          <FaPlus /> Add Food
+        </button>
       </div>
 
       {/* Table */}
