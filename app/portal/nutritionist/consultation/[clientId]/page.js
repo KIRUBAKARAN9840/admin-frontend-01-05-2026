@@ -254,7 +254,7 @@ export default function ConsultationForm() {
   };
 
   return (
-    <div style={{ backgroundColor: "#f9fafb", minHeight: "100vh", padding: "60px 20px" }}>
+    <div style={{ backgroundColor: "#f9fafb", minHeight: "100vh", padding: "15px" }}>
 
       {/* Fixed Section Navigation - Right Side */}
       <div style={{
@@ -329,7 +329,7 @@ export default function ConsultationForm() {
       <div style={{ maxWidth: "1000px", margin: "0 auto 0 20px" }}>
         
         {/* Top Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "50px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "25px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
             <button 
               onClick={() => router.back()}
