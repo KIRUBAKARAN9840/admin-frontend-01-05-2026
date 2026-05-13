@@ -8,7 +8,7 @@ const MEAL_TYPES = [
   "Evening Snack", "Pre-Workout", "Post-Workout", "Dinner", 
   "Late Night Snack", "Bedtime Drink", "Detox", "Snack", "Mini Meal"
 ];
-
+const DEFAULT_MEALS = ["Breakfast", "Lunch", "Evening Snack", "Dinner"];
 export default function CreateTemplate() {
   const [view, setView] = useState("create"); // "create" or "list"
   const [templates, setTemplates] = useState([]);
@@ -61,7 +61,12 @@ export default function CreateTemplate() {
     for (let i = 1; i <= days; i++) {
       data.push({
         day_number: i,
-        meals: []
+        meals: DEFAULT_MEALS.map(title => ({
+          title: title,
+          time: "",
+          foods: [],
+          isCustomTitle: false
+        }))
       });
       initialCollapsed.push(i);
     }
@@ -130,7 +135,12 @@ export default function CreateTemplate() {
     const newDayNumber = dietData.length + 1;
     const newDay = {
       day_number: newDayNumber,
-      meals: []
+      meals: DEFAULT_MEALS.map(title => ({
+        title: title,
+        time: "",
+        foods: [],
+        isCustomTitle: false
+      }))
     };
     setDietData([...dietData, newDay]);
     setNumberOfDays(newDayNumber);
