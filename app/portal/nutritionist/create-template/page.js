@@ -484,10 +484,10 @@ export default function CreateTemplate() {
       setLoading(true);
       const response = await axios.get(`/api/admin/nutritionist_diet_templates/template/${templateId}`);
       if (response.data?.success) {
-        const diet_data = migrateDietData(template.diet_data || []);
-        setViewingTemplate({ ...template, diet_data });
+        const data = response.data.data;
+        const diet_data = migrateDietData(data.diet_data || []);
+        setViewingTemplate({ ...data, diet_data });
         setCollapsedDays(diet_data.map(d => d.day_number));
-        setView("view");
       }
     } catch (err) {
       console.error("Error fetching template:", err);
@@ -495,6 +495,11 @@ export default function CreateTemplate() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const closeViewer = () => {
+    setViewingTemplate(null);
+    setView("list");
   };
 
   return (
@@ -1158,7 +1163,7 @@ export default function CreateTemplate() {
             justifyContent: "center",
             zIndex: 9999,
           }}
-          onClick={() => setViewingTemplate(null)}
+          onClick={closeViewer}
         >
           <div
             style={{
@@ -1179,7 +1184,7 @@ export default function CreateTemplate() {
                 {viewingTemplate.template_name}
               </h3>
               <button
-                onClick={() => setViewingTemplate(null)}
+                onClick={closeViewer}
                 style={{
                   background: "transparent",
                   border: "none",
@@ -1266,7 +1271,7 @@ export default function CreateTemplate() {
 
             <div style={{ marginTop: "1.5rem", textAlign: "right" }}>
               <button
-                onClick={() => setViewingTemplate(null)}
+                onClick={closeViewer}
                 style={{
                   background: "#10b981",
                   border: "none",

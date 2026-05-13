@@ -303,7 +303,6 @@ export default function FoodCollections() {
                 <th style={{ padding: "12px 16px", fontSize: "12px", fontWeight: "600", color: "#4b5563", textTransform: "uppercase" }}>Iron</th>
                 <th style={{ padding: "12px 16px", fontSize: "12px", fontWeight: "600", color: "#4b5563", textTransform: "uppercase" }}>Mag</th>
                 <th style={{ padding: "12px 16px", fontSize: "12px", fontWeight: "600", color: "#4b5563", textTransform: "uppercase" }}>Pot</th>
-                <th style={{ padding: "12px 16px", fontSize: "12px", fontWeight: "600", color: "#4b5563", textTransform: "uppercase" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -319,7 +318,27 @@ export default function FoodCollections() {
                 foods.map((food, index) => (
                   <tr key={food.id} style={{ borderBottom: "1px solid #f3f4f6", hover: { backgroundColor: "#f9fafb" } }}>
                     <td style={{ padding: "12px 16px", fontSize: "14px", color: "#111827" }}>{(page - 1) * limit + index + 1}</td>
-                    <td style={{ padding: "12px 16px", fontSize: "14px", fontWeight: "600", color: "#111827" }}>{food.item}</td>
+                    <td style={{ padding: "12px 16px", fontSize: "14px", fontWeight: "600", color: "#111827" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <button
+                          onClick={() => openEditModal(food)}
+                          style={{
+                            background: "transparent",
+                            border: "none",
+                            color: "#10b981",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "16px",
+                            padding: 0
+                          }}
+                          title="Edit Food"
+                        >
+                          <FaEdit />
+                        </button>
+                        {food.item}
+                      </div>
+                    </td>
                     <td style={{ padding: "12px 16px", fontSize: "14px", color: "#4b5563" }}>
                       <span style={{ backgroundColor: "#f3f4f6", padding: "2px 8px", borderRadius: "12px", fontSize: "12px" }}>{food.categories}</span>
                     </td>
@@ -335,24 +354,6 @@ export default function FoodCollections() {
                     <td style={{ padding: "12px 16px", fontSize: "14px", color: "#4b5563" }}>{food.iron}mg</td>
                     <td style={{ padding: "12px 16px", fontSize: "14px", color: "#4b5563" }}>{food.magnesium}mg</td>
                     <td style={{ padding: "12px 16px", fontSize: "14px", color: "#4b5563" }}>{food.potassium}mg</td>
-                    <td style={{ padding: "12px 16px" }}>
-                      <button
-                        onClick={() => openEditModal(food)}
-                        style={{
-                          background: "transparent",
-                          border: "none",
-                          color: "#10b981",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                          fontSize: "13px",
-                          fontWeight: "600"
-                        }}
-                      >
-                        <FaEdit /> Edit
-                      </button>
-                    </td>
                   </tr>
                 ))
               )}
