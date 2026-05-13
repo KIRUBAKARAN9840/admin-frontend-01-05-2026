@@ -18,6 +18,7 @@ import {
   HiOutlineCreditCard,
   HiOutlineReceiptTax,
   HiOutlineShieldCheck,
+  HiOutlineCollection
 } from "react-icons/hi";
 import { MdWorkOutline, MdOutlineTabletMac, MdRestaurantMenu } from "react-icons/md";
 
@@ -397,6 +398,11 @@ export default function RoleBasedLayout({ children }) {
             name: "Food Template",
             icon: MdRestaurantMenu,
             path: "/portal/nutritionist/create-template",
+          },
+          {
+            name: "Food Collections",
+            icon: HiOutlineCollection,
+            path: "/portal/nutritionist/food-collections",
           },
         ];
 

@@ -248,10 +248,11 @@ export default function CreateTemplate() {
       food.quantity = value;
       // Recalculate nutrition proportionally if quantity is numeric
       const numericQty = parseFloat(value);
-      if (!isNaN(numericQty) && food.base_nutrition) {
+      if (!isNaN(numericQty) && food.base_nutrition && food.base_quantity) {
         Object.keys(food.base_nutrition).forEach(k => {
           const baseVal = food.base_nutrition[k] || 0;
-          food.nutrition[k] = parseFloat(((baseVal / 100) * numericQty).toFixed(2));
+          // Formula: (Nutrition Value / Base Quantity) * User Entered Quantity
+          food.nutrition[k] = parseFloat(((baseVal / food.base_quantity) * numericQty).toFixed(2));
         });
       }
     } else if (field === "name") {
@@ -320,17 +321,22 @@ export default function CreateTemplate() {
       fiber: 0, sugar: 0, sodium: 0, calcium: 0,
       iron: 0, magnesium: 0, potassium: 0
     };
-    const displayQty = suggestion.quantity || "100g";
-    const numericQty = parseFloat(displayQty) || 100;
+    
+    const baseQty = suggestion.base_quantity || 100;
+    const baseUnit = suggestion.base_unit || "g";
+    const displayQty = suggestion.quantity || `${baseQty}${baseUnit}`;
+    const numericQty = parseFloat(displayQty) || baseQty;
 
     const initialNutrition = {};
     Object.keys(baseNutrition).forEach(k => {
-      initialNutrition[k] = parseFloat(((baseNutrition[k] / 100) * numericQty).toFixed(2));
+      initialNutrition[k] = parseFloat(((baseNutrition[k] / baseQty) * numericQty).toFixed(2));
     });
 
     newDietData[dayIndex].meals[mealIndex].foods[foodIndex] = {
       name: suggestion.name,
       quantity: displayQty,
+      base_quantity: baseQty,
+      base_unit: baseUnit,
       base_nutrition: { ...baseNutrition },
       nutrition: initialNutrition
     };
