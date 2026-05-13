@@ -154,16 +154,35 @@ export default function ConsultationForm() {
   };
 
   const handleAnthroChange = (field, type, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      anthropometric_table: {
+    setFormData((prev) => {
+      const updatedAnthro = {
         ...prev.anthropometric_table,
         [field]: {
           ...prev.anthropometric_table[field],
           [type]: value,
         },
-      },
-    }));
+      };
+
+      // Auto-calculate BMI if weight or height changes
+      if (field === "weight" || field === "height") {
+        const weight = parseFloat(updatedAnthro.weight[type]) || 0;
+        const height = parseFloat(updatedAnthro.height[type]) || 0;
+
+        if (weight > 0 && height > 0) {
+          const heightInMeters = height / 100;
+          const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
+          updatedAnthro.bmi = {
+            ...updatedAnthro.bmi,
+            [type]: bmi
+          };
+        }
+      }
+
+      return {
+        ...prev,
+        anthropometric_table: updatedAnthro,
+      };
+    });
   };
 
   const handleSubmit = async (e) => {

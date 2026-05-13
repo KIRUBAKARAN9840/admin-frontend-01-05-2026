@@ -15,7 +15,16 @@ const toISTDateString = (date) => {
 
 export default function Home() {
   const router = useRouter();
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("nutritionist_selected_date");
+      if (saved) {
+        const parsed = new Date(saved);
+        return isNaN(parsed.getTime()) ? null : parsed;
+      }
+    }
+    return null;
+  });
   const [sessions, setSessions] = useState([]);
   const [dateCounts, setDateCounts] = useState({}); // Store session counts per date
   const [dateRescheduled, setDateRescheduled] = useState({}); // Track which dates have rescheduled sessions
@@ -168,9 +177,11 @@ export default function Home() {
   const handleDateClick = (date) => {
     if (selectedDate && selectedDate.toDateString() === date.toDateString()) {
       setSelectedDate(null);
+      localStorage.removeItem("nutritionist_selected_date");
       setSessions([]);
     } else {
       setSelectedDate(date);
+      localStorage.setItem("nutritionist_selected_date", date.toISOString());
     }
     setExpandedRow(null);
   };
