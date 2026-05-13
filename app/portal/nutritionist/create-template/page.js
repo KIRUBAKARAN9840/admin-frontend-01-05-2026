@@ -57,13 +57,16 @@ export default function CreateTemplate() {
 
   const initializeDietData = (days) => {
     const data = [];
+    const initialCollapsed = [];
     for (let i = 1; i <= days; i++) {
       data.push({
         day_number: i,
         meals: []
       });
+      initialCollapsed.push(i);
     }
     setDietData(data);
+    setCollapsedDays(initialCollapsed);
   };
 
   // Migrate old format to new format for backwards compatibility
@@ -131,6 +134,7 @@ export default function CreateTemplate() {
     };
     setDietData([...dietData, newDay]);
     setNumberOfDays(newDayNumber);
+    setCollapsedDays(prev => [...prev, newDayNumber]);
   };
 
   const removeDay = (dayIndex) => {
@@ -425,7 +429,9 @@ export default function CreateTemplate() {
         setTemplateName(template.template_name);
         setNumberOfDays(template.number_of_days);
         setDescription(template.description || "");
-        setDietData(migrateDietData(template.diet_data || []));
+        const diet_data = migrateDietData(template.diet_data || []);
+        setDietData(diet_data);
+        setCollapsedDays(diet_data.map(d => d.day_number));
         setEditingTemplate(template);
         setView("create");
       }
@@ -462,10 +468,10 @@ export default function CreateTemplate() {
       setLoading(true);
       const response = await axios.get(`/api/admin/nutritionist_diet_templates/template/${templateId}`);
       if (response.data?.success) {
-        const template = response.data.data;
-        // Migrate diet data to new format for consistent display
-        template.diet_data = migrateDietData(template.diet_data || []);
-        setViewingTemplate(template);
+        const diet_data = migrateDietData(template.diet_data || []);
+        setViewingTemplate({ ...template, diet_data });
+        setCollapsedDays(diet_data.map(d => d.day_number));
+        setView("view");
       }
     } catch (err) {
       console.error("Error fetching template:", err);
