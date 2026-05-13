@@ -312,6 +312,7 @@ export default function CompletedList() {
                     <th>Duration</th>
                     <th>Interested in Product</th>
                     <th>Diet Template</th>
+                    <th>Comments</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -449,7 +450,36 @@ export default function CompletedList() {
                               </button>
                             </div>
                           </td>
-                          <td>
+                          <td onClick={(e) => e.stopPropagation()}>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                router.push(`/portal/nutritionist/consultation/${session.client_id}`);
+                              }}
+                              style={{
+                                background: "rgba(16, 185, 129, 0.1)",
+                                border: "1px solid #10b981",
+                                color: "#10b981",
+                                padding: "6px 12px",
+                                borderRadius: "6px",
+                                cursor: "pointer",
+                                fontSize: "12px",
+                                fontWeight: "600",
+                                transition: "all 0.2s"
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = "#10b981";
+                                e.currentTarget.style.color = "white";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = "rgba(16, 185, 129, 0.1)";
+                                e.currentTarget.style.color = "#10b981";
+                              }}
+                            >
+                              Comments
+                            </button>
+                          </td>
+                          <td style={{ textAlign: "right" }}>
                             {expandedRow === index ? (
                               <FaChevronUp />
                             ) : (
