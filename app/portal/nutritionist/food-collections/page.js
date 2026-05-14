@@ -206,7 +206,7 @@ export default function FoodCollections() {
   };
 
   return (
-    <div style={{ padding: "2rem", backgroundColor: "#f9fafb", minHeight: "100vh" }}>
+    <div style={{ padding: "0.5rem 1rem 2rem 1rem", backgroundColor: "#f9fafb", minHeight: "100vh" }}>
       {/* Filters & Actions - Sticky */}
       <div style={{ 
         display: "flex", 
