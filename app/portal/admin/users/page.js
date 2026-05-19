@@ -1351,6 +1351,21 @@ export default function Users() {
               <option value={50}>50 per page</option>
             </select>
           </div>
+
+          <div style={{ flex: "1 1 auto", minWidth: "110px", display: "flex", alignItems: "center" }}>
+            <div style={{
+              fontSize: "13px",
+              color: "#ccc",
+              backgroundColor: "#2a2a2a",
+              border: "1px solid #444",
+              borderRadius: "6px",
+              padding: "8px 16px",
+              fontWeight: "500",
+              whiteSpace: "nowrap"
+            }}>
+              Showing: <span style={{ color: "#fff", fontWeight: "600" }}>{filteredTotal}</span>
+            </div>
+          </div>
         </div>
       </div>
 

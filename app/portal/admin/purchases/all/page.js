@@ -413,7 +413,7 @@ export default function AllPurchases() {
             {bookingCountFilter === "custom" && (
               <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
                 <input
-                  type="datetime-local"
+                  type="date"
                   value={customStartTime}
                   onChange={(e) => {
                     setCustomStartTime(e.target.value);
@@ -431,7 +431,7 @@ export default function AllPurchases() {
                 />
                 <span style={{ color: "#666", fontSize: "11px" }}>to</span>
                 <input
-                  type="datetime-local"
+                  type="date"
                   value={customEndTime}
                   onChange={(e) => {
                     setCustomEndTime(e.target.value);
@@ -861,9 +861,12 @@ export default function AllPurchases() {
                                     <span style={{ color: "#fff", fontWeight: "500" }}>{purchase.gym_area}</span>
                                   </div>
                                 )}
-
-
-
+                                {purchase.discount_price !== undefined && purchase.discount_price !== null && (
+                                  <div style={{ fontSize: "13px" }}>
+                                    <span style={{ color: "#888" }}>Gym Price: </span>
+                                    <span style={{ color: "#fff", fontWeight: "500" }}>₹{purchase.discount_price}</span>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>

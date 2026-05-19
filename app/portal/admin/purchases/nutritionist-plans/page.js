@@ -79,6 +79,37 @@ export default function NutritionistPlans() {
     });
   };
 
+  const getStatusBadge = (status) => {
+    if (!status || status === "N/A") return <span style={{ color: "#888" }}>N/A</span>;
+    const colors = {
+      attended: { bg: "rgba(16, 185, 129, 0.1)", text: "#10b981", border: "rgba(16, 185, 129, 0.2)" },
+      booked: { bg: "rgba(59, 130, 246, 0.1)", text: "#3b82f6", border: "rgba(59, 130, 246, 0.2)" },
+      pending: { bg: "rgba(245, 158, 11, 0.1)", text: "#f59e0b", border: "rgba(245, 158, 11, 0.2)" },
+      rescheduled: { bg: "rgba(139, 92, 246, 0.1)", text: "#8b5cf6", border: "rgba(139, 92, 246, 0.2)" },
+      cancelled: { bg: "rgba(239, 68, 68, 0.1)", text: "#ef4444", border: "rgba(239, 68, 68, 0.2)" },
+      no_show: { bg: "rgba(107, 114, 128, 0.1)", text: "#6b7280", border: "rgba(107, 114, 128, 0.2)" },
+    };
+    const style = colors[status.toLowerCase()] || { bg: "rgba(255, 255, 255, 0.05)", text: "#fff", border: "rgba(255, 255, 255, 0.1)" };
+    return (
+      <span
+        style={{
+          backgroundColor: style.bg,
+          color: style.text,
+          border: `1px solid ${style.border}`,
+          padding: "4px 8px",
+          borderRadius: "12px",
+          fontSize: "11px",
+          fontWeight: "600",
+          textTransform: "uppercase",
+          letterSpacing: "0.5px",
+          display: "inline-block",
+        }}
+      >
+        {status}
+      </span>
+    );
+  };
+
   const totalPages = Math.ceil(totalUsers / 10);
 
   const handleExport = async () => {
@@ -208,9 +239,10 @@ export default function NutritionistPlans() {
                 <tr>
                   <th>Client Name</th>
                   <th>Contact</th>
-                  <th>Gym Name</th>
                   <th>Purchased Date</th>
-                  <th>Booked Date</th>
+                  <th>Scheduled Date</th>
+                  <th>Status</th>
+                  <th>Session count</th>
                   <th>Amount</th>
                 </tr>
               </thead>
@@ -223,9 +255,6 @@ export default function NutritionistPlans() {
                     <td className="client-contact">
                       <div>{user.mobile || "N/A"}</div>
                     </td>
-                    <td className="gym-name">
-                      <div>{user.gym_name || "N/A"}</div>
-                    </td>
                     <td>
                       <div style={{ fontSize: "13px", color: "#ccc" }}>
                         {formatDate(user.purchased_date)}
@@ -234,6 +263,14 @@ export default function NutritionistPlans() {
                     <td>
                       <div style={{ fontSize: "13px", color: "#ccc" }}>
                         {formatDate(user.booked_date)}
+                      </div>
+                    </td>
+                    <td>
+                      <div>{getStatusBadge(user.status)}</div>
+                    </td>
+                    <td>
+                      <div style={{ fontSize: "13px", color: "#ccc", fontWeight: "500" }}>
+                        {user.session_count ?? 0}
                       </div>
                     </td>
                     <td>

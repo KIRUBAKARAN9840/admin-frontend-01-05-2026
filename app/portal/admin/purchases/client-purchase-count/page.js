@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axiosInstance from "@/lib/axios";
 import { FaDownload } from "react-icons/fa";
 
@@ -20,20 +20,23 @@ export default function ClientPurchaseCountPage() {
     hasPrev: false,
   });
 
-  const fetchData = async (pageNum = 1) => {
+  const isInitialMount = useRef(true);
+
+  const fetchData = async (pageNum = 1, currentSearch = search) => {
     try {
       setLoading(true);
       const res = await axiosInstance.get("/api/admin/purchases/purchase-count-summary", {
         params: {
           page: pageNum,
           limit: 10,
-          search: search || undefined,
+          search: currentSearch || undefined,
         },
       });
       if (res.data.success) {
         setData(res.data.data);
         setPagination({
           ...res.data.pagination,
+          page: pageNum,
           hasNext: pageNum < res.data.pagination.totalPages,
           hasPrev: pageNum > 1
         });
@@ -45,13 +48,39 @@ export default function ClientPurchaseCountPage() {
     }
   };
 
+  // Restore state on mount
   useEffect(() => {
-    fetchData(1);
+    const savedState = sessionStorage.getItem("clientPurchaseCountState");
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState);
+        if (state.isReturning) {
+          sessionStorage.removeItem("clientPurchaseCountState");
+          setSearch(state.search || "");
+          fetchData(state.page || 1, state.search || "");
+          isInitialMount.current = false;
+          return;
+        }
+      } catch (e) {
+        console.error("Error parsing saved state:", e);
+      }
+    }
+
+    fetchData(1, search);
+    isInitialMount.current = false;
+  }, []);
+
+  // Fetch only on search changes (skipping initial mount)
+  useEffect(() => {
+    if (isInitialMount.current) {
+      return;
+    }
+    fetchData(1, search);
   }, [search]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
-      fetchData(newPage);
+      fetchData(newPage, search);
     }
   };
 
@@ -188,7 +217,15 @@ export default function ClientPurchaseCountPage() {
               {data.map((item) => (
                 <tr 
                   key={item.client_id}
-                  onClick={() => router.push(`/portal/admin/purchases/client-purchase-count/${item.client_id}?name=${encodeURIComponent(item.client_name)}`)}
+                  onClick={() => {
+                    const currentState = {
+                      search,
+                      page: pagination.page,
+                      isReturning: true
+                    };
+                    sessionStorage.setItem("clientPurchaseCountState", JSON.stringify(currentState));
+                    router.push(`/portal/admin/purchases/client-purchase-count/${item.client_id}?name=${encodeURIComponent(item.client_name)}`);
+                  }}
                   style={{ cursor: "pointer" }}
                   className="clickable-row"
                 >
